@@ -1,0 +1,30 @@
+#!/bin/bash
+
+INPUTFILE=$1
+FILETYPE=$2
+SEGMENTATIONWM=$3
+SEGMENTATIONGM=$4
+
+if (( $FILETYPE==1 )) ## generate threshold 3d+t bucket across separate surfaces
+ 	then
+	3dcalc -a $INPUTFILE -expr '( within(a,-1000,0) )' -prefix boundariesThr+orig
+else
+	instrWM=$(printf '3dcalc -a %s -expr \u0027within(a,%s,%s)\u0027 -prefix boundariesThrWM+orig' $INPUTFILE $SEGMENTATIONWM $SEGMENTATIONWM )
+    instrGM=$(printf '3dcalc -a %s -expr \u0027step(a)\u0027 -prefix boundariesThrGM+orig' $INPUTFILE )
+    echo $instrWM
+    echo $instrGM
+    Rscript $AFNI_TOOLBOXDIR/runCommandViaR.R $instrWM
+    Rscript $AFNI_TOOLBOXDIR/runCommandViaR.R $instrGM
+    3dTcat boundariesThrWM+orig boundariesThrGM+orig -prefix boundariesThr+orig
+    rm boundariesThrWM+orig.HEAD
+    rm boundariesThrWM+orig.BRIK
+    rm boundariesThrGM+orig.HEAD
+    rm boundariesThrGM+orig.BRIK
+fi
+
+3dAFNItoNIFTI boundariesThr+orig
+gzip boundariesThr.nii
+rm boundariesThr+orig.BRIK
+rm boundariesThr+orig.HEAD
+
+mv boundariesThr.nii.gz surfaces/

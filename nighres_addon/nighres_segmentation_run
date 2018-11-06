@@ -1,0 +1,54 @@
+python -c 'import sys; sys.path.insert(0, "/home/fracasso/programs/nighres"); print(sys.path); import nighres; nighres.brain.mgdm_segmentation(contrast_image1="/home/fracasso/data/tests/MP2RAGE_test_nighres/MPRAGE_ss.nii", contrast_type1="Mp2rage7T", contrast_image2="/home/fracasso/data/tests/MP2RAGE_test_nighres/MPRAGE_T1_ss.nii", contrast_type2="T1map7T", save_data=True, file_name="sub001_test", output_dir="/home/fracasso/data/tests/MP2RAGE_test_nighres")'
+
+
+
+
+
+
+
+python -c 'import sys; sys.path.insert(0, "/home/fracasso/programs/nighres"); print(sys.path); import nighres; nighres.brain.mgdm_segmentation(contrast_image1="T1_orig_ss_nudge_RAI.nii.gz", contrast_type1="Mp2rage7T", contrast_image2="T1_ss_nudge_RAI.nii.gz", contrast_type2="T1map7T", save_data=True, file_name="sub001_test02", output_dir="resultsTestAdjustPriors_nudge/", adjust_intensity_priors=False, n_steps=5)'
+
+python -c 'import sys; sys.path.insert(0, "/home/fracasso/programs/nighres"); print(sys.path); import nighres; nighres.brain.extract_brain_region(segmentation="sub001_test02_mgdm_seg.nii.gz", levelset_boundary="sub001_test02_mgdm_dist.nii.gz", maximum_membership="sub001_test02_mgdm_mems.nii.gz", maximum_label="sub001_test02_mgdm_lbls.nii.gz", extracted_region="left_cerebrum", save_data=True, file_name="sub001_test02_left", output_dir="leftCer/")'
+
+python -c 'import sys; sys.path.insert(0, "/home/fracasso/programs/nighres"); print(sys.path); import nighres; nighres.cortex.cruise_cortex_extraction(init_image="sub001_test02_left_xmask_lcrwm.nii.gz", wm_image="sub001_test02_left_xproba_lcrwm.nii.gz", gm_image="sub001_test02_left_xproba_lcrgm.nii.gz", csf_image="sub001_test02_left_xproba_lcrbg.nii.gz", normalize_probabilities=True, save_data=True, file_name="sub001_test02_left_cruise", output_dir="leftCruise/")'
+
+
+
+
+
+
+
+
+
+
+to cruise:
+nighres.brain.extract_brain_region(segmentation=segmentation,
+                                            levelset_boundary=boundary_dist,
+                                            maximum_membership=max_probas,
+                                            maximum_label=max_labels,
+                                            extracted_region='left_cerebrum',
+                                            save_data=True,
+                                            file_name='sub001_sess1_left_cerebrum',
+                                            output_dir=out_dir)
+
+NB, gm ribbon as levelset
+cruise = nighres.cortex.cruise_cortex_extraction(
+                        init_image=cortex['inside_mask'],
+                        wm_image=cortex['inside_proba'],
+                        gm_image=cortex['region_proba'],
+                        csf_image=cortex['background_proba'],
+                        normalize_probabilities=True,
+                        save_data=True,
+                        file_name="sub001_sess1_left_cerebrum",
+                        output_dir=out_dir)
+
+NB, outer_levelset = wm+gm ribbon as levelset
+depth = nighres.laminar.volumetric_layering(
+                        inner_levelset=cruise['gwb'],
+                        outer_levelset=cruise['cgb'],
+                        n_layers=4,
+                        save_data=True,
+                        file_name="sub001_sess1_left_cerebrum",
+                        output_dir=out_dir)
+
+

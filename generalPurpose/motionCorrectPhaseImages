@@ -1,0 +1,61 @@
+#!/bin/tcsh
+
+cd motionCorrect.results
+
+cp dfile.r**1D ../PHASE/
+
+cd ../PHASE
+
+phase_files=( *unwrap.nii )
+d_files=( *.1D )
+
+for ((i=0; i<${#phase_files[@]}; i++)); do
+
+   outputFileName=$(printf '%s%s' ${phase_files[i]%%.???} '_al+orig')
+   outputFileNameMean=$(printf '%s%d%s' 'meanPhase_' $i '+orig')
+   echo ${phase_files[i]}
+   echo ${d_files[i]}   
+   echo ${outputFileName}
+   echo ${outputFileNameMean}
+
+   3drotate -1Dfile ${d_files[i]} -prefix ${outputFileName} ${phase_files[i]}
+
+   3dTstat -prefix ${outputFileNameMean} ${outputFileName}   
+
+   3dAFNItoNIFTI ${outputFileNameMean}
+
+   rm $(printf '%s%s' ${outputFileName} '.HEAD')
+   rm $(printf '%s%s' ${outputFileName} '.BRIK')
+   rm $(printf '%s%s' ${outputFileNameMean} '.HEAD')
+   rm $(printf '%s%s' ${outputFileNameMean} '.BRIK')
+
+   
+done
+
+mean_files=( meanPhase**.nii )
+
+outputFileName=$(printf '3dMean -prefix phaseAnatomy+orig %s' ${mean_files[0]} )
+
+for ((i=1; i<=${#mean_files[@]}; i++)); do
+   
+  outputFileName=$(printf '%s %s ' ${outputFileName} ${mean_files[i]} )
+   
+done
+
+echo ${outputFileName}
+
+${outputFileName}
+
+3dAFNItoNIFTI phaseAnatomy+orig
+
+rm meanPhase**.nii
+rm phaseAnatomy+orig.BRIK
+rm phaseAnatomy+orig.HEAD
+
+mv phaseAnatomy.nii ../anatomy
+
+cd ..
+
+
+
+

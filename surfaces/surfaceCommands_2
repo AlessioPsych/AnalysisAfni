@@ -1,0 +1,47 @@
+#!/bin/tcsh
+
+ConvertSurface -i_1D csf_distance.1D.coord WM_Surface.1D.topo -o_1D csf_distance_consistent -make_consistent
+
+ConvertSurface -i_1D middle_cortical_thickness.1D.coord WM_Surface.1D.topo -o_1D middle_cortical_thickness_consistent -make_consistent
+
+#quickspec -tn 1D csf_distance_consistent.1D.coord csf_distance_consistent.1D.topo \
+#	-spec surfaces_csf_smooth
+
+#SurfSmooth -spec surfaces_csf_smooth -surf_A csf_distance_consistent.1D.coord -met LM -Niter 10 -output csf_distance_consistent_smooth.1D.coord
+
+quickspec -tn 1D WM_Surface_smooth_consistent.1D.coord WM_Surface_smooth_consistent.1D.topo \
+	-tn 1D csf_distance_consistent.1D.coord csf_distance_consistent.1D.topo \
+        -tn 1D middle_cortical_thickness_consistent.1D.coord middle_cortical_thickness_consistent.1D.topo \
+	-spec surfaces_step2.spec
+
+SurfSmooth -spec surfaces_step2.spec -surf_A middle_cortical_thickness_consistent.1D.coord -met LM -Niter 800 -output middle_cortical_thickness_consistent_smooth.1D.coord
+
+ConvertSurface -i_1D middle_cortical_thickness_consistent_smooth.1D.coord middle_cortical_thickness_consistent.1D.topo -o_1D middle_cortical_thickness_consistent_step2 -make_consistent
+
+
+SurfSmooth -spec surfaces_step2.spec -surf_A csf_distance_consistent.1D.coord -met LM -Niter 800 -output csf_distance_consistent_smooth.1D.coord
+
+ConvertSurface -i_1D csf_distance_consistent_smooth.1D.coord csf_distance_consistent.1D.topo -o_1D csf_distance_consistent_step2 -make_consistent
+
+quickspec -tn 1D WM_Surface_smooth_consistent.1D.coord WM_Surface_smooth_consistent.1D.topo \
+	-tn 1D WM_Surface_inflated.1D.coord WM_Surface_inflated.1D.topo \
+        -tn 1D CSF_Surface_smooth.1D.coord CSF_Surface.1D.topo                              \
+        -tn 1D CSF_Surface_smooth_consistent.1D.coord CSF_Surface_smooth_consistent.1D.topo \
+        -tn 1D csf_distance_consistent.1D.coord csf_distance_consistent.1D.topo             \
+	-tn 1D csf_distance_consistent_step2.1D.coord csf_distance_consistent_step2.1D.topo \
+	-tn 1D middle_cortical_thickness_consistent_step2.1D.coord middle_cortical_thickness_consistent_step2.1D.topo \
+	-spec surfaces_final.spec
+
+SurfMeasures                                                     \
+            -spec       surfaces_final.spec                      \
+            -sv         t1Myelin.nii                             \
+            -surf_A     WM_Surface_smooth_consistent.1D.coord    \
+            -surf_B     csf_distance_consistent_step2.1D.coord   \
+            -func       thick                                    \
+            -out        t1Myelin.niml.dset                       \
+            -func       coord_A                                  \
+            -func       coord_B
+
+afni -niml &
+suma -spec surfaces_final.spec -sv t1Myelin_scaled_registered_EPI_space.nii
+#suma -spec surfaces_step1.spec -sv t1Myelin_scaled_registered_EPI_space.nii

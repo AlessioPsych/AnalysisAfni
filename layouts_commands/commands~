@@ -1,0 +1,255 @@
+coregisterT1onEPI.sh \
+ anatomy_crop.nii.gz \
+ amplitudeAnatomy.nii.gz \
+ segmentation_crop.nii.gz 2 2 0 8
+
+coregisterT1onEPI_NL.sh MPRAGE_al_epi.nii.gz amplitudeAnatomy.nii.gz 1 1
+coregisterT1onEPI_NL.sh MPRAGE_al_epi.nii.gz meanEpi.nii 1 0
+
+defineBoundaries.sh boundaries.nii.gz 1 2 1
+
+generateSurfaces.sh 11 30 800
+
+afniSurface.sh anatomy_crop.nii.gz
+
+
+######################################################
+## distance map in epi space, affine + nl transform ##
+######################################################
+
+3dcalc -a segmentation_crop.nii.gz \
+	-b continous_depth.nii.gz \
+	-expr 'within(a,2,2)*0 + within(a,0,0)*1 + within(a,1,1)*b' \
+	-prefix continous_depth_fill.nii.gz 
+
+roiT1toEPI.sh \
+ continous_depth_fill.nii.gz  \
+ amplitudeAnatomy.nii.gz \
+ MPRAGE_zp_shft.1D \
+ MPRAGE_zp_shft_mask_unif_al_mat.aff12.1D \
+ DEPTH \
+ linear
+
+3dNwarpApply -nwarp Qwarp_WARP_1+orig \
+                   -source DEPTH_al_epi.nii.gz \
+                   -prefix DEPTH_al_epi_nl \
+		   -interp linear
+3dAFNItoNIFTI DEPTH_al_epi_nl+orig
+rm DEPTH_al_epi_nl+orig.HEAD
+rm DEPTH_al_epi_nl+orig.BRIK
+
+
+
+
+
+
+
+roiEPItoT1.sh \
+ prfModelOutput_020916_195359+orig \
+ amplitudeAnatomy.nii.gz \
+ anatomy_crop.nii.gz \
+ MPRAGE_zp_shft.1D \
+ MPRAGE_zp_shft_mask_unif_al_mat.aff12.1D \
+ 8 \
+ prfModelOutput
+
+3dVol2Surf -spec spec.surfaces.smoothed \
+ -surf_A boundary05_sm.1D.coord \
+ -sv anatomy_crop.nii.gz \
+ -grid_parent prfModelOutput_al_mprage.nii.gz \
+ -map_func mask \
+ -out_1D eccVal1.1D
+
+roiT1toEPI.sh \
+ continous_depth.nii.gz \
+ amplitudeAnatomy.nii.gz \
+ MPRAGE_zp_shft.1D \
+ MPRAGE_zp_shft_mask_unif_al_mat.aff12.1D \
+ DEPTH
+
+
+
+
+
+
+
+ROINAME='LEFTV1.1D.roi'
+BOUNDARY='boundary05'
+ANAT='anatomy_crop.nii.gz'
+DEPTH='continous_depth.nii.gz'
+Rscript $AFNI_TOOLBOXDIR/surfaces/surf2VolRoi01.R \
+ $ROINAME \
+ $BOUNDARY \
+ $DEPTH \
+ $AFNI_INSTALLDIR \
+ $AFNI_TOOLBOXDIRSURFACES
+
+roiT1toEPI.sh \
+ LEFTV1.1D.roi_clust+orig \
+ amplitudeAnatomy.nii.gz \
+ MPRAGE_zp_shft.1D \
+ MPRAGE_zp_shft_mask_unif_al_mat.aff12.1D \
+ LEFTV1 \
+ NN
+
+3dNwarpApply -nwarp Qwarp_WARP_1+orig \
+                   -source LEFTV1_al_epi.nii.gz \
+                   -prefix LEFTV1_al_epi_nl \
+		   -interp NN
+3dAFNItoNIFTI LEFTV1_al_epi_nl+orig
+rm LEFTV1_al_epi_nl+orig.HEAD
+rm LEFTV1_al_epi_nl+orig.BRIK
+
+
+
+ROINAME='RIGHTV1.1D.roi'
+BOUNDARY='boundary05'
+ANAT='anatomy_crop.nii.gz'
+DEPTH='continous_depth.nii.gz'
+Rscript $AFNI_TOOLBOXDIR/surfaces/surf2VolRoi01.R \
+ $ROINAME \
+ $BOUNDARY \
+ $DEPTH \
+ $AFNI_INSTALLDIR \
+ $AFNI_TOOLBOXDIRSURFACES
+
+roiT1toEPI.sh \
+ RIGHTV1.1D.roi_clust+orig \
+ amplitudeAnatomy.nii.gz \
+ MPRAGE_zp_shft.1D \
+ MPRAGE_zp_shft_mask_unif_al_mat.aff12.1D \
+ RIGHTV1 \
+ NN
+
+3dNwarpApply -nwarp Qwarp_WARP_1+orig \
+                   -source RIGHTV1_al_epi.nii.gz \
+                   -prefix RIGHTV1_al_epi_nl \
+		   -interp NN
+3dAFNItoNIFTI RIGHTV1_al_epi_nl+orig
+rm RIGHTV1_al_epi_nl+orig.BRIK
+rm RIGHTV1_al_epi_nl+orig.HEAD
+
+
+
+
+ROINAME='LEFTV2D.1D.roi'
+BOUNDARY='boundary05'
+ANAT='anatomy_crop.nii.gz'
+DEPTH='continous_depth.nii.gz'
+Rscript $AFNI_TOOLBOXDIR/surfaces/surf2VolRoi01.R \
+ $ROINAME \
+ $BOUNDARY \
+ $DEPTH \
+ $AFNI_INSTALLDIR \
+ $AFNI_TOOLBOXDIRSURFACES
+
+roiT1toEPI.sh \
+ LEFTV2D.1D.roi_clust+orig \
+ amplitudeAnatomy.nii.gz \
+ MPRAGE_zp_shft.1D \
+ MPRAGE_zp_shft_mask_unif_al_mat.aff12.1D \
+ LEFTV2D
+
+
+ROINAME='RIGHTV2D.1D.roi'
+BOUNDARY='boundary05'
+ANAT='anatomy_crop.nii.gz'
+DEPTH='continous_depth.nii.gz'
+Rscript $AFNI_TOOLBOXDIR/surfaces/surf2VolRoi01.R \
+ $ROINAME \
+ $BOUNDARY \
+ $DEPTH \
+ $AFNI_INSTALLDIR \
+ $AFNI_TOOLBOXDIRSURFACES
+
+roiT1toEPI.sh \
+ RIGHTV2D.1D.roi_clust+orig \
+ amplitudeAnatomy.nii.gz \
+ MPRAGE_zp_shft.1D \
+ MPRAGE_zp_shft_mask_unif_al_mat.aff12.1D \
+ RIGHTV2D
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+roiT1toEPI.sh \
+ continous_depth.nii.gz \
+ amplitudeAnatomy.nii.gz \
+ MPRAGE_zp_shft.1D \
+ MPRAGE_zp_shft_mask_unif_al_mat.aff12.1D \
+ DEPTH
+
+
+roiT1toEPI.sh p1.1D.roi_clust+orig amplitudeAnatomy.nii.gz MPRAGE_zp_shft.1D MPRAGE_zp_shft_mask_unif_al_mat.aff12.1D P1
+
+roiEPItoT1.sh P1_al_epi.nii.gz amplitudeAnatomy.nii.gz anatomy_crop.nii.gz MPRAGE_zp_shft_mask_unif_al_mat.aff12.1D 8 P1Anat
+
+
+
+
+
+
+
+
+
+
+
+
+
+defineBoundaries.sh boundaries.nii.gz 1 2 1
+generateSurfaces.sh 11 30 800
+afniSurface.sh anatomy_crop.nii.gz
+
+ROINAME='p1.1D.roi'
+BOUNDARY='boundary05'
+ANAT='anatomy_crop.nii.gz'
+DEPTH='continous_depth.nii.gz'
+Rscript $AFNI_TOOLBOXDIR/surfaces/surf2VolRoi01.R $ROINAME $BOUNDARY $DEPTH $AFNI_INSTALLDIR $AFNI_TOOLBOXDIRSURFACES
+
+
+
+
+
+roiT1toEPI.sh continous_depth.nii.gz amplitudeAnatomy.nii.gz MPRAGE_zp_shft.1D MPRAGE_zp_shft_mask_unif_al_mat.aff12.1D 8 DEPTH
+
+roiT1toEPI.sh p1.1D.roi_clust+orig amplitudeAnatomy.nii.gz MPRAGE_zp_shft.1D MPRAGE_zp_shft_mask_unif_al_mat.aff12.1D P1
+
+roiEPItoT1.sh P1_al_epi.nii.gz amplitudeAnatomy.nii.gz anatomy_crop.nii.gz MPRAGE_zp_shft_mask_unif_al_mat.aff12.1D 8 P1Anat
+
+
+roiEPItoT1.sh prfModelOutput_011316_174457+orig amplitudeAnatomy.nii.gz anatomy_crop.nii.gz MPRAGE_zp_shft.1D MPRAGE_zp_shft_mask_unif_al_mat.aff12.1D 8 prfModelAnat
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#defineBoundaries.sh SEG_al_epi.nii.gz 2 2 1
+#generateSurfaces.sh 2 10 10
+#afniSurface.sh MPRAGE_al_epi.nii.gz
+
+#ROINAME='leftV1.1D.roi'
+#BOUNDARYWM='boundary00'
+#BOUNDARYGM='boundary01'
+#ANAT='MPRAGE_al_epi.nii.gz'
+#DEPTH='DEPTH_al_epi.nii.gz'
+#Rscript $AFNI_TOOLBOXDIR/surfaces/surf2VolRoi01.R $ROINAME $BOUNDARYWM $DEPTH $AFNI_INSTALLDIR $AFNI_TOOLBOXDIRSURFACES
+

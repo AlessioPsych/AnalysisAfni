@@ -1,0 +1,89 @@
+3dSkullStrip -input MP2RAGE_INV2.nii -prefix PD_SS+orig
+3dcalc -a PD_SS+orig -b MP2RAGEM.nii -expr 'b*step(a)' -prefix T1_SS+orig
+3dresample -dxyz 0.6 0.6 0.6 -inset T1_SS+orig -prefix TT_SS_iso+orig
+3dAFNItoNIFTI TT_SS_iso+orig
+
+3dTstat -prefix amplitude_anatomy.nii.gz 3D08_mag.nii
+
+3dWarp -card2oblique amplitude_anatomy.nii.gz -linear -prefix anatomy_N3_obl.nii.gz anatomy_N3.nii.gz
+3dWarp -card2oblique amplitude_anatomy.nii.gz -linear -prefix innerSurf_obl.nii.gz innerSurf.nii.gz
+3dWarp -card2oblique amplitude_anatomy.nii.gz -linear -prefix outerSurf_obl.nii.gz outerSurf.nii.gz
+
+coregisterT1onEPI.sh \
+ anatomy_crop.nii.gz \
+ amplitude_anatomy.nii.gz \
+ segmentation_crop.nii.gz 2 2 0 8 right
+
+coregisterT1onEPI_NL.sh MPRAGE_al_epi.nii.gz amplitude_anatomy.nii.gz 3 1 1
+
+coregisterT1onEPI_NL.sh MPRAGE_al_epi.nii.gz T123DEPImean_T1M.nii 3 1 4
+
+coregisterT1onEPI_NL.sh MPRAGE_al_epi.nii.gz T123DEPImeanM.nii 3 1 4 ## this seem to work, maybe improved by 'skull stripping' further
+
+
+defineBoundaries.sh boundaries.nii.gz 1 2 1
+
+generateSurfaces.sh 11 30 800
+
+afniSurface.sh anatomy_crop.nii.gz
+
+3dVol2Surf -spec spec.surfaces.smoothed \
+ -surf_A boundary05_sm.1D.coord \
+ -sv anatomy_crop.nii.gz \
+ -grid_parent anatomy_crop.nii.gz \
+ -map_func mask \
+ -out_1D t1Intensity.1D
+
+
+
+ROINAME='p1.1D.roi'
+BOUNDARY='boundary05'
+ANAT='anatomy_crop.nii.gz'
+DEPTH='continous_depth.nii.gz'
+Rscript $AFNI_TOOLBOXDIR/surfaces/surf2VolRoi01.R \
+ $ROINAME \
+ $BOUNDARY \
+ $DEPTH \
+ $AFNI_INSTALLDIR \
+ $AFNI_TOOLBOXDIRSURFACES
+
+roiT1toEPI.sh \
+ p1.1D.roi_clust+orig \
+ amplitude_anatomy.nii.gz \
+ MPRAGE_zp_shft.1D \
+ MPRAGE_zp_shft_mask_unif_al_mat.aff12.1D \
+ P1 \
+ NN
+
+3dNwarpApply -nwarp Qwarp_WARP_3+orig \
+                   -source P1_al_epi.nii.gz \
+                   -prefix P1_al_epi_nl.nii.gz \
+		   -interp NN
+
+
+
+3dcalc -a segmentation_crop.nii.gz \
+	-b continous_depth.nii.gz \
+	-expr 'within(a,2,2)*0 + within(a,0,0)*1 + within(a,1,1)*b' \
+	-prefix continous_depth_fill.nii.gz 
+
+roiT1toEPI.sh \
+ continous_depth_fill.nii.gz  \
+ amplitude_anatomy.nii.gz \
+ MPRAGE_zp_shft.1D \
+ MPRAGE_zp_shft_mask_unif_al_mat.aff12.1D \
+ DEPTH \
+ linear
+
+3dNwarpApply -nwarp Qwarp_WARP_3+orig \
+                   -source DEPTH_al_epi.nii.gz \
+                   -prefix DEPTH_al_epi_nl.nii.gz \
+		   -interp linear
+
+
+
+
+
+
+
+

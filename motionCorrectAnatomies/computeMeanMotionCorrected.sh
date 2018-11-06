@@ -1,0 +1,27 @@
+#!/bin/bash
+
+cd originalNifti
+
+nifti_files=( *.nii )
+
+nifti_files_aligned=( *_al.nii )
+
+outputFileName=$(printf '3dMean -prefix meanAnatomy %s' ${nifti_files[0]} )
+
+for ((i=0; i<=${#nifti_files_aligned[@]}; i++)); do
+   
+  outputFileName=$(printf '%s %s ' ${outputFileName} ${nifti_files_aligned[i]} )
+   
+done
+
+echo ${outputFileName}
+
+${outputFileName}
+
+3dAFNItoNIFTI meanAnatomy+orig.BRIK
+
+cd ..
+
+mv originalNifti/meanAnatomy+orig.HEAD pdVolumes/
+mv originalNifti/meanAnatomy+orig.BRIK pdVolumes/
+

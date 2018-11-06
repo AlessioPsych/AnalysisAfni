@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+coordFiles=(*_sm.1D.coord)
+topoFiles=(*.topo)
+
+for (( i=0; i<=9; i++ )) do
+        outputFile=$(printf 'surfMapping%s.surf' $i)
+	part=$(printf 'SurfToSurf -i_1D %s %s -i_1D %s %s -prefix %s' ${topoFiles[i]} ${coordFiles[i]} )
+        echo ${i}
+	echo ${part}
+	echo ${outputFile}
+done
+
+
+#SurfToSurf -i_1D boundary08_sm.1D.coord boundary08.1D.topo \
+#	-i_1D boundary09_sm.1D.coord boundary09.1D.topo \
+#	-prefix thickness.surf
+

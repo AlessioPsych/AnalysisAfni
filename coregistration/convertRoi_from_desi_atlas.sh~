@@ -1,0 +1,74 @@
+#!/bin/bash
+#generates the instruction to transform an roi from tlrc to the actual anatomy;
+# 4 inputs: transformation file, roi number to import, atlas directory, import grid volume
+
+MATFILE=$1
+GRIDOUTFILE=$2
+FILENAMEANDPATH=$3
+FLAGNONLIN=$4
+WARPFIELD=$5
+
+if [ -z "$1" ]
+ then
+  echo 'Bash script bring a normalized atlas to a T1. Inputs:'
+  echo 'MATFILE=$1, matrix filename' 
+  echo 'GRIDOUTFILE=$2, output grid'
+  echo 'FILENAMEANDPATH=$3, atlas file + path'
+  echo 'FLAGNONLIN=$4, non linear warping?'
+  echo 'WARPFIELD=$5, in case, warping field'
+  exit 1
+fi
+
+
+
+
+if (( FLAGNONLIN==0 ))
+	then
+	instr1=$(printf '3dWarp -matvec_in2out %s -gridset %s -prefix outputVolume.nii.gz -NN %s' $MATFILE $GRIDOUTFILE $FILENAMEANDPATH)
+fi
+if (( FLAGNONLIN==1 ))
+	then
+	cat_matvec -ONELINE $MATFILE -I > MPRAGEtoTLRC.1D
+	instr1=$(printf '3dNwarpApply -source %s -nwarp \u0027MPRAGEtoTLRC.1D Qwarp_WARPINV+tlrc\u0027 -prefix outputVolume.nii.gz -master %s -interp NN'  $FILENAMEANDPATH $GRIDOUTFILE)
+fi
+
+echo $instr1
+
+
+Rscript $AFNI_TOOLBOXDIR/runCommandViaR.R $instr1
+
+#MATFILE=$1
+#ROINUMBER=$2
+#DIR=$3
+#GRID=$4
+
+#atlasPath=$(printf '%s/TT_N27+tlrc' $DIR)  # set atlas file
+#roiPath=$(printf '%s/TT_desai_dk_mpm+tlrc' $DIR)  # set roi file
+#exprCommand=$(printf '\u0027within(a, %s, %s)\u0027' $ROINUMBER $ROINUMBER )
+#roiVolumeName=$(printf 'roiVolume%s+tlrc' $ROINUMBER)
+
+#instr1=$(printf '3dcalc \u002Da %s \u002Dexpr \u0027within(a,%d,%d)\u0027 \u002Dprefix roiVolume' $roiPath $ROINUMBER $ROINUMBER)
+
+#instr2=$(printf '3dWarp -matvec_in2out %s -gridset %s -prefix %s roiVolume+tlrc' $MATFILE $GRID $roiVolumeName)
+
+#instr3=$(printf '3drefit -view \u0027orig\u0027 %s' $roiVolumeName )
+
+#echo
+#echo 'INSTRUCTION 1'
+#echo $instr1
+#echo
+#echo 'INSTRUCTION 2'
+#echo $instr2
+#echo
+#echo 'INSTRUCTION 3'
+#echo $instr3
+#echo
+
+#Rscript $AFNI_TOOLBOXDIR/runCommandViaR.R $instr1
+#Rscript $AFNI_TOOLBOXDIR/runCommandViaR.R $instr2
+#Rscript $AFNI_TOOLBOXDIR/runCommandViaR.R $instr3
+
+#rm roiVolume+tlrc.HEAD
+#rm roiVolume+tlrc.BRIK
+
+

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+MPRAGE=$1
+
+afni -niml &
+suma -spec spec.surfaces.smoothed -sv $MPRAGE &
+
+

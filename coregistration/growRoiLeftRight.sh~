@@ -1,0 +1,6 @@
+#!/bin/bash
+# smooths the left_right separation from the atlas
+
+VOLUME=$1
+
+Rscript $AFNI_TOOLBOXDIR/coregistration/growRoiLeftRight.R $VOLUME /usr/lib/afni/bin /home/alessiofracasso/Dropbox/analysisAfni/surfaces

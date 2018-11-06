@@ -1,0 +1,13 @@
+#!/bin/tcsh
+
+ConvertSurface -i_1D WM_Surface_inflated.1D.coord WM_Surface_inflated.1D.topo -o_1D WM_Surface_inflated_consistent  -make_consistent
+
+quickspec -tn 1D WM_Surface_inflated_consistent.1D.coord WM_Surface_inflated_consistent.1D.topo
+
+SurfSmooth -spec quick.spec -surf_A WM_Surface_inflated_consistent.1D.coord -met LM -Niter 500 -output WM_Surface_inflated_consistent_smooth.1D.coord 
+
+quickspec -tn 1D WM_Surface_smooth_consistent.1D.coord WM_Surface_smooth_consistent.1D.topo \
+	-tn 1D WM_Surface_inflated_consistent_smooth.1D.coord WM_Surface_inflated_consistent.1D.topo \
+	-tn 1D CSF_Surface_smooth_consistent.1D.coord CSF_Surface_smooth_consistent.1D.topo \
+	-spec surfaces.spec
+

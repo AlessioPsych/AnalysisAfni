@@ -1,0 +1,13 @@
+#!/bin/tcsh
+
+IsoSurface -input t1MyelinSegmentation_bool_WM+orig -isoval 1 -o_vec WM_Surface 
+quickspec -tn 1D WM_Surface.1D.coord WM_Surface.1D.topo 
+SurfSmooth -spec quick.spec -surf_A WM_Surface.1D.coord -met LM -Niter 50 -output WM_Surface_smooth.1D.coord
+
+IsoSurface -input t1MyelinSegmentation_bool_CSF+orig -isoval 1 -o_vec CSF_Surface
+quickspec -tn 1D CSF_Surface.1D.coord CSF_Surface.1D.topo 
+SurfSmooth -spec quick.spec -surf_A CSF_Surface.1D.coord -met LM -Niter 700 -output CSF_Surface_smooth.1D.coord
+
+ConvertSurface -i_1D WM_Surface_smooth.1D.coord WM_Surface.1D.topo -o_1D WM_Surface_smooth_consistent -make_consistent
+
+ConvertSurface -i_1D CSF_Surface_smooth.1D.coord CSF_Surface.1D.topo -o_1D CSF_Surface_smooth_consistent -make_consistent

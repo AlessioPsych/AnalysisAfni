@@ -1,0 +1,30 @@
+#! /bin/bash
+
+export AFNI_TOOLBOXDIR=/data1/projects/myelin/analysisAfni # change to your folder
+
+PATH=$PATH:/data1/projects/myelin/analysisAfni # change to your folder
+PATH=$PATH:$AFNI_TOOLBOXDIR/surfaces
+PATH=$PATH:$AFNI_TOOLBOXDIR/coregistration
+PATH=$PATH:$AFNI_TOOLBOXDIR/motionCorrectAnatomies
+PATH=$PATH:$AFNI_TOOLBOXDIR/fitEpiData
+PATH=$PATH:$AFNI_TOOLBOXDIR/motCorr_topUp
+PATH=$PATH:$AFNI_TOOLBOXDIR/generalPurpose
+PATH=$PATH:$AFNI_TOOLBOXDIR/devel
+PATH=$PATH:$AFNI_TOOLBOXDIR/nighres_addon
+
+export NIGHRES_TOOLBOXDIR=/home/fracasso/programs/nighres
+export AFNI_TOOLBOXDIRSURFACES=$AFNI_TOOLBOXDIR/surfaces
+export AFNI_TOOLBOXDIRCOREGISTRATION=$AFNI_TOOLBOXDIR/coregistration
+export AFNI_TOOLBOXDIRMOTIONCORRECT=$AFNI_TOOLBOXDIR/motionCorrectAnatomies
+export AFNI_TOOLBOXDIRGENERALPURPOSE=$AFNI_TOOLBOXDIR/generalPurpose
+export AFNI_ENVIRON_WARNINGS=NO
+
+export AFNI_INSTALLDIR=/export/apps/afni/afni # change to AFNI install folder (bin)
+export AFNI_ATLASDIR=/export/apps/afni/afni # change to AFNI folder where the atlases live
+
+# the .sh files in the toolbox folder need to be accessible and executable (chmod 777 -R yourToolboxDir/)
+# startAfniToolbox.sh must be stored in your home folder (with the proper modifications for the directories).
+# to start the toolbox, go to your home folder and write . startAfniToolbox, this will setup
+# the global variables needed
+
+

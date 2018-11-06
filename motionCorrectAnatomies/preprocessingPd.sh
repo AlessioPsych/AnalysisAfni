@@ -1,0 +1,61 @@
+#!/bin/bash
+
+cd pdVolumes
+
+pd_files=(*.nii)
+
+anatomyFile='meanAnatomy+orig.HEAD'
+
+meanInstructions='3dMean -prefix meanPD '
+
+echo $anatomyFile
+
+for ((i=0; i<${#pd_files[@]}; i++)); do
+
+	outputFileName=$(printf '%s_%s' ${pd_files[i]%%.???} 'resample')
+        outputFileNameAfni=$(printf '%s_%s%s' ${pd_files[i]%%.???} 'resample' '+orig.HEAD')
+        outputFileNameNifti=$(printf '%s_%s%s' ${pd_files[i]%%.???} 'resample' '.nii')
+
+	echo $anatomyFile
+	echo ${pd_files[i]}	
+	echo $outputFileName
+	echo $outputFileNameAfni
+
+	3dresample -master $anatomyFile -prefix $outputFileName -inset ${pd_files[i]}
+
+        3dAFNItoNIFTI ${outputFileNameAfni}
+
+	meanInstructions=$(printf '%s %s ' ${meanInstructions} ${outputFileNameNifti} )
+	
+done
+
+${meanInstructions}
+
+3dmerge -1blur_fwhm 7.0 -prefix meanPDBlur meanPD+orig.HEAD
+
+3dcalc -a meanPDBlur+orig.HEAD -b meanAnatomy+orig.BRIK -expr '1 - (b/a * ispositive( a-40 ) )' -prefix pdCorrect
+
+3dcalc -a meanPDBlur+orig.HEAD -b meanAnatomy+orig.BRIK -expr '5000 * ( b/a * ispositive( a-40 ) )' -prefix pdCorrectRegularT1
+
+3dcalc -a meanPD+orig -b meanAnatomy+orig -expr '5000 * ( b/a * ispositive( a-40 ) )' -prefix pdCorrectRegularT1_noBlur
+
+#3dcalc -a meanAnatomy+orig.BRIK -b pdCorrectRegularT1+orig.BRIK -expr '( max(a)-min(a) ) / ( max(b)-min(b) ) * ( b - min(b) ) + min(a)' -prefix #pdCorrectRegularT1Scaled
+
+3dSkullStrip -prefix skull_strip+orig -input meanPD+orig
+
+3dcalc -a pdCorrectRegularT1_noBlur+orig -b skull_strip+orig -expr 'a * ispositive( b )' -prefix pdCorrectRegularT1_noBlur_stripped+orig
+
+3dAFNItoNIFTI pdCorrectRegularT1_noBlur_stripped+orig
+
+3dAFNItoNIFTI pdCorrect+orig.HEAD
+
+3dAFNItoNIFTI pdCorrectRegularT1+orig.HEAD
+
+3dAFNItoNIFTI pdCorrectRegularT1_noBlur_stripped+orig
+
+cd ..
+
+
+
+
+

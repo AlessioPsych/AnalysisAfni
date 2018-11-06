@@ -1,0 +1,9 @@
+#!/bin/tcsh
+
+SurfToSurf \
+	-i_1D WM_Surface_smooth_consistent.1D.coord WM_Surface_smooth_consistent.1D.topo \
+	-i_1D CSF_Surface_smooth_consistent.1D.coord CSF_Surface_smooth_consistent.1D.topo \
+	-prefix thickness.surf \
+	-output_params DistanceToSurf
+	#-closest_possible 2
+	

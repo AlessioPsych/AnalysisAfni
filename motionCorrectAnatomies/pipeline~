@@ -1,0 +1,10 @@
+#!/bin/tcsh
+
+#remember to create 2 directories:
+# originalNifti and pdVolumes before running it
+
+. motionCorrect
+
+. computeMeanMotionCorrected
+
+. preprocessingPd
