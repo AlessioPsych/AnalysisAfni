@@ -49,7 +49,7 @@ for (k in 1:length(inflateSurfaces) ) {
   boundaryFile <- coordFiles[ as.numeric( inflateSurfaces[k] ) + 1 ]
   inflatedName <- strsplit( boundaryFile, '_' )[[1]][1]
   instr <- c( sprintf('SurfSmooth -spec spec.surfaces -surf_A %s -met NN_geom ', coordFiles[ as.numeric( inflateSurfaces[k] ) + 1 ] ), 
-              sprintf('-output \u0027inflated_%s.1D.coord\u0027 -Niter %s -match_vol 0.01', inflatedName, inflateIterations ) )
+              sprintf('-output \u0027inflated_%s.1D.coord\u0027 -Niter %s -match_area 0.01', inflatedName, inflateIterations ) )
   
 #  instr <- c( sprintf('SurfSmooth -spec spec.surfaces -surf_A %s -met HEAT_05 ', coordFiles[ as.numeric( inflateSurfaces[k] ) + 1 ] ), 
 #              sprintf('-output \u0027inflated_%s.1D.coord\u0027 -Niter %s', inflatedName, inflateIterations ) )

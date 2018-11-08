@@ -1,13 +1,15 @@
-#args <- commandArgs(T)
-#print( args )
+args <- commandArgs(T)
+print( args )
 
-# to debug
-setwd('/home/fracasso/data/ArjanProject/2017-01-27_HeadcoilSurf_R3_fMRI_AF/ParRec/results')
-BOUNDARYNAME='boundary03'
-DISTANCEROI='test07.1D.roi'
-NODEFACTR=1
-KERNELRADIUS=0
-args <- c( BOUNDARYNAME, DISTANCEROI, NODEFACTR, KERNELRADIUS, '/packages/afni/17.0.13','/home/fracasso/analysisAfni/surfaces' )
+#to debug
+#setwd('/home/fracasso/data/ArjanProject/2017-01-27_HeadcoilSurf_R3_fMRI_AF/ParRec/results')
+#BOUNDARYNAME='boundary00'
+#DISTANCEROI='testRoi.1D.roi'
+#NODEFACTR=7
+#KERNELRADIUS=0
+#args <- c( BOUNDARYNAME, DISTANCEROI, NODEFACTR, KERNELRADIUS, '/packages/afni/17.0.13','/home/fracasso/analysisAfni/surfaces' )
+# fix kernel option
+
 
 mainDir <- getwd()
 
@@ -39,7 +41,7 @@ write.table( cbind( startNodes, rep_roi_nodes_start ), file='datasetStart.1D', c
 
 # node to node distance matrix
 print('node to node distance matrix (2nd step, might take longer)...')
-instr <- sprintf( '%s/SurfDist -i_1D surfaces_folder/%s_sm.1D.coord surfaces_folder/%s_or.1D.topo -input datasetStart.1D > exampleStart.1D', args[5], args[1], args[1] )
+instr <- sprintf( '%s/SurfDist -i_1D %s%s_sm.1D.coord %s%s_or.1D.topo -input datasetStart.1D > exampleStart.1D', args[5], args[7], args[1], args[7], args[1] )
 system.time( system( instr ) )
 
 print('read node to node distance matrix')
@@ -64,7 +66,7 @@ setwd(mainDir)
 
 if ( kernelRadius != 0 ) {
   # load coords 
-  coords <- read.table( sprintf( 'surfaces_folder/%s_sm.1D.coord', args[1] ) )
+  coords <- read.table( sprintf( '%s%s_sm.1D.coord', args[7], args[1] ) )
   coordsIndices <- seq( 0, dim(coords)[1]-1 )
   emptyMap <- array(0, c( length(coordsIndices), 3) )
   emptyMap[ outTemp[,1]+1, 1 ] <- 1
@@ -76,7 +78,7 @@ if ( kernelRadius != 0 ) {
   
   write.table( selStartNodes, row.names=FALSE, col.names = FALSE, 'outMap_indices.1D' )
   system( 'mkdir surfInterp' )
-  instr <- sprintf( 'ROIgrow -i_1D surfaces_folder/%s_sm.1D.coord surfaces_folder/%s_or.1D.topo -roi_labels PER_NODE -roi_nodes outMap_indices.1D -lim %s -prefix roiMap001Fill', args[1], args[1], kernelRadius )
+  instr <- sprintf( 'ROIgrow -i_1D %s%s_sm.1D.coord %s%s_or.1D.topo -roi_labels PER_NODE -roi_nodes outMap_indices.1D -lim %s -prefix roiMap001Fill', args[7], args[1], args[7], args[1], kernelRadius )
   system( instr )
   system('mv roiMap001Fill* surfInterp/')
   setwd('surfInterp/')
@@ -164,17 +166,17 @@ if ( kernelRadius == 0 ) {
 #vertexFC <- vertexF - t( array( rep( vertexF[ , idxCenter ], c(n,n) ), c(n,2) ) )
 #vertexFCR <- rbind( vertexFC[1,]*cos(rot) + vertexFC[2,]*sin(rot) , vertexFC[1,]*sin(rot) + vertexFC[2,]*cos(rot) )
 
-nIter <- 100
-vertexS <- vertexF
-stress <- rep(0,nIter)
-for ( k in 1:nIter ) {
-   D1 <- array( rep( apply( vertexS^2, 2, sum ), n ), c(n,n) )
-   D1 <- sqrt( D1 + t(D1) - 2*t(vertexS)%*%vertexS )
-   B <- -D/max(D1,1e-10)
-   B <- B - diag( apply( B, 1, sum ) )
-   vertexS <- t( (B%*%t(vertexS)) ) / n
-   stress[k] <- sqrt( sum( abs( array(D1)-array(D) )^2 ) / n^2 )
-}
+#nIter <- 100
+#vertexS <- vertexF
+#stress <- rep(0,nIter)
+#for ( k in 1:nIter ) {
+#   D1 <- array( rep( apply( vertexS^2, 2, sum ), n ), c(n,n) )
+#   D1 <- sqrt( D1 + t(D1) - 2*t(vertexS)%*%vertexS )
+#   B <- -D/max(D1,1e-10)
+#   B <- B - diag( apply( B, 1, sum ) )
+#   vertexS <- t( (B%*%t(vertexS)) ) / n
+#   stress[k] <- sqrt( sum( abs( array(D1)-array(D) )^2 ) / n^2 )
+#}
  
 plot( stress )
 
