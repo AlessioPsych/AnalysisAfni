@@ -23,7 +23,7 @@ echo
 exit 1
 fi
 
-INSTRCOMP=$(printf 'import sys; sys.path.insert(0,'\''%s'\''); print(sys.path); import nighres; nighres.%s' "$NIGHRES_TOOLBOXDIR" "$INSTROUT")
+INSTRCOMP=$(printf 'import sys; sys.path.insert(0,'\''%s'\''); print(sys.path); import nighres; help(nighres.%s)' "$NIGHRES_TOOLBOXDIR" "$INSTROUT")
 
 echo $INSTRCOMP >> _tttt.py
 
