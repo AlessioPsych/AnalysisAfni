@@ -19,7 +19,11 @@ echo
 echo 'run_nighres_command.sh '\''laminar.profile_sampling(profile_surface_image="", intensity_image="", save_data=False, output_dir="", file_name="")'\'''
 echos
 echo 'run_nighres_command.sh '\''surface.probability_to_levelset(probability_image="", save_data=False, output_dir="", file_name="")'\'''
-echo 
+echo
+echo 'run_nighres_command.sh '\''filtering.filter_ridge_structures(input_image="", structure_intensity="bright", output_type="probability", use_strict_min_max_filter=True, save_data=False, output_dir="", file_name="")'\'''
+echo
+echo 'run_nighres_command.sh '\''filtering.filter_ridge_structures(input_image="", structure_intensity="dark", output_type="probability", use_strict_min_max_filter=True, save_data=False, output_dir="", file_name="")'\'''
+echo
 exit 1
 fi
 
