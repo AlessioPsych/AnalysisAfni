@@ -42,10 +42,11 @@ for (lim in 1:length(limit1) ) {
   ind2 <- which( gmData>limit1[lim] & gmData<=limit2[lim] )
   coordsWM <- matrix( t( coordinateFromLinearIndex( ind1, dim(emptyVol) ) ), ncol=3 )
   coordsGM <- matrix( t( coordinateFromLinearIndex( ind2, dim(emptyVol) ) ), ncol=3 )
-  nnOut <- nn2( coordsGM, coordsWM,  k=1 )
-  coords <- coordsGM[ nnOut$nn.idx, ]
-  coordsVol <- linearIndexFromCoordinate( t( coords ), dim( emptyVol ) )
+  nnOut <- nn2( coordsGM, coordsWM,  k=1 ) #distance from ind2 to ind1
+  coords <- coordsGM[ nnOut$nn.idx, ] #coords in ind2 close to ind1
+  coordsVol <- linearIndexFromCoordinate( t( coords ), dim( emptyVol ) ) #index in ind2 close to ind1
   emptyVol[ coordsVol ] <- 1
+  #emptyVol[ coordsVol ] <- emptyVol[ ind1 ]
   #for (l in 1:dim(coords)[1]) {
   #  emptyVol[ coords[l,1], coords[l,2], coords[l,3] ] <- 1
   #}
@@ -71,8 +72,8 @@ instr <- sprintf( '3dmask_tool -input _ttt_clust.nii.gz -prefix %s -fill_holes',
 print( instr )
 system( instr )
 
-system( sprintf('rm %s.BRIK', roiFileName ) )
+system( sprintf('rm %s.BRIK.gz', roiFileName ) )
 system( sprintf('rm %s.HEAD', roiFileName ) )
 system('rm _ttt_clust.nii.gz')
 system('rm surfVolWMRoi+orig.HEAD')
-system('rm surfVolWMRoi+orig.BRIK')
+system('rm surfVolWMRoi+orig.BRIK.gz')

@@ -2,12 +2,15 @@ args <- commandArgs(T)
 print( args )
 
 #to debug
-#setwd('/home/fracasso/data/ArjanProject/2017-01-27_HeadcoilSurf_R3_fMRI_AF/ParRec/results')
-#BOUNDARYNAME='boundary00'
-#DISTANCEROI='testRoi.1D.roi'
-#NODEFACTR=7
-#KERNELRADIUS=0
-#args <- c( BOUNDARYNAME, DISTANCEROI, NODEFACTR, KERNELRADIUS, '/packages/afni/17.0.13','/home/fracasso/analysisAfni/surfaces' )
+#setwd('/analyse/Project0226/partialAnatomy02')
+#BOUNDARYNAME='boundary01'
+#DISTANCEROI='leftRoi.1D.roi'
+#NODEFACTR='8'
+#KERNELRADIUS='1.5'
+#args <- c( BOUNDARYNAME, DISTANCEROI, NODEFACTR, KERNELRADIUS, 
+#           Sys.getenv(x='AFNI_INSTALLDIR'),
+#           Sys.getenv(x='AFNI_TOOLBOXDIRSURFACES'),
+#           'surfaces_folder/')
 # fix kernel option
 
 
@@ -19,7 +22,7 @@ source( sprintf('%s/linearIndexFromCoordinate.r', args[6] ) )
 library(RANN)
 
 nodeDownsampling <- as.numeric( args[3] )
-kernelRadius <- args[4]
+kernelRadius <- as.numeric( args[4] )
 if ( nodeDownsampling == 1 ) { kernelRadius <- 0  }
 
 # load ROI nodes
@@ -131,7 +134,7 @@ if ( kernelRadius != 0 ) {
   nodeIdx <- function( idx, startingNodes, finalNodes ) {
     return( which( startingNodes[idx]==finalNodes ) )
   }
-  whichUniqueNodes <- sapply( seq( 1, length( roi_nodes) ), nodeIdx, startingNodes=roi_nodes, finalNodes=uniqueNodes )
+  whichUniqueNodes <- unlist( sapply( seq( 1, length( roi_nodes) ), nodeIdx, startingNodes=roi_nodes, finalNodes=uniqueNodes ) )
   
   setwd( mainDir )
   out <- round( cbind( uniqueNodes[whichUniqueNodes], storeNodes01[whichUniqueNodes], storeNodes02[whichUniqueNodes] ), 2 )
@@ -178,7 +181,7 @@ if ( kernelRadius == 0 ) {
 #   stress[k] <- sqrt( sum( abs( array(D1)-array(D) )^2 ) / n^2 )
 #}
  
-plot( stress )
+#plot( stress )
 
 
 # read node to node distance
