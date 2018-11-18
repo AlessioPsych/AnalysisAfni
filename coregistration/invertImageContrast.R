@@ -5,7 +5,7 @@ print( args )
 # setwd('/media/alessiofracasso/storage2/dataLaminar_leftVSrightNEW/V2677leftright_Ric/resultsCBS/coregistration')
 # args <- c('coreg_tempFile_MPRAGE_shft_al+orig', '/home/alessiofracasso/Dropbox/analysisAfni', '/usr/lib/afni/bin', 'invertedContrast.nii.gz' )
 
-eVar <- Sys.getenv(c('AFNI_TOOLBOXDIR','AFNI_INSTALLDIR'))
+eVar <- Sys.getenv(c('AFNI_TOOLBOXDIRGENERALPURPOSE','AFNI_INSTALLDIR'))
 
 source( sprintf('%s/scaleData.R', eVar[1] ) )
 source( sprintf('%s/AFNIio.R', eVar[2] ) )
