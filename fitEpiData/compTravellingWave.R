@@ -8,6 +8,8 @@ print( args )
 source( sprintf('%s/AFNIio.R', args[3] ) )
 source( sprintf('%s/coordinateFromLinearIndex.r', args[4] ) )
 source( sprintf('%s/linearIndexFromCoordinate.r', args[4] ) )
+source( sprintf('%s/scaleData.R', args[7] ) )
+ph_shift_input <- as.numeric( args[6] )
 tsFilename <- args[1]
 instr <- sprintf('3dcopy %s ttt_data.nii.gz',args[1])
 system( instr )
@@ -48,8 +50,14 @@ for (k in 1:dim(dataBrk)[3] ) {
   sqrtsummagsq = sqrt( apply( scaledSliceFFT_h^2, 1, sum ) )
   coSlice <- scaledSliceFFT_h[ ,nCycles+1 ] / sqrtsummagsq 
   
+# Calculate phase:
+# 1) add pi/2 so that it is in sine phase.
+# 2) minus sign because sin(x-phi) is shifted to the right by phi.
+# 3) Add 2pi to any negative values so phases increase from 0 to 2pi.
+
   ph_slice <- -(pi/2) - atan2( Im( sliceFFT[,nCycles+1] ), Re( sliceFFT[,nCycles+1] ) ) 
   ph_slice[ph_slice<0] = ph_slice[ph_slice<0]+pi*2;
+  ph_slice <- ( ph_slice + ph_shift_input ) %% pi*2
   
   #emptyVol[,,k,1] <- round( amp/sliceMean*100, 4)
   emptyVol[,,k,1] <- round( amp, 4)
