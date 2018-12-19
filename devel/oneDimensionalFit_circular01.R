@@ -23,9 +23,9 @@ library(pracma)
 
 # von Mises dist
 x <- seq(-pi,pi,0.1)
-mu <- pi/10
-k <- 0.1
-vonValues <- vonMisesDist( x, mu, k, 2 )
+mu <- pi*0.9
+k <- 2
+vonValues <- vonMisesDist( x, mu, k, 2, 0.1 )
 plot( vonValues~x )
 
 # get canonical hrf
@@ -66,8 +66,9 @@ tsArray <- array( ts$brk, c( prod( dim( ts$brk )[1:3] ), dim(ts$brk)[4] ) )
 meanEpi <- read.AFNI( epiFile )
 
 fitSurround <- 0
-debug <- 1
-scalingVonMises <- 2
+debug <- 0
+scalingVonMises <- 1
+scalingParameter <- 0
 
 print('build prediction...')
 if (fitSurround==0) {
@@ -81,16 +82,24 @@ if (fitSurround==0) {
 }
 if (fitSurround==1) {
   centerArray <- seq( -0.95*pi, 0.95*pi, length.out=15 ) 
-  sigmaArrayPositive <- seq( 0.1, 0.95, length.out=15 ) 
-  sigmaArrayNegative <- seq( 0.01, 0.90, length.out=15 ) 
+  sigmaArrayPositive <- seq( 0.1, 2, length.out=15 ) 
+  sigmaArrayNegative <- seq( 0, 0.8, length.out=10 ) 
   multArray <- c(1)
   predictionGridTemp <- expand.grid( centerArray, sigmaArrayPositive, sigmaArrayNegative, multArray )
-  keepPredictionIdx <- predictionGridTemp[ ,2] > predictionGridTemp[ ,3]
+  keepPredictionIdx <- rep( TRUE, dim( predictionGridTemp )[1] )
 }
 if (fitSurround==2) {
-  centerArray <- seq( -0.95*pi, 0.95*pi, length.out=30 ) 
-  sigmaArrayPositive <- seq( 0.05, 0.95, length.out=20 ) 
-  sigmaArrayNegative <- seq( 0.1, 0.9, length.out=8 ) 
+  centerArray <- seq( -0.95*pi, 0.95*pi, length.out=15 ) 
+  sigmaArrayPositive <- seq( 0.8, 2.5, length.out=10 ) 
+  sigmaArrayNegative <- -1000
+  multArray <- c(1)
+  predictionGridTemp <- expand.grid( centerArray, sigmaArrayPositive, sigmaArrayNegative, multArray )
+  keepPredictionIdx <- rep(TRUE,dim(predictionGridTemp)[1])
+}
+if (fitSurround==3) {
+  centerArray <- seq( -0.95*pi, 0.95*pi, length.out=15 ) 
+  sigmaArrayPositive <- seq( 0.8, 2.5, length.out=10 ) 
+  sigmaArrayNegative <- seq( pi/15, pi/5, length.out=10 ) 
   multArray <- c(1)
   predictionGridTemp <- expand.grid( centerArray, sigmaArrayPositive, sigmaArrayNegative, multArray )
   keepPredictionIdx <- rep(TRUE,dim(predictionGridTemp)[1])
@@ -106,10 +115,10 @@ for ( nPrediction in 1:dim(predictionGrid)[1] ) {
     progress <- progress + 0.05
   }
   
-  if (fitSurround==0) {
+  if (fitSurround==0) { # the problem is dealing the baseline, it should ne in a range of values outside those used for the stimuli
     prfPar <- as.numeric( predictionGrid[nPrediction,] )
-    muRad <- pi*1.5#prfPar[1]
-    kappaPar <- 0.5#prfPar[2]
+    muRad <- prfPar[1]
+    kappaPar <- prfPar[2]
     stimuliSequenceTr <- 200 #in milliseconds
     sampleRepetitions <- directionFile[,3] / stimuliSequenceTr
     baselines <- ifelse( sampleRepetitions>10, 1, 0 )
@@ -120,6 +129,48 @@ for ( nPrediction in 1:dim(predictionGrid)[1] ) {
     baselines_expanded[ saccStart ] <- 0
     
     firstStepTs_orig <- suppressWarnings( vonMisesDist( directionArray_expanded_radiants, muRad, kappaPar, scalingVonMises  ) )
+    formattedBaselines <- abs(baselines_expanded-1)
+    formattedBaselines[ formattedBaselines==0 ] <- -1
+    firstStepTs_orig_baseline <- firstStepTs_orig
+    firstStepTs_orig_baseline[ formattedBaselines==-1 ] <- 0
+    
+    convTs <- conv( firstStepTs_orig_baseline, hrf )
+    convTsTrim <- convTs[1:length(firstStepTs_orig_baseline)]
+    timeArray <- seq( 0, length(convTsTrim)*stimuliSequenceTr/1000, length.out = length(convTsTrim) )#  *stimuliSequenceTr/1000
+    iTs <- interp1( timeArray, convTsTrim, seq(0,max(timeArray),length.out = dim(ts$brk)[4] ) )
+    tsPrediction[nPrediction,] <- iTs
+    
+    if (debug==1) {
+      par(mfrow=c(3,3))
+      piSpace <- seq(-pi*0.95, +pi*0.95, length.out = 200)
+      plot( formattedBaselines, type='l' )
+      plot( directionArray_expanded_radiants, type='l' )
+      plot( formattedBaselines * directionArray_expanded_radiants, type='l' )
+      plot( suppressWarnings( vonMisesDist( piSpace, muRad, kappaPar, scalingVonMises  ) ) ~ piSpace )
+      firstStepTs_orig_plot_baseline <- firstStepTs_orig
+      firstStepTs_orig_plot_baseline[ formattedBaselines==-1 ] <- -4
+      plot( firstStepTs_orig_plot_baseline, type='l' )
+      plot( firstStepTs_orig, type='l' )
+      plot( firstStepTs_orig_baseline, type='l' )
+      plot( convTsTrim~timeArray )
+      lines( seq(0,max(timeArray),length.out = dim(ts$brk)[4] ), iTs, col='red' )
+    }
+  }
+  if (fitSurround==1) {
+    prfPar <- as.numeric( predictionGrid[nPrediction,] )
+    muRad <- prfPar[1]
+    kappaPar <- prfPar[2]
+    scaling_par <- prfPar[3]
+    stimuliSequenceTr <- 200 #in milliseconds
+    sampleRepetitions <- directionFile[,3] / stimuliSequenceTr
+    baselines <- ifelse( sampleRepetitions>10, 1, 0 )
+    directionArray <- directionPol[,1]
+    directionArray_expanded_radiants <- rep( directionArray, sampleRepetitions )
+    baselines_expanded <- rep( baselines, sampleRepetitions )
+    baselines_expanded <- rep(1,length(baselines_expanded))
+    baselines_expanded[ saccStart ] <- 0
+    
+    firstStepTs_orig <- suppressWarnings( vonMisesDist( directionArray_expanded_radiants, muRad, kappaPar, scalingVonMises, scaling_par ) )
     firstStepTs_orig_baseline <- abs(baselines_expanded-1) * firstStepTs_orig
     
     convTs <- conv( firstStepTs_orig_baseline, hrf )
@@ -135,10 +186,10 @@ for ( nPrediction in 1:dim(predictionGrid)[1] ) {
       muRad02 <- -pi*0.5
       kappaPar02 <- 0.1
       xPlot <- seq(-pi,pi,length.out = 200)
-      plot( suppressWarnings( vonMisesDist( xPlot, muRad01, kappaPar01, scalingVonMises  ) ) ~ xPlot, type='l', bty='n', ylab='density', xlab='angle' )
-      plot( suppressWarnings( vonMisesDist( xPlot, muRad02, kappaPar02, scalingVonMises  ) ) ~ xPlot, type='l', bty='n', ylab='density', xlab='angle' )
-      plot( scaleData( suppressWarnings( vonMisesDist( xPlot, muRad01, kappaPar01, scalingVonMises  ) ), 1, 0 ) ~ xPlot, type='l', bty='n', ylab='density', xlab='angle' )
-      plot( scaleData( suppressWarnings( vonMisesDist( xPlot, muRad02, kappaPar02, scalingVonMises  ) ), 1, 0 ) ~ xPlot, type='l', bty='n', ylab='density', xlab='angle' )
+      plot( suppressWarnings( vonMisesDist( xPlot, muRad01, kappaPar01, scalingVonMises, scaling_par ) ) ~ xPlot, type='l', bty='n', ylab='density', xlab='angle' )
+      plot( suppressWarnings( vonMisesDist( xPlot, muRad02, kappaPar02, scalingVonMises, scaling_par ) ) ~ xPlot, type='l', bty='n', ylab='density', xlab='angle' )
+      plot( scaleData( suppressWarnings( vonMisesDist( xPlot, muRad01, kappaPar01, scalingVonMises, scaling_par ) ), 1, 0 ) ~ xPlot, type='l', bty='n', ylab='density', xlab='angle' )
+      plot( scaleData( suppressWarnings( vonMisesDist( xPlot, muRad02, kappaPar02, scalingVonMises, scaling_par ) ), 1, 0 ) ~ xPlot, type='l', bty='n', ylab='density', xlab='angle' )
       muGauss01 <- -2
       sigmaGauss01 <- 1
       muGauss02 <- -2
@@ -152,18 +203,18 @@ for ( nPrediction in 1:dim(predictionGrid)[1] ) {
       par(mfrow=c(3,2))
       piSpace <- seq(-pi*0.95, +pi*0.95, length.out = 200)
       plot( abs(baselines_expanded-1) * directionArray_expanded_radiants, type='l' )
-      plot( suppressWarnings( vonMisesDist( piSpace, muRad, kappaPar, scalingVonMises  ) ) ~ piSpace )
+      plot( suppressWarnings( vonMisesDist( piSpace, muRad, kappaPar, scalingVonMises, scaling_par ) ) ~ piSpace )
       plot( firstStepTs_orig, type='l' )
       plot( firstStepTs_orig_baseline, type='l' )
       plot( convTsTrim~timeArray )
       lines( seq(0,max(timeArray),length.out = dim(ts$brk)[4] ), iTs, col='red' )
     }
   }
-  if (fitSurround==1) {
+  if (fitSurround==2) {
     prfPar <- as.numeric( predictionGrid[nPrediction,] )
     muRad <- prfPar[1]
-    rhoParPositive <- prfPar[2]
-    rhoParNegative <- prfPar[3]
+    kappaPar <- prfPar[2]
+    #scaling_par <- prfPar[3]
     stimuliSequenceTr <- 200 #in milliseconds
     sampleRepetitions <- directionFile[,3] / stimuliSequenceTr
     baselines <- ifelse( sampleRepetitions>10, 1, 0 )
@@ -173,128 +224,70 @@ for ( nPrediction in 1:dim(predictionGrid)[1] ) {
     baselines_expanded <- rep(1,length(baselines_expanded))
     baselines_expanded[ saccStart ] <- 0
     
-    piSpace <- seq(-pi*0.95, +pi*0.95, length.out = 200)
-    positivePrf <- suppressWarnings( dwrappednormal( piSpace, muRad, rhoParPositive  ) )
-    negativePrf <- -1*suppressWarnings( dwrappednormal( piSpace, muRad, rhoParNegative  ) )
-    sumPrf <- positivePrf + negativePrf
-    sumPrfFit <- smooth.spline( piSpace, sumPrf )
-    firstStepTs_orig_prf <- predict( sumPrfFit, directionArray_expanded_radiants )
-    firstStepTs_orig_prf_baseline <- abs(baselines_expanded-1) * firstStepTs_orig_prf$y
-      
-    #firstStepTs_orig_center <- suppressWarnings( dwrappednormal( directionArray_expanded_radiants, muRad, rhoPar01  ) )
-    #firstStepTs_orig_surround <- suppressWarnings( dwrappednormal( directionArray_expanded_radiants, muRad, rhoPar02  ) )
-    #firstStepTs_orig_inverted_baseline <- abs(baselines_expanded-1) * firstStepTs_orig_inverted
+    firstStepTs_orig <- suppressWarnings( dnorm( directionArray_expanded_radiants, muRad, kappaPar ) )
+    firstStepTs_orig_baseline <- abs(baselines_expanded-1) * firstStepTs_orig
     
-    convTs <- conv( firstStepTs_orig_prf_baseline, hrf )
-    convTsTrim <- convTs[1:length(firstStepTs_orig_prf_baseline)]
+    convTs <- conv( firstStepTs_orig_baseline, hrf )
+    convTsTrim <- convTs[1:length(firstStepTs_orig_baseline)]
     timeArray <- seq( 0, length(convTsTrim)*stimuliSequenceTr/1000, length.out = length(convTsTrim) )#  *stimuliSequenceTr/1000
     iTs <- interp1( timeArray, convTsTrim, seq(0,max(timeArray),length.out = dim(ts$brk)[4] ) )
     tsPrediction[nPrediction,] <- iTs
     
     if (debug==1) {
       par(mfrow=c(3,2))
-      plot( positivePrf ~ piSpace, type='l', col='red', ylim=c(min(negativePrf),max(positivePrf)) ) 
-      lines( piSpace, negativePrf, col='blue' )
-      plot( sumPrf ~ piSpace, type='l', col='darkorange', lwd=4 ) 
-      lines( sumPrfFit$x, sumPrfFit$y, lty=2, col='black' )
-      plot( firstStepTs_orig_prf$y, type='l' )
-      plot( firstStepTs_orig_prf_baseline, type='l' )
+      piSpace <- seq(-pi*0.95, +pi*0.95, length.out = 200)
+      plot( abs(baselines_expanded-1) * directionArray_expanded_radiants, type='l' )
+      plot( suppressWarnings( dnorm( piSpace, muRad, kappaPar ) ) ~ piSpace )
+      plot( firstStepTs_orig, type='l' )
+      plot( firstStepTs_orig_baseline, type='l' )
       plot( convTsTrim~timeArray )
       lines( seq(0,max(timeArray),length.out = dim(ts$brk)[4] ), iTs, col='red' )
-    }      
-  }
-  if (fitSurround==2) {
-    prfPar <- as.numeric( predictionGrid[nPrediction,] )
-    muRad <- prfPar[1]
-    rhoPar <- prfPar[2]
-    suppressionRatio <- prfPar[3]
-    logParVonMises <- TRUE
-    stimuliSequenceTr <- 200 #in milliseconds
-    sampleRepetitions <- directionFile[,3] / stimuliSequenceTr
-    baselines <- ifelse( sampleRepetitions>10, 1, 0 )
-    directionArray <- directionPol[,1]
-    directionArray_expanded_radiants <- rep( directionArray, sampleRepetitions )
-    baselines_expanded <- rep( baselines, sampleRepetitions )
-    baselines_expanded <- rep(1,length(baselines_expanded))
-    baselines_expanded[ saccStart ] <- 0
-
-    piSpace <- seq(-pi*0.95, +pi*0.95, length.out = 200)
-    positivePrf <- suppressWarnings( dwrappednormal( piSpace, muRad, rhoPar  ) )
-    suppressionConstant <- diff( range( positivePrf ) )*suppressionRatio
-    positivePrf <- positivePrf - suppressionConstant
-    positivePrfFit <- smooth.spline( piSpace, positivePrf )
-    firstStepTs_orig_prf <- predict( positivePrfFit, directionArray_expanded_radiants )
-    firstStepTs_orig_prf_baseline <- abs(baselines_expanded-1) * firstStepTs_orig_prf$y
-    
-    convTs <- conv( firstStepTs_orig_prf_baseline, hrf )
-    convTsTrim <- convTs[1:length(firstStepTs_orig_prf_baseline)]
-    timeArray <- seq( 0, length(convTsTrim)*stimuliSequenceTr/1000, length.out = length(convTsTrim) )#  *stimuliSequenceTr/1000
-    timeArrayInterp <- seq(0,max(timeArray),length.out = dim(ts$brk)[4] )
-    iTs <- interp1( timeArray, convTsTrim, timeArrayInterp )
-    tsPrediction[nPrediction,] <- iTs
-    
-    if (debug==1) {
-      par(mfrow=c(3,2))
-      plot( positivePrf ~ piSpace, type='l', col='red' ) 
-      lines( positivePrfFit$x, positivePrfFit$y, lty=2, col='black' )
-      plot( firstStepTs_orig_prf$y, type='l' )
-      plot( firstStepTs_orig_prf_baseline, type='l' )
-      plot( convTsTrim~timeArray )
-      lines( timeArrayInterp, iTs, col='red' )
-    }
-  }
-  if (fitSurround==3) {
-    prfPar <- as.numeric( predictionGrid[nPrediction,] )
-    muRad <- -pi*0.8 #prfPar[1]
-    rhoPar <- 0.8 #prfPar[2]
-    suppressionRatio <- 0 #prfPar[3]
-    motorUncertainty <- 0.8
-    logParVonMises <- TRUE
-    stimuliSequenceTr <- 200 #in milliseconds
-    sampleRepetitions <- directionFile[,3] / stimuliSequenceTr
-    baselines <- ifelse( sampleRepetitions>10, 1, 0 )
-    directionArray <- directionPol[,1]
-    directionArray_expanded_radiants <- rep( directionArray, sampleRepetitions )
-    baselines_expanded <- rep( baselines, sampleRepetitions )
-    baselines_expanded <- rep(1,length(baselines_expanded))
-    baselines_expanded[ saccStart ] <- 0
-    
-    piSpace <- seq(-pi*0.95, +pi*0.95, length.out = 200)
-    #positivePrf <- suppressWarnings( dwrappednormal( piSpace, muRad, rhoPar  ) )
-    #suppressionConstant <- diff( range( positivePrf ) )*suppressionRatio
-    #positivePrf <- positivePrf - suppressionConstant
-    #positivePrfFit <- smooth.spline( piSpace, positivePrf )
-    
-    positivePrf <- suppressWarnings( dwrappednormal( piSpace, muRad, rhoPar  ) )
-    storeMotorFields <- array( 0, c( length(directionArray_expanded_radiants), length(piSpace)   ) )
-    storeTs <- rep( 0, length(directionArray_expanded_radiants), 1   )
-    for (motorCounter in 1:length(directionArray_expanded_radiants)) {
-      storeMotorFields[motorCounter, ] <- suppressWarnings( dwrappednormal( piSpace, directionArray_expanded_radiants[motorCounter], motorUncertainty  ) )
-      storeTs[motorCounter] <- sum( positivePrf*storeMotorFields[motorCounter, ] )
-    }
-    
-    firstStepTs_orig_prf_baseline <- abs(baselines_expanded-1) * storeTs
-    
-    convTs <- conv( firstStepTs_orig_prf_baseline, hrf )
-    convTsTrim <- convTs[1:length(firstStepTs_orig_prf_baseline)]
-    timeArray <- seq( 0, length(convTsTrim)*stimuliSequenceTr/1000, length.out = length(convTsTrim) )#  *stimuliSequenceTr/1000
-    timeArrayInterp <- seq(0,max(timeArray),length.out = dim(ts$brk)[4] )
-    iTs <- interp1( timeArray, convTsTrim, timeArrayInterp )
-    plot(iTs, type='l')
-    tsPrediction[nPrediction,] <- iTs
-    
-    if (debug==1) {
-      par(mfrow=c(3,2))
-      plot( positivePrf ~ piSpace, type='l', col='red' ) 
-      lines( positivePrfFit$x, positivePrfFit$y, lty=2, col='black' )
-      plot( firstStepTs_orig_prf$y, type='l' )
-      plot( firstStepTs_orig_prf_baseline, type='l' )
-      plot( convTsTrim~timeArray )
-      lines( timeArrayInterp, iTs, col='red' )
     }
   }  
+  if (fitSurround==3) {
+    prfPar <- as.numeric( predictionGrid[nPrediction,] )
+    muRad <- prfPar[1]
+    kappaPar <- prfPar[2]
+    fwhm_par <- prfPar[3]
+    stimuliSequenceTr <- 200 #in milliseconds
+    sampleRepetitions <- directionFile[,3] / stimuliSequenceTr
+    baselines <- ifelse( sampleRepetitions>10, 1, 0 )
+    directionArray <- directionPol[,1]
+    directionArray_expanded_radiants <- rep( directionArray, sampleRepetitions )
+    baselines_expanded <- rep( baselines, sampleRepetitions )
+    baselines_expanded <- rep(1,length(baselines_expanded))
+    baselines_expanded[ saccStart ] <- 0
+    
+    firstStepTs_orig <- rep( 999, length(directionArray_expanded_radiants) )
+    for ( radCount in 1:length(directionArray_expanded_radiants) ) {
+      lim01 <- round( directionArray_expanded_radiants[ radCount ] + pi - fwhm_par/2, 3 )
+      lim02 <- round( directionArray_expanded_radiants[ radCount ] + pi + fwhm_par/2, 3 )
+      selectedRadiants <- ( seq( lim01, lim02, 0.01 ) %% (2*pi) ) - pi
+      firstStepTs_orig[ radCount ] <- sum( vonMisesDist( selectedRadiants, muRad, kappaPar, scalingVonMises, scalingParameter ) )
+    }
+    #firstStepTs_orig <- suppressWarnings( vonMisesDist( directionArray_expanded_radiants, muRad, kappaPar, 1, 0 ) )
+    firstStepTs_orig_baseline <- abs(baselines_expanded-1) * firstStepTs_orig
+    
+    convTs <- conv( firstStepTs_orig_baseline, hrf )
+    convTsTrim <- convTs[1:length(firstStepTs_orig_baseline)]
+    timeArray <- seq( 0, length(convTsTrim)*stimuliSequenceTr/1000, length.out = length(convTsTrim) )#  *stimuliSequenceTr/1000
+    iTs <- interp1( timeArray, convTsTrim, seq(0,max(timeArray),length.out = dim(ts$brk)[4] ) )
+    tsPrediction[nPrediction,] <- iTs
+    
+    if (debug==1) {
+      par(mfrow=c(3,2))
+      piSpace <- seq(-pi*0.95, +pi*0.95, length.out = 200)
+      plot( abs(baselines_expanded-1) * directionArray_expanded_radiants, type='l' )
+      plot( suppressWarnings( vonMisesDist( piSpace, muRad, kappaPar, scalingVonMises, scalingParameter ) ) ~ piSpace )
+      plot( firstStepTs_orig, type='l' )
+      plot( firstStepTs_orig_baseline, type='l' )
+      plot( convTsTrim~timeArray )
+      lines( seq(0,max(timeArray),length.out = dim(ts$brk)[4] ), iTs, col='red' )
+    }
+  }    
+  
 }
-plot(tsPrediction[170,],type='l')
+#plot(tsPrediction[170,],type='l')
 
 #source( sprintf('/data1/projects/myelin/analysisAfni/powerSpectra.R' ) )
 #plot(pConvTrim~seq(1,length(pConvTrim)),type='l',col='black')

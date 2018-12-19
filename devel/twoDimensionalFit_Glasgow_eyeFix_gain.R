@@ -79,18 +79,22 @@ system( 'rm _ttt_mask.nii.gz' )
 # load stimuli definition
 print('get prfStimuli.RData...')
 #load( file='prfStimuli.RData' )
-setwd('/analyse/Project0226/scanner_train - Copy/orientationgrating_points_fit_long_glas_large_get_stimuli')
-arrayStim <- scan( 'eyeMovingStim.txt' )
+#setwd('/analyse/Project0226/scanner_train - Copy/orientationgrating_points_fit_long_glas_large_get_stimuli')
+#arrayStim <- scan( 'eyeMovingStim.txt' )
 #setwd('/analyse/Project0226/scanner_train - Copy/orientationgrating_points_fit_long_glas_large_fixation_get_stimuli_border')
 #arrayStim <- scan( 'eyeFixStim_border.txt' )
 
+setwd('/analyse/Project0226/dataSummary')
+arrayStim <- scan( 'prfStim.txt' )
+
 setwd(mainDir)
 #stimMat <- aperm( array( arrayStim, c(128,620,96) ), c( 1, 3, 2 ) )
-stimMat <- aperm( array( arrayStim, c(128,1510,96) ), c( 3, 1, 2 ) )
+#stimMat <- aperm( array( arrayStim, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
+stimMat <- aperm( array( arrayStim, c(200,1860,150) ), c( 3, 1, 2 ) ) # prf
 stimMatFlip <- stimMat[ ,dim(stimMat)[2]:1, ]
-image( stimMatFlip[,,56], axes=FALSE )
+image( stimMatFlip[,,556], axes=FALSE )
 #image( stimMat[,,56], axes=FALSE )
-x11( width=4, height=4 )
+x11( width=8, height=8 )
 for ( snap in 1:dim(stimMat)[3] ) {
   image( stimMat[,,snap], axes=FALSE ); par(new=TRUE); Sys.sleep(0.01) 
 }
