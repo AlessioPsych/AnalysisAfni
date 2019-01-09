@@ -8,7 +8,7 @@ INV2=$2
 3dSkullStrip -input _del_INV2_RAI.nii.gz -prefix _del_SKULL_STRIP.nii.gz -shrink_fac 0.4
 3dcalc -a _del_SKULL_STRIP.nii.gz -b _del_MP2RAGE_RAI.nii.gz -expr 'b*step(a)' -prefix _del_MP2RAGE_RAI_SKULL_STRIP.nii.gz 
 3dAutobox -input _del_MP2RAGE_RAI_SKULL_STRIP.nii.gz -noclust -prefix MP2RAGE_RAI_SKULL_STRIP_BOX.nii.gz -npad 5 
-segment_white_matter_params.sh MP2RAGE_RAI_SKULL_STRIP_BOX.nii.gz 0.0001 0.001 5 7-7-7-7-7-7 0 1 1 
+segment_white_matter_params_no_ants.sh MP2RAGE_RAI_SKULL_STRIP_BOX.nii.gz 0.0001 0.001 5 7-7-7-7-7-7 0 0 1 
 segment_gray_matter.sh MP2RAGE_RAI_SKULL_STRIP_BOX.nii.gz white_matter_mask.nii.gz 0.65-0.75-0.75-0.75
 
 cp MP2RAGE_RAI_SKULL_STRIP_BOX.nii.gz anatCopy.nii.gz
@@ -59,6 +59,10 @@ cp volumetric/volumetricData_layering_layers.nii.gz volumetricData_layering_laye
 run_nighres_command.sh 'laminar.profile_sampling(profile_surface_image="volumetricData_layering_boundaries.nii.gz", intensity_image="anatCopy.nii.gz", save_data=True, output_dir="profilesDir", file_name="profilesOut")'
 
 cp profilesDir/profilesOut_profiles.nii.gz profilesOut_profiles.nii.gz
+
+#hemisphereSeparation.sh anatCopy.nii.gz cruise_cortex.nii.gz /usr/local/bin/TT_icbm452+tlrc 1
+# copy script to generate two brain surfaces, in NL server;
+
 
 
 

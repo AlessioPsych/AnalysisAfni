@@ -10,10 +10,13 @@
 
 rm(list=ls())
 #setwd('/analyse/Project0226/GN18NE278_HNA10_FEF_19102018_nifti')
-setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
+#setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
+setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
+
 mainDir <- getwd()
 args <- c('meanTs_eyeMovement_topUp_res_mask.nii', 'meanTs_eyeMovement_topUp_res.nii', 'output_test_eye_test_fix_moving','/home/alessiof/abin', '1', '4','1','0.166')
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
+afniInstallDir <- Sys.getenv( x='AFNI_INSTALLDIR' ) 
 source( sprintf('%s/scaleData.R', generalPurposeDir) )
 #instr <- '3dresample -dxyz 4 4 4 -orient RAI -rmode Lin -prefix barsTs_res.nii.gz -inset meanTsBars_topUp.nii'
 #system( instr )
@@ -25,12 +28,9 @@ source( sprintf('%s/scaleData.R', generalPurposeDir) )
 #system( instr )
 
 
-###
-#fitIntercept <- 1
-###
 
 
-source( sprintf('%s/AFNIio.R', args[4] ) )
+source( sprintf('%s/AFNIio.R', afniInstallDir ) )
 library( pracma )
 library( abind )
 library( neuRosim )
@@ -85,16 +85,26 @@ print('get prfStimuli.RData...')
 #arrayStim <- scan( 'eyeFixStim_border.txt' )
 
 setwd('/analyse/Project0226/dataSummary')
-arrayStim <- scan( 'prfStim.txt' )
+arrayStim <- scan( 'eyeMovingStim.txt' )
 
 setwd(mainDir)
 #stimMat <- aperm( array( arrayStim, c(128,620,96) ), c( 1, 3, 2 ) )
-#stimMat <- aperm( array( arrayStim, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
-stimMat <- aperm( array( arrayStim, c(200,1860,150) ), c( 3, 1, 2 ) ) # prf
+stimMat <- aperm( array( arrayStim, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
+#stimMat <- aperm( array( arrayStim, c(200,1860,150) ), c( 3, 1, 2 ) ) # prf
+#stimMatInterp2 <- array( 0,c(60,60,1510) )
+#xStim <- seq(0,200,length.out=200)	
+#yStim <- seq(0,150,length.out=150)	
+#xStimInt <- seq(0,200,length.out=60)	
+#yStimInt <- seq(0,150,length.out=60)	
+#for (interpCounter in 1:dim(stimMat)[2] ) {
+#	imageLoop <- stimMat[,,interpCounter]
+#	stimMatInterp2[,,interpCounter] <- interp2( xStim, yStim, imageLoop, xStimInt, yStimInt, method=c('linear') )
+#}
+#stimMat <- stimMatInterp2
 stimMatFlip <- stimMat[ ,dim(stimMat)[2]:1, ]
 image( stimMatFlip[,,556], axes=FALSE )
 #image( stimMat[,,56], axes=FALSE )
-x11( width=8, height=8 )
+x11( width=4, height=4 )
 for ( snap in 1:dim(stimMat)[3] ) {
   image( stimMat[,,snap], axes=FALSE ); par(new=TRUE); Sys.sleep(0.01) 
 }
@@ -107,20 +117,21 @@ hrf <- canonicalHRF( seq(0,30,samplingTime) )
 
 addSpace <- abs( min(x) )*0.5
 print('build prediction...')
-xPosFit <- seq( min(x)-addSpace, max(x)+addSpace, length.out=8 )
-yPosFit <- seq( min(y)-addSpace, max(y)+addSpace, length.out=8 )
-sigmaArrayPositive <- seq( 0.15, 6, length.out=10 )
+xPosFit <- seq( min(x)-addSpace, max(x)+addSpace, length.out=6 )
+yPosFit <- seq( min(y)-addSpace, max(y)+addSpace, length.out=6 )
+sigmaArrayPositive <- seq( 0.15, 6, length.out=6 )
 if (flagSurround==1) { sigmaArrayNegative <- sigmaArrayPositive }
 if (flagSurround==0) { sigmaArrayNegative <- 1000 }
 predictionGridTemp <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, sigmaArrayNegative )
 keepPredictionIdx <- predictionGridTemp[ ,3] < predictionGridTemp[ ,4]
 predictionGrid <- predictionGridTemp[ keepPredictionIdx, ]
 
-#normFun <- function(x,muNorm,sigmaNorm) { 1/(sqrt(2*pi)*sigmaNorm) * exp( -( ( x-muNorm )^2 / ( 2*sigmaNorm^2 ) ) ) }
-
-tsPrediction <- array( 0, c( dim(predictionGrid)[1], dim(stimSeq)[3] ) )
+tsPrediction <- array( 0, c( dim(predictionGrid)[1], dim( ts$brk )[4] ) )
 stimSeqMat <- array( stimSeq, c( length(x)*length(y), dim(stimSeq)[3] ) )
 incrementalCounter <- dim(predictionGrid)[1] * 0.05
+timeStimuli <- seq( 0, dim(stimSeq)[3]*samplingTime, length.out = dim(stimSeq)[3] )
+mriTime <- seq( 0, dim(stimSeq)[3]*samplingTime, length.out = dim(ts$brk)[4] )
+
 for (nPrediction in 1:dim(predictionGrid)[1] ) {
   
   prfPar <- as.numeric( predictionGrid[nPrediction,] )
@@ -141,13 +152,15 @@ for (nPrediction in 1:dim(predictionGrid)[1] ) {
   
   if (flagSurround==1) { r <- imgCenter - imgSurround }
   if (flagSurround==0) { r <- imgCenter }
-  rMat <- array(r)
+  rMat <- round( array(r), 5 )
+
   #trMat <- t(stimSeqMat)
   #system.time( predictionLoop <- as.numeric( trMat%*%rMat ) )
   predictionLoop <- as.numeric( crossprod( stimSeqMat,rMat ) )
   pConv <- conv( predictionLoop, hrf )
-  pConvTrim <- pConv[ 1 : dim(stimSeq)[3] ] # fix this
-  tsPrediction[nPrediction,] <- pConvTrim
+  pConvTrim <- pConv[ 1 : dim(stimSeq)[3] ]
+  tsPredictionMriInterp <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('linear') )
+  tsPrediction[nPrediction,] <- tsPredictionMriInterp / max( tsPredictionMriInterp )
   if ( nPrediction > incrementalCounter ) {
     incrementStep <- dim(predictionGrid)[1] * 0.05
     incrementalCounter <- incrementalCounter + incrementStep
@@ -161,15 +174,58 @@ controlPredictions <- apply( tsPrediction, 1, sum ) != 0
 tsPrediction <- tsPrediction[controlPredictions,]
 predictionGrid <- predictionGrid[controlPredictions,]
 
-### downsample predictions to epi TR
-timeStimuli <- seq( 0, dim(stimSeq)[3]*samplingTime, length.out = dim(stimSeq)[3] )
-mriTime <- seq( 0, dim(stimSeq)[3]*samplingTime, length.out = dim(ts$brk)[4] )
-tsPredictionMriInterp <- array(0, c( dim(predictionGrid)[1], length(mriTime) ) )
-for ( nPrediction in 1:dim(predictionGrid)[1] ) {
-  tsPredictionMriInterp[nPrediction,] <- interp1( x=timeStimuli, y=tsPrediction[nPrediction,], xi=mriTime, method=c('linear') )
-  tsPredictionMriInterp[nPrediction,] <- scaleData( tsPredictionMriInterp[nPrediction,], 1, 0)
+
+generatePrediction <- function( indexPrediction ) {
+  prfPar <- as.numeric( predictionGrid[indexPrediction,] )
+  
+  #prfPar <- c(-2,-4,1,1.1)
+  a <- dnorm( x, prfPar[1], prfPar[3] )
+  b <- dnorm( y, prfPar[2], prfPar[3] )
+  #a <- normFun( x, prfPar[1], prfPar[3] )
+  #b <- normFun( y, prfPar[1], prfPar[3] )
+  imgCenter <- tcrossprod(a,b)
+  #image( imgCenter )
+  
+  a <- dnorm( x, prfPar[1], prfPar[4] )
+  b <- dnorm( y, prfPar[2], prfPar[4] )
+  #a <- normFun( x, prfPar[1], prfPar[4] )
+  #b <- normFun( y, prfPar[1], prfPar[4] )
+  imgSurround <- tcrossprod(a,b)
+  
+  if (flagSurround==1) { r <- imgCenter - imgSurround }
+  if (flagSurround==0) { r <- imgCenter }
+  rMat <- array(r)
+
+  #trMat <- t(stimSeqMat)
+  #system.time( predictionLoop <- as.numeric( trMat%*%rMat ) )
+  predictionLoop <- as.numeric( crossprod( stimSeqMat,rMat ) )
+  pConv <- conv( predictionLoop, hrf )
+  pConvTrim <- pConv[ 1 : dim(stimSeq)[3] ]
+  tsPredictionMriInterp <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('linear') )
+  #tsPrediction[nPrediction,] <- tsPredictionMriInterp / max( tsPredictionMriInterp )
+  return( round( tsPredictionMriInterp / max( tsPredictionMriInterp ), 5 ) )
 }
-tsPrediction <- tsPredictionMriInterp
+library(parallel)
+detectCores()
+nCores <- 8
+cl <- makeCluster(nCores, type='FORK')
+storeTimePar <- system.time( outParallel <- parSapply(cl, 1:dim(predictionGrid)[1], generatePrediction ) )
+stopCluster(cl)
+storeTimeSerial <- system.time( sapply(1:dim(predictionGrid)[1], generatePrediction ) )
+print( storeTimePar )
+print( storeTimeSerial )
+
+
+
+### downsample predictions to epi TR
+#timeStimuli <- seq( 0, dim(stimSeq)[3]*samplingTime, length.out = dim(stimSeq)[3] )
+#mriTime <- seq( 0, dim(stimSeq)[3]*samplingTime, length.out = dim(ts$brk)[4] )
+#tsPredictionMriInterp <- array(0, c( dim(predictionGrid)[1], length(mriTime) ) )
+#for ( nPrediction in 1:dim(predictionGrid)[1] ) {
+#  tsPredictionMriInterp[nPrediction,] <- interp1( x=timeStimuli, y=tsPrediction[nPrediction,], xi=mriTime, method=c('linear') )
+#  tsPredictionMriInterp[nPrediction,] <- scaleData( tsPredictionMriInterp[nPrediction,], 1, 0)
+#}
+#tsPrediction <- tsPredictionMriInterp
 
 #scale predictions to 1
 
@@ -222,8 +278,8 @@ for (dataPart in 1:(length(fitPart)-1) ) {
       
       if (fitIntercept==1) { dMat01 <- cbind( rep(1,length(dMat)), dMat ) }
       if (fitIntercept==0) { dMat01 <- dMat }
-      a <- solve( crossprod(dMat01,dMat01), crossprod(dMat01,tsTransposed) )
-      #a <- solve( qr(dMat01), tsTransposed)
+      #a <- solve( crossprod(dMat01,dMat01), crossprod(dMat01,tsTransposed) )
+      a <- solve( qr(dMat01), tsTransposed)
       
       ### remove the intercept fit, it is better ############
       
@@ -276,8 +332,9 @@ for (dataPart in 1:(length(fitPart)-1) ) {
     storeAllExpectedTs[, fitPart[dataPart]:fitPart[dataPart+1] ] <- storeFitFilled
   }
   print('...')
-  
 }
+
+
 
 if (flagSurround==1) { 
   print('get FWHM...')
@@ -315,6 +372,70 @@ if (flagSurround==0) {
   FWHM[,1] <- storeAllPred[,3]
   FWHM[,2] <- 1000
 }
+
+
+
+
+
+#take it from here, function to  optimize the fit, maybe a couple of times
+
+print('fine fit...')
+fineFitPredictor <- function( paramsArray ) {
+    if (flagSurround==1) { 
+      xCoord <- paramsArray[1]
+      yCoord <- paramsArray[2]
+      sizeCenter <- paramsArray[3]
+      sizeSurround <- paramsArray[4]
+      #intercept <- paramsArray[5]
+      #slope <- paramsArray[6]
+      a <- dnorm( x, xCoord, sizeCenter )
+      b <- dnorm( y, yCoord, sizeCenter )
+      imgCenter <- tcrossprod(a,b)
+      a <- dnorm( x, xCoord, sizeSurround )
+      b <- dnorm( y, yCoord, sizeSurround )
+      imgSurround <- tcrossprod(a,b)
+      r <- imgCenter - imgSurround
+    }
+    if (flagSurround==0) { 
+      xCoord <- paramsArray[1]
+      yCoord <- paramsArray[2]
+      sizeCenter <- paramsArray[3]
+      #intercept <- paramsArray[4]
+      #slope <- paramsArray[5]
+      a <- dnorm( x, xCoord, sizeCenter )
+      b <- dnorm( y, yCoord, sizeCenter )
+      imgCenter <- tcrossprod(a,b)
+      r <- imgCenter
+    }
+    rMat <- array(r)
+    predictionLoop <- as.numeric( crossprod( stimSeqMat, rMat ) )
+    pConv <- conv( predictionLoop, hrf )
+    pConv <- pConv[ 1 : dim(stimSeq)[3] ]
+    ### downsampling step ###
+    timeStimuli <- seq( 0, dim(stimSeq)[3]*samplingTime, length.out=dim(stimSeq)[3] )
+    mriTime <- seq( 0, dim(stimSeq)[3]*samplingTime, length.out=dim(ts$brk)[4] )
+    pConv <- interp1( x=timeStimuli, y=pConv, xi=mriTime, method=c('linear') )
+    ### make max to 1 ###
+    pConv <- pConv / max(pConv)
+    #pConvTrim <- intercept + pConv * slope
+    return(pConv)  
+}
+
+
+test
+
+
+
+xMod <- c(-0.2,0,0.2)
+yMod <- xMod
+sigmaMod <- xMod
+surroundMod <- xMod 
+multiplicativeGrid <- expand.grid(xMod, yMod, sigmaMod, surroundMod )
+rep(  ) 
+
+
+
+
 
 # from here, check the position of the slope in the storePred matrix
 
