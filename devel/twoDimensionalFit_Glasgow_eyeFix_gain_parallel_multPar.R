@@ -3,7 +3,7 @@
 args <- commandArgs(T)
 print( args )
 
-#setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
+#setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
 #args <- c('bars_mask_res.nii.gz','barsTs_res.nii.gz','outTest_delme.nii.gz','/packages/afni/17.0.13','1')
 
 ## prepare the stimuli with the portrait as well
@@ -14,7 +14,7 @@ print( args )
 #setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
 
 mainDir <- getwd()
-#args <- c('meanTs_eyeMovement_topUp_res_mask.nii', 'meanTs_eyeMovement_topUp_res.nii', 'output_test_delme','/home/alessiof/abin', '1', '4','1','0.166','1')
+#args <- c('meanTs_bars_res_mask.nii', 'meanTs_bars_res.nii', 'output_test_delme_bars','/home/alessiof/abin', '1', '4','1','0.166','4')
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
 afniInstallDir <- Sys.getenv( x='AFNI_INSTALLDIR' ) 
 source( sprintf('%s/scaleData.R', generalPurposeDir) )
@@ -88,24 +88,24 @@ print('get prfStimuli.RData...')
 
 setwd('/analyse/Project0226/dataSummary')
 if (stimType==1) { 
-	arrayStim <- scan( 'eyeMovingStim.txt' )
-	setwd(mainDir)
-	stimMat <- aperm( array( arrayStim, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
+  arrayStim <- scan( 'eyeMovingStim.txt' )
+  setwd(mainDir)
+  stimMat <- aperm( array( arrayStim, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
 }
 if (stimType==2) { 
-	arrayStim <- scan( 'eyeFixStim.txt' )
-	setwd(mainDir)
-	stimMat <- aperm( array( arrayStim, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
+  arrayStim <- scan( 'eyeFixStim.txt' )
+  setwd(mainDir)
+  stimMat <- aperm( array( arrayStim, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
 }
 if (stimType==3) { 
-	arrayStim <- scan( 'eyeFixStim_border.txt' )
-	setwd(mainDir)
-	stimMat <- aperm( array( arrayStim, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
+  arrayStim <- scan( 'eyeFixStim_border.txt' )
+  setwd(mainDir)
+  stimMat <- aperm( array( arrayStim, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
 }
 if (stimType==4) { 
-	arrayStim <- scan( 'prfStim.txt' )
-	setwd(mainDir)
-	stimMat <- aperm( array( arrayStim, c(200,1860,150) ), c( 3, 1, 2 ) ) # eye movement
+  arrayStim <- scan( 'prfStim.txt' )
+  setwd(mainDir)
+  stimMat <- aperm( array( arrayStim, c(200,1860,150) ), c( 3, 1, 2 ) ) # eye movement
 }
 
 #stimMat <- aperm( array( arrayStim, c(128,620,96) ), c( 1, 3, 2 ) )
@@ -119,173 +119,203 @@ if (stimType==4) {
 #	imageLoop <- stimMat[,,interpCounter]
 #	stimMatInterp2[,,interpCounter] <- interp2( xStim, yStim, imageLoop, xStimInt, yStimInt, method=c('linear') )
 #}
-#stimMat <- stimMatInterp2
-stimMatFlip <- stimMat[ ,dim(stimMat)[2]:1, ]
-#image( stimMatFlip[,,556], axes=FALSE )
-#image( stimMat[,,56], axes=FALSE )
+
+#stimMatFlip <- stimMat[ ,dim(stimMat)[2]:1, ]
+stimMatFlip <- aperm( stimMat[ dim(stimMat)[1]:1,, ], c(2,1,3) )
+
+
 x11( width=3, height=3 )
 for ( snap in 1:dim(stimMat)[3] ) {
-  image( stimMat[,,snap], axes=FALSE ); par(new=TRUE); Sys.sleep(0.01) 
+  image( stimMatFlip[,,snap], axes=FALSE ); par(new=TRUE); Sys.sleep(0.01) 
 }
 stimSeq <- stimMatFlip
-x <- seq(-7,7,length.out = dim(stimSeq)[1] )
-y <- seq(-10,10,length.out = dim(stimSeq)[2] )
+x <- seq(-6,6,length.out = dim(stimSeq)[1] )
+y <- seq(-8,8,length.out = dim(stimSeq)[2] )
 
 #### get the standard hrf ####
 print('get hrf...')
 hrf <- canonicalHRF( seq(0,30,samplingTime) )
 
-
-multVector <- c(0.8, 0.9, 1, 1.1, 1.2)
-#modelFitCounter <- 1
-for (modelFitCounter in 1:length(multVector)) {
-
-#### prepare to generate the predictions ####
-addSpace <- abs( min(x) )*0.5
+#this part of the code builds a matrix with all the possible prediction tested, for both models at this stage
+addSpace <- abs( min(x) )*0.05
 print('build prediction...')
-xPosFit <- seq( min(x)-addSpace, max(x)+addSpace, length.out=6 ) * multVector[ modelFitCounter ]
-yPosFit <- seq( min(y)-addSpace, max(y)+addSpace, length.out=6 ) * multVector[ modelFitCounter ]
-sigmaArrayPositive <- seq( 0.25, 7, length.out=5 ) * multVector[ modelFitCounter ]
-
+xPosFit <- seq( min(x)-addSpace, max(x)+addSpace, length.out=10 )
+yPosFit <- seq( min(y)-addSpace, max(y)+addSpace, length.out=10 )
+sigmaArrayPositive <- seq( 0.25, 7, length.out=8 )
 if (flagSurround==1) { sigmaArrayNegative <- sigmaArrayPositive }
 if (flagSurround==0) { sigmaArrayNegative <- 1000 }
 predictionGridTemp <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, sigmaArrayNegative )
 keepPredictionIdx <- predictionGridTemp[ ,3] < predictionGridTemp[ ,4]
-predictionGrid <- predictionGridTemp[ keepPredictionIdx, ]
+predictionGridGlobal <- predictionGridTemp[ keepPredictionIdx, ]
 
-#tsPrediction <- array( 0, c( dim(predictionGrid)[1], dim( ts$brk )[4] ) )
-stimSeqMat <- array( stimSeq, c( length(x)*length(y), dim(stimSeq)[3] ) )
-incrementalCounter <- dim(predictionGrid)[1] * 0.05
-timeStimuli <- seq( 0, dim(stimSeq)[3]*samplingTime, length.out = dim(stimSeq)[3] )
-mriTime <- seq( 0, dim(stimSeq)[3]*samplingTime, length.out = dim(ts$brk)[4] )
+# this part builds a matrix with the starting and ending prediction index to fit for each loop in the next for loop
+limitsPrediction <- round( seq(1,dim(predictionGridGlobal)[1], length.out=50) ) #split between 100 (arbitrary number) chuncks for iterative fitting
+limitsPrediction[1] <- 1
+limitsPrediction[ length(limitsPrediction) ] <- dim(predictionGridGlobal)[1]
+limitsPredictionMatrix <- array( 0, c( (length(limitsPrediction)-1) , 2 ) )
+limitsPredictionMatrix[,1] <- limitsPrediction[1:(length(limitsPrediction)-1)]
+limitsPredictionMatrix[,2] <- limitsPrediction[2:(length(limitsPrediction))]
+limitsPredictionMatrix[2:dim(limitsPredictionMatrix)[1],1] <- limitsPredictionMatrix[2:dim(limitsPredictionMatrix)[1],1] + 1 #matrix with starting ts and ending ts for each chunk to be fitted
+runIndexPredictions <- seq( 1:dim(limitsPredictionMatrix)[1] )
 
-#### function to generate the predictions ####
-generatePrediction <- function( indexPrediction, inputPredictionGrid ) {
-  prfPar <- as.numeric( inputPredictionGrid[indexPrediction,] )
+
+#multVector <- c(1)#c(0.8, 0.9, 1, 1.1, 1.2)
+#modelFitCounter <- 1
+for (modelFitCounter in 1:length(runIndexPredictions)) {
   
-  #prfPar <- c(-2,-4,1,1.1)
-  a <- dnorm( x, prfPar[1], prfPar[3] )
-  b <- dnorm( y, prfPar[2], prfPar[3] )
-  #a <- normFun( x, prfPar[1], prfPar[3] )
-  #b <- normFun( y, prfPar[1], prfPar[3] )
-  imgCenter <- tcrossprod(a,b)
-  #image( imgCenter )
+  print( sprintf( 'iteration %1.0f of %1.0f, start...', modelFitCounter, length(runIndexPredictions)  ) )
   
-  a <- dnorm( x, prfPar[1], prfPar[4] )
-  b <- dnorm( y, prfPar[2], prfPar[4] )
-  #a <- normFun( x, prfPar[1], prfPar[4] )
-  #b <- normFun( y, prfPar[1], prfPar[4] )
-  imgSurround <- tcrossprod(a,b)
+  # here I select the portion of all the predictions that are going to be tested later
+  predictionGrid <- predictionGridGlobal[ limitsPredictionMatrix[modelFitCounter,1]:limitsPredictionMatrix[modelFitCounter,2], ]
   
-  if (flagSurround==1) { r <- imgCenter - imgSurround }
-  if (flagSurround==0) { r <- imgCenter }
-  rMat <- array(r)
-
-  #trMat <- t(stimSeqMat)
-  #system.time( predictionLoop <- as.numeric( trMat%*%rMat ) )
-  predictionLoop <- as.numeric( crossprod( stimSeqMat,rMat ) ) #### this is the slow step, this is the reason for the parallel computing ####
-  pConv <- conv( predictionLoop, hrf )
-  pConvTrim <- pConv[ 1 : dim(stimSeq)[3] ]
-  tsPredictionMriInterp <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('linear') )
-  #tsPrediction[nPrediction,] <- tsPredictionMriInterp / max( tsPredictionMriInterp )
-  #return( round( tsPredictionMriInterp / max( tsPredictionMriInterp ), 5 ) ) #### scale predictions to 1 and round them to 5 digits
-  return( round( scaleData( tsPredictionMriInterp, 1, 0 ), 5 ) ) #### scale predictions betweeo 0 and 1 and round them to 5 digits
-}
-
-#### generate predictions in parallel ####
-library(parallel)
-detectCores()
-nCores <- 8
-cl <- makeCluster(nCores, type='FORK')
-storeTimePar <- system.time( tsPredictionTransposed <- parSapply(cl, 1:dim(predictionGrid)[1], generatePrediction, inputPredictionGrid=predictionGrid ) )
-stopCluster(cl)
-#storeTimeSerial <- system.time( sapply(1:100, generatePrediction, inputPredictionGrid=predictionGrid ) )
-print( storeTimePar )
-#print( storeTimeSerial )
-
-#### clean up ts predictions and prediction grid ####
-tsPrediction <- t( tsPredictionTransposed )
-controlPredictions <- apply( tsPrediction, 1, sum ) != 0 
-tsPrediction <- tsPrediction[controlPredictions,]
-predictionGrid <- predictionGrid[controlPredictions,]
-print( dim( predictionGrid ) )
-
-
-#### linear fitting in parallel ####
-print('linear fitting...')
-indexVol <- meanEpi$brk[,,,1]
-indexArray <- array( indexVol, prod( dim( indexVol ) ) )
-tsTransposedAll <- t( tsArray )
-selIdxVoxel <- which( indexArray == 1 )
-tsTransposedSel <- tsTransposedAll[,selIdxVoxel] #all selected time series
-limitsSelVoxels <- round( seq(1,length(selIdxVoxel), length.out=50) ) #split between 50 (arbitrary number) chuncks for parallel fitting
-limitsSelVoxels[1] <- 1
-limitsSelVoxels[ length(limitsSelVoxels) ] <- length(selIdxVoxel)
-limitsSelVoxelsMatrix <- array( 0, c( (length(limitsSelVoxels)-1) , 2 ) )
-limitsSelVoxelsMatrix[,1] <- limitsSelVoxels[1:(length(limitsSelVoxels)-1)]
-limitsSelVoxelsMatrix[,2] <- limitsSelVoxels[2:(length(limitsSelVoxels))]
-limitsSelVoxelsMatrix[2:dim(limitsSelVoxelsMatrix)[1],1] <- limitsSelVoxelsMatrix[2:dim(limitsSelVoxelsMatrix)[1],1] + 1 #matrix with starting ts and ending ts for each chunk
-runIndex <- seq( 1:dim(limitsSelVoxelsMatrix)[1] )
-voxelModel <- function(passIdx) { #this fits the model on serveral voxels at a time, see limitsSelVoxelsMatrix
-	selTsVoxel <- tsTransposedSel[ , limitsSelVoxelsMatrix[passIdx,1]:limitsSelVoxelsMatrix[passIdx,2] ]
-        selTsVoxelMean <- apply( selTsVoxel, 2, mean ) #voxels average
-	ssTot <- apply( (selTsVoxel-selTsVoxelMean)^2, 2, sum) #voxels total sum of squares
-	runLinMod <- function(nIndex) { #get best fit for every prediction (nIndex = counter of predictions)
-      		dMat <- cbind( tsPrediction[nIndex,] )      
-      		dMat01 <- cbind( rep(1,length(dMat)), dMat ) #column of ones and column of predictor
-		a <- solve( crossprod(dMat01,dMat01), crossprod(dMat01,selTsVoxel) ) #beta coefficients (2: intercept and slope)
-      		#a <- solve( qr(dMat01), selTsVoxel)
-      		expectedTs <- crossprod( t(dMat01), a ) #expected ts
- 	        residualsSquared <- ( selTsVoxel - expectedTs )^2 
-      	        ssRes <- apply( residualsSquared, 2, sum )
-                r2 <- 1-(ssRes/ssTot) #r squares
-     		return( rbind( r2, a, expectedTs ) )
-	}
-	outVoxelList <- lapply( 1:dim(tsPrediction)[1], runLinMod  ) #apply the function for all predictions, get a list as output
-	outVoxel3D <- abind( outVoxelList, along=3 ) #reshape the list in a 3dmatrix with fields: output X voxels tested X predictions
-	betaPositiveMatrix <- outVoxel3D[3,,] > 0
-	r2Matrix <- outVoxel3D[1,,]	
-	extractData <- function(nSelectedVoxels) {
-		indexBetaZero <- betaPositiveMatrix[nSelectedVoxels,]
-		if ( sum(indexBetaZero)>0 ) {
-			indexBetaZero <- which( indexBetaZero )
-			indexVarExp <- which.max( r2Matrix[nSelectedVoxels,indexBetaZero] )
-			return( as.numeric( c( predictionGrid[indexBetaZero[indexVarExp],], outVoxel3D[,nSelectedVoxels,indexBetaZero[indexVarExp]] ) ) ) 
-		}
-		if ( sum(indexBetaZero)==0 ) {
-			return( rep(0, dim(predictionGrid)[2]+3+dim(selTsVoxel)[1] ) ) #no positive betas, return array of zeros, 3=r2,beta intercept, beta slope
-		}
-	}	
-	outModel <- sapply( 1:dim(r2Matrix)[1], extractData )
-	return( outModel )
-}
-#system.time( aaa <- lapply( 1:3, voxelModel ) )
-library(parallel)
-detectCores()
-nCores <- 4
-cl <- makeCluster(nCores, type='FORK')
-storeTimePar <- system.time( outModel <- parLapply(cl, runIndex, voxelModel ) )
-stopCluster(cl)
-print( storeTimePar )
-
-for ( nElements in 1:length(outModel) ) {
-	if (nElements==1) {
-		outMatrix <- outModel[[nElements]]
-	}
-	if (nElements>1) {
-		outMatrix <- cbind( outMatrix, outModel[[nElements]] )
-	}
-}
-
-outModel <- outMatrix
-if (modelFitCounter==1) { outModelLoop <- outModel }
-if (modelFitCounter>1) { 
-selectedCols <- outModel[5,] > outModelLoop[5,]
-if ( sum( selectedCols ) > 0 ) {
-outModelLoop[,selectedCols] <- outModel[,selectedCols] 
-}
-}
-
+  print( sprintf( 'generate predictions in iteration %1.0f of %1.0f ...', modelFitCounter, length(runIndexPredictions)  ) )
+  
+  #### prepare to generate the predictions ####
+  # addSpace <- abs( min(x) )*0.5
+  # print('build prediction...')
+  # xPosFit <- seq( min(x)-addSpace, max(x)+addSpace, length.out=6 ) * multVector[ modelFitCounter ]
+  # yPosFit <- seq( min(y)-addSpace, max(y)+addSpace, length.out=6 ) * multVector[ modelFitCounter ]
+  # sigmaArrayPositive <- seq( 0.25, 7, length.out=5 ) * multVector[ modelFitCounter ]
+  # 
+  # if (flagSurround==1) { sigmaArrayNegative <- sigmaArrayPositive }
+  # if (flagSurround==0) { sigmaArrayNegative <- 1000 }
+  # predictionGridTemp <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, sigmaArrayNegative )
+  # keepPredictionIdx <- predictionGridTemp[ ,3] < predictionGridTemp[ ,4]
+  # predictionGrid <- predictionGridTemp[ keepPredictionIdx, ]
+  
+  #tsPrediction <- array( 0, c( dim(predictionGrid)[1], dim( ts$brk )[4] ) )
+  stimSeqMat <- array( stimSeq, c( length(x)*length(y), dim(stimSeq)[3] ) )
+  incrementalCounter <- dim(predictionGrid)[1] * 0.05
+  timeStimuli <- seq( 0, dim(stimSeq)[3]*samplingTime, length.out = dim(stimSeq)[3] )
+  mriTime <- seq( 0, dim(stimSeq)[3]*samplingTime, length.out = dim(ts$brk)[4] )
+  
+  #### function to generate the predictions ####
+  generatePrediction <- function( indexPrediction, inputPredictionGrid ) {
+    prfPar <- as.numeric( inputPredictionGrid[indexPrediction,] )
+    
+    #prfPar <- c(-2,-4,1,1.1)
+    a <- dnorm( x, prfPar[1], prfPar[3] )
+    b <- dnorm( y, prfPar[2], prfPar[3] )
+    #a <- normFun( x, prfPar[1], prfPar[3] )
+    #b <- normFun( y, prfPar[1], prfPar[3] )
+    imgCenter <- tcrossprod(a,b)
+    #image( imgCenter )
+    
+    a <- dnorm( x, prfPar[1], prfPar[4] )
+    b <- dnorm( y, prfPar[2], prfPar[4] )
+    #a <- normFun( x, prfPar[1], prfPar[4] )
+    #b <- normFun( y, prfPar[1], prfPar[4] )
+    imgSurround <- tcrossprod(a,b)
+    
+    if (flagSurround==1) { r <- imgCenter - imgSurround }
+    if (flagSurround==0) { r <- imgCenter }
+    rMat <- array(r)
+    
+    #trMat <- t(stimSeqMat)
+    #system.time( predictionLoop <- as.numeric( trMat%*%rMat ) )
+    predictionLoop <- as.numeric( crossprod( stimSeqMat,rMat ) ) #### this is the slow step, this is the reason for the parallel computing ####
+    pConv <- conv( predictionLoop, hrf )
+    pConvTrim <- pConv[ 1 : dim(stimSeq)[3] ]
+    tsPredictionMriInterp <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('linear') )
+    #tsPrediction[nPrediction,] <- tsPredictionMriInterp / max( tsPredictionMriInterp )
+    #return( round( tsPredictionMriInterp / max( tsPredictionMriInterp ), 5 ) ) #### scale predictions to 1 and round them to 5 digits
+    return( round( scaleData( tsPredictionMriInterp, 1, 0 ), 5 ) ) #### scale predictions betweeo 0 and 1 and round them to 5 digits
+  }
+  
+  #### generate predictions in parallel ####
+  library(parallel)
+  detectCores()
+  nCores <- 4
+  cl <- makeCluster(nCores, type='FORK')
+  storeTimePar <- system.time( tsPredictionTransposed <- parSapply(cl, 1:dim(predictionGrid)[1], generatePrediction, inputPredictionGrid=predictionGrid ) )
+  stopCluster(cl)
+  #storeTimeSerial <- system.time( sapply(1:100, generatePrediction, inputPredictionGrid=predictionGrid ) )
+  print( storeTimePar )
+  #print( storeTimeSerial )
+  
+  #### clean up ts predictions and prediction grid ####
+  tsPrediction <- t( tsPredictionTransposed )
+  controlPredictions <- apply( tsPrediction, 1, sum ) != 0 
+  tsPrediction <- tsPrediction[controlPredictions,]
+  predictionGrid <- predictionGrid[controlPredictions,]
+  print( dim( predictionGrid ) )
+  
+  
+  #### linear fitting in parallel ####
+  print( sprintf( 'linear fitting in iteration %1.0f of %1.0f ...', modelFitCounter, length(runIndexPredictions)  ) )
+  indexVol <- meanEpi$brk[,,,1]
+  indexArray <- array( indexVol, prod( dim( indexVol ) ) )
+  tsTransposedAll <- t( tsArray )
+  selIdxVoxel <- which( indexArray == 1 )
+  tsTransposedSel <- tsTransposedAll[,selIdxVoxel] #all selected time series
+  limitsSelVoxels <- round( seq(1,length(selIdxVoxel), length.out=80) ) #split between 100 (arbitrary number) chuncks for parallel fitting
+  limitsSelVoxels[1] <- 1
+  limitsSelVoxels[ length(limitsSelVoxels) ] <- length(selIdxVoxel)
+  limitsSelVoxelsMatrix <- array( 0, c( (length(limitsSelVoxels)-1) , 2 ) )
+  limitsSelVoxelsMatrix[,1] <- limitsSelVoxels[1:(length(limitsSelVoxels)-1)]
+  limitsSelVoxelsMatrix[,2] <- limitsSelVoxels[2:(length(limitsSelVoxels))]
+  limitsSelVoxelsMatrix[2:dim(limitsSelVoxelsMatrix)[1],1] <- limitsSelVoxelsMatrix[2:dim(limitsSelVoxelsMatrix)[1],1] + 1 #matrix with starting ts and ending ts for each chunk
+  runIndex <- seq( 1:dim(limitsSelVoxelsMatrix)[1] )
+  voxelModel <- function(passIdx) { #this fits the model on serveral voxels at a time, see limitsSelVoxelsMatrix
+    selTsVoxel <- tsTransposedSel[ , limitsSelVoxelsMatrix[passIdx,1]:limitsSelVoxelsMatrix[passIdx,2] ]
+    selTsVoxelMean <- apply( selTsVoxel, 2, mean ) #voxels average
+    ssTot <- apply( (selTsVoxel-selTsVoxelMean)^2, 2, sum) #voxels total sum of squares
+    runLinMod <- function(nIndex) { #get best fit for every prediction (nIndex = counter of predictions)
+      dMat <- cbind( tsPrediction[nIndex,] )      
+      dMat01 <- cbind( rep(1,length(dMat)), dMat ) #column of ones and column of predictor
+      a <- solve( crossprod(dMat01,dMat01), crossprod(dMat01,selTsVoxel) ) #beta coefficients (2: intercept and slope)
+      #a <- solve( qr(dMat01), selTsVoxel)
+      expectedTs <- crossprod( t(dMat01), a ) #expected ts
+      residualsSquared <- ( selTsVoxel - expectedTs )^2 
+      ssRes <- apply( residualsSquared, 2, sum )
+      r2 <- 1-(ssRes/ssTot) #r squares
+      return( rbind( r2, a, expectedTs ) )
+    }
+    outVoxelList <- lapply( 1:dim(tsPrediction)[1], runLinMod  ) #apply the function for all predictions, get a list as output
+    outVoxel3D <- abind( outVoxelList, along=3 ) #reshape the list in a 3dmatrix with fields: output X voxels tested X predictions
+    betaPositiveMatrix <- outVoxel3D[3,,] > 0
+    r2Matrix <- outVoxel3D[1,,]	
+    extractData <- function(nSelectedVoxels) {
+      indexBetaZero <- betaPositiveMatrix[nSelectedVoxels,]
+      if ( sum(indexBetaZero)>0 ) {
+        indexBetaZero <- which( indexBetaZero )
+        indexVarExp <- which.max( r2Matrix[nSelectedVoxels,indexBetaZero] )
+        return( as.numeric( c( predictionGrid[indexBetaZero[indexVarExp],], outVoxel3D[,nSelectedVoxels,indexBetaZero[indexVarExp]] ) ) ) 
+      }
+      if ( sum(indexBetaZero)==0 ) {
+        return( rep(0, dim(predictionGrid)[2]+3+dim(selTsVoxel)[1] ) ) #no positive betas, return array of zeros, 3=r2,beta intercept, beta slope
+      }
+    }	
+    outModel <- sapply( 1:dim(r2Matrix)[1], extractData )
+    return( outModel )
+  }
+  #system.time( aaa <- lapply( 1:3, voxelModel ) )
+  library(parallel)
+  detectCores()
+  nCores <- 4
+  cl <- makeCluster(nCores, type='FORK')
+  storeTimePar <- system.time( outModel <- parLapply(cl, runIndex, voxelModel ) )
+  stopCluster(cl)
+  print( storeTimePar )
+  
+  for ( nElements in 1:length(outModel) ) {
+    if (nElements==1) {
+      outMatrix <- outModel[[nElements]]
+    }
+    if (nElements>1) {
+      outMatrix <- cbind( outMatrix, outModel[[nElements]] )
+    }
+  }
+  
+  outModel <- outMatrix
+  if (modelFitCounter==1) { outModelLoop <- outModel }
+  if (modelFitCounter>1) { 
+    selectedCols <- outModel[5,] > outModelLoop[5,]
+    if ( sum( selectedCols ) > 0 ) {
+      outModelLoop[,selectedCols] <- outModel[,selectedCols] 
+    }
+  }
+  
 }
 
 
@@ -339,7 +369,7 @@ storeAllExpectedTs[,selIdxVoxel] <- outModelLoop[ 8:dim(outModelLoop)[1], ]
 storeAllPredOut <- array( 0, c(11, dim(tsTransposedAll)[2] ) )
 
 print('save linear step...')
-polCoords <- cart2pol( storeAllPred[,c(1,2)] )
+polCoords <- cart2pol( storeAllPred[,c(2,1)] ) 
 storeAllPredOut[,selIdxVoxel] <- t( cbind( storeAllPred, polCoords, FWHM ) )
 fileTs <- sprintf('%s_PredixtedTs.nii.gz',outSuffix) 
 fileParams <- sprintf('%s_params.nii.gz',outSuffix)
