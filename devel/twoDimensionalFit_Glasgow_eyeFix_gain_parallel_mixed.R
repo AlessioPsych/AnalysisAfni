@@ -5,7 +5,7 @@ print( args )
 #setwd('/analyse/Project0226/GN18NE278_HNA10_FEF_19102018_nifti')
 #setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
 #setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
-#args <- c('meanTs_eyeMovement_topUp_res_mask.nii', 'meanTs_eyeMovement_topUp_res.nii', '__delme_output_mixed','/home/alessiof/abin', '1', '4','1','0.166','1')
+#args <- c('meanTs_eyeMovement_topUp_res_mask.nii', 'meanTs_eyeMovement_topUp_res.nii', '__delme_output_mixed','/home/alessiof/abin', '0-1', '0','1','0.166','1')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
@@ -32,7 +32,9 @@ library( parallel )
 epiFile <- args[1]
 inputFile <- args[2]
 outSuffix <- args[3]
-flagSurround <- as.numeric( args[5] )
+flagSurroundInput <- args[5]
+flagSurroundEyeMov <- as.numeric( strsplit( flagSurroundInput, '[-]' )[[1]][1] )
+flagSurroundStimBorder <- as.numeric( strsplit( flagSurroundInput, '[-]' )[[1]][2] )
 fitIntercept <- as.numeric( args[7] )
 polortArg <- as.numeric( args[6] )
 samplingTime <- as.numeric( args[8] )
@@ -89,15 +91,17 @@ stimMat_eyeMovingStim <- aperm( array( arrayStim_eyeMovingStim, c(200,1510,150) 
 #  stimMat <- aperm( array( arrayStim, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
 #}
 #if (stimType==3) { 
+
+## uncomment these
 arrayStim_eyeFixStim_border <- scan( 'eyeFixStim_border.txt' )
+#arrayStim_eyeFixStim_border <- scan( 'eyeFixStim.txt' )
 stimMat_eyeFixStim_border <- aperm( array( arrayStim_eyeFixStim_border, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
 setwd(mainDir)
-#}
-#if (stimType==4) { 
-#  arrayStim <- scan( 'prfStim.txt' )
-#  setwd(mainDir)
-#  stimMat <- aperm( array( arrayStim, c(200,1860,150) ), c( 3, 1, 2 ) ) # eye movement
-#}
+
+## uncomment these to test with prf for theta parameter testing
+#arrayStim_eyeFixStim_border <- scan( 'prfStim.txt' )
+#stimMat_eyeFixStim_border <- aperm( array( arrayStim_eyeFixStim_border, c(200,1860,150) ), c( 3, 1, 2 ) ) # eye movement
+#setwd(mainDir)
 
 #stimMat <- aperm( array( arrayStim, c(128,620,96) ), c( 1, 3, 2 ) )
 #stimMat <- aperm( array( arrayStim, c(200,1860,150) ), c( 3, 1, 2 ) ) # prf
@@ -116,11 +120,11 @@ setwd(mainDir)
 stimMatFlip_eyeMovingStim <- aperm( stimMat_eyeMovingStim[ dim(stimMat_eyeMovingStim)[1]:1,, ], c(2,1,3) )
 stimMatFlip_eyeFixStim_border <- aperm( stimMat_eyeFixStim_border[ dim(stimMat_eyeFixStim_border)[1]:1,, ], c(2,1,3) )
 
-x11( width=3.5, height=3.5 )
+x11( width=4.5, height=4.5 )
 for ( snap in 1:dim(stimMat_eyeMovingStim)[3] ) {
   image( stimMatFlip_eyeMovingStim[,,snap], axes=FALSE ); par(new=TRUE); Sys.sleep(0.01) 
 }
-x11( width=3.5, height=3.5 )
+x11( width=4.5, height=4.5 )
 for ( snap in 1:dim(stimMat_eyeFixStim_border)[3] ) {
   image( stimMatFlip_eyeFixStim_border[,,snap], axes=FALSE ); par(new=TRUE); Sys.sleep(0.01) 
   #image( stimSeq_eyeFixStim_border[,,snap], axes=FALSE ); par(new=TRUE); Sys.sleep(0.001) 
@@ -159,9 +163,9 @@ hrf <- canonicalHRF( seq(0,30,samplingTime) )
 # runIndexPredictions <- seq( 1:dim(limitsPredictionMatrix)[1] )
 
 modelType <- stimType
-multVector <- c(0.5,1,1.2)#c(0.1, 0.5, 1, 1.25)
+multVector <- c(0.5,1)#c(0.1, 0.5, 1, 1.25)
 multVectorGrid <- expand.grid( multVector, multVector, multVector )
-#modelFitCounter <- 1
+#modelFitCounter <- 3
 for ( modelFitCounter in 1:dim( multVectorGrid )[1] ) {
   
   print( sprintf( 'iteration %1.0f of %1.0f, start...', modelFitCounter, dim( multVectorGrid )[1]  ) )
@@ -169,18 +173,30 @@ for ( modelFitCounter in 1:dim( multVectorGrid )[1] ) {
   #### prepare to generate the predictions ####
   print( sprintf( 'iteration %1.0f of %1.0f, building predictions...', modelFitCounter, dim( multVectorGrid )[1]  ) )
   for (stimuliCondition in 1:2) {
-    if (stimuliCondition==1) { stimSeq <- stimSeq_eyeMovingStim }
-    if (stimuliCondition==2) { stimSeq <- stimSeq_eyeFixStim_border }
+    if (stimuliCondition==1) { 
+      stimSeq <- stimSeq_eyeMovingStim; flagSurround <- flagSurroundEyeMov 
+      print( sprintf( 'stimuli: eye moving, fit surround? %1.0f ...', flagSurround  ) )
+      addSpace <- abs( min(x) )*0.05
+      xPosFit <- seq( min(x)-addSpace, max(x)+addSpace, length.out=2 ) * multVectorGrid[ modelFitCounter, 1 ]
+      yPosFit <- seq( min(y)-addSpace, max(y)+addSpace, length.out=2 ) * multVectorGrid[ modelFitCounter, 2 ]
+      sigmaArrayPositive <- seq( 0.25, 5, length.out=3 ) * multVectorGrid[ modelFitCounter, 3 ] #move sigma array positive as a function of the stimuli type, only big for eye model
+    }
+    if (stimuliCondition==2) { 
+      stimSeq <- stimSeq_eyeFixStim_border; flagSurround <- flagSurroundStimBorder 
+      print( sprintf( 'stimuli: eye fix border, fit surround? %1.0f ...', flagSurround  ) )
+      addSpace <- abs( min(x) )*0.05
+      #xPosFit <- seq( min(x)-addSpace, max(x)+addSpace, length.out=4 ) * multVectorGrid[ modelFitCounter, 1 ]
+      #yPosFit <- seq( min(y)-addSpace, max(y)+addSpace, length.out=4 ) * multVectorGrid[ modelFitCounter, 2 ]
+      xPosFit <- seq( -2, 2, length.out=4 ) * multVectorGrid[ modelFitCounter, 1 ]
+      yPosFit <- seq( -3, 3, length.out=4 ) * multVectorGrid[ modelFitCounter, 1 ]
+      sigmaArrayPositive <- seq( 0.25, 4, length.out=4 ) * multVectorGrid[ modelFitCounter, 3 ] #move sigma array positive as a function of the stimuli type, only big for eye model
+    }
     
     # here I select the portion of all the predictions that are going to be tested later
     #predictionGrid <- predictionGridGlobal[ limitsPredictionMatrix[modelFitCounter,1]:limitsPredictionMatrix[modelFitCounter,2], ]
     
-    addSpace <- abs( min(x) )*0.05
+    
     print('build prediction...')
-    xPosFit <- seq( min(x)-addSpace, max(x)+addSpace, length.out=2 ) * multVectorGrid[ modelFitCounter, 1 ]
-    yPosFit <- seq( min(y)-addSpace, max(y)+addSpace, length.out=2 ) * multVectorGrid[ modelFitCounter, 2 ]
-    sigmaArrayPositive <- seq( 0.25, 6, length.out=4 ) * multVectorGrid[ modelFitCounter, 3 ]
-
     if (flagSurround==1) { sigmaArrayNegative <- sigmaArrayPositive }
     if (flagSurround==0) { sigmaArrayNegative <- 1000 }
     predictionGridTemp <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, sigmaArrayNegative )
@@ -197,7 +213,7 @@ for ( modelFitCounter in 1:dim( multVectorGrid )[1] ) {
     generatePrediction <- function( indexPrediction, inputPredictionGrid ) {
       prfPar <- as.numeric( inputPredictionGrid[indexPrediction,] )
       
-      #prfPar <- c(-2,-4,1,1.1)
+      #prfPar <- c(3,3,1,1.2)
       a <- dnorm( x, prfPar[1], prfPar[3] )
       b <- dnorm( y, prfPar[2], prfPar[3] )
       #a <- normFun( x, prfPar[1], prfPar[3] )
@@ -228,21 +244,26 @@ for ( modelFitCounter in 1:dim( multVectorGrid )[1] ) {
     
     #### generate predictions in parallel ####
     library(parallel)
-    detectCores()
+    print( sprintf( 'n cores: %1.0f ...', detectCores()  ) )
     nCores <- 4
+    print( sprintf( 'running on %1.0f cores ...', nCores ) )
     cl <- makeCluster(nCores, type='FORK')
     storeTimePar <- system.time( tsPredictionTransposed <- parSapply(cl, 1:dim(predictionGrid)[1], generatePrediction, inputPredictionGrid=predictionGrid ) )
     stopCluster(cl)
     #storeTimeSerial <- system.time( sapply(1:100, generatePrediction, inputPredictionGrid=predictionGrid ) )
+    print( sprintf( 'time to generate predictions:' ) )
     print( storeTimePar )
     #print( storeTimeSerial )
     
     #### clean up ts predictions and prediction grid ####
     tsPrediction <- t( tsPredictionTransposed )
-    controlPredictions <- apply( tsPrediction, 1, sum ) != 0 
+    controlPredictionsNA <- apply( is.na(tsPrediction), 1, sum ) == 0 
+    controlPredictionsZero <- apply( tsPrediction, 1, sum ) != 0 
+    controlPredictions <- controlPredictionsNA & controlPredictionsZero
     tsPrediction <- tsPrediction[controlPredictions,]
     predictionGrid <- predictionGrid[controlPredictions,]
-    print( dim( predictionGrid ) )
+    print( sprintf( 'prediction grid, dimensions (rows X cols): %1.0f %1.0f ...', dim( predictionGrid )[1], dim( predictionGrid )[2] ) )
+    
     if (stimuliCondition==1) { 
       tsPrediction_eyeMovingStim <- tsPrediction
       predictionGrid_eyeMovingStim <- predictionGrid
@@ -262,7 +283,7 @@ for ( modelFitCounter in 1:dim( multVectorGrid )[1] ) {
   tsTransposedAll <- t( tsArray )
   selIdxVoxel <- which( indexArray == 1 )
   tsTransposedSel <- tsTransposedAll[,selIdxVoxel] #all selected time series
-  limitsSelVoxels <- round( seq(1,length(selIdxVoxel), length.out=100) ) #split between 50 (arbitrary number) chuncks for parallel fitting
+  limitsSelVoxels <- round( seq(1,length(selIdxVoxel), length.out=100) ) #split between 100 (arbitrary number) chuncks for parallel fitting
   limitsSelVoxels[1] <- 1
   limitsSelVoxels[ length(limitsSelVoxels) ] <- length(selIdxVoxel)
   limitsSelVoxelsMatrix <- array( 0, c( (length(limitsSelVoxels)-1) , 2 ) )
@@ -301,15 +322,15 @@ for ( modelFitCounter in 1:dim( multVectorGrid )[1] ) {
       ssRes <- apply( residualsSquared, 2, sum )
       r2 <- 1-(ssRes/ssTot) #r squares
       if (modelType==2 | modelType==3) { a <- rbind( a, rep(999,dim(a)[2]) ) }
-      eyeMovingArray <- rep( index_eyeMoving, length(r2) )
-      eyeFixStimArray <- rep( index_eyeFixStim_border, length(r2) )
+      eyeMovingArray <- rep( index_eyeMoving, length(r2) ) #the index is a scalar, it has to match with the vector r2 and vectors in a
+      eyeFixStimArray <- rep( index_eyeFixStim_border, length(r2) ) #the index is a scalar, it has to match with the vector r2 and vectors in a
       return( rbind( r2, a, eyeMovingArray, eyeFixStimArray, expectedTs ) ) #fields: r2, 
       # 3 beta coeffs (intercept slope _eyeMovingStim and slope _eyeFixStim_border), 
       # index predictor eye moving (da predictionIndexesMatrix), 
       # index predictor eyeFixStim_border (da predictionIndexesMatrix), 
       # expected ts
     }
-    outVoxelList <- lapply( 1:dim(predictionIndexesMatrix)[1], runLinMod  ) #apply the function for all predictions, get a list as output
+    outVoxelList <- lapply( 1:dim(predictionIndexesMatrix)[1], runLinMod  ) #apply the function for all predictions, on the selected voxels get a list as output
     outVoxel3D <- abind( outVoxelList, along=3 ) #reshape the list in a 3dmatrix with fields: output X voxels tested X predictions (from predictionIndexesMatrix)
     betaPositiveMatrix <- outVoxel3D[3,,] > 0 & outVoxel3D[4,,] > 0 #fields slope _eyeMovingStim and slope _eyeFixStim_border must be positive, output = matrix with voxelsXpredictions (from predictionIndexesMatrix)
     r2Matrix <- outVoxel3D[1,,]	# extracts r2, output = matrix with voxelsXpredictions (from predictionIndexesMatrix)
@@ -317,32 +338,34 @@ for ( modelFitCounter in 1:dim( multVectorGrid )[1] ) {
     index_eyeFixStim_borderMatrix <- outVoxel3D[6,,] # output = matrix with voxelsXpredictions (from predictionIndexesMatrix)
     extractData <- function(nSelectedVoxels) { #function that, for each voxel tested, looks for positive betas and extracts max(r2) and relevant parameters
       indexBetaZero <- betaPositiveMatrix[nSelectedVoxels,]
-      if ( sum(indexBetaZero)>0 ) {
+      if ( sum(indexBetaZero)>0 ) { #are there predictions where slope _eyeMovingStim and slope _eyeFixStim_border are both positive?
         indexBetaZero <- which( indexBetaZero )
         indexVarExp <- which.max( r2Matrix[nSelectedVoxels,indexBetaZero] )
         eyeMovingPredictorIndex <- index_eyeMovingMatrix[nSelectedVoxels, indexBetaZero[indexVarExp] ] #to be found in predictionGrid_eyeMovingStim
         eyeFixBorderPredictorIndex <- index_eyeFixStim_borderMatrix[nSelectedVoxels, indexBetaZero[indexVarExp] ] #to be found in predictionGrid_eyeFixStim_border
         prediction_eyeMoving <- predictionGrid_eyeMovingStim[eyeMovingPredictorIndex, ]
         prediction_eyeFixBorder <- predictionGrid_eyeFixStim_border[eyeFixBorderPredictorIndex, ]
-        return( as.numeric( c( prediction_eyeMoving, prediction_eyeFixBorder, outVoxel3D[,nSelectedVoxels,indexBetaZero[indexVarExp]] ) ) ) 
+        return( as.numeric( c( prediction_eyeMoving, prediction_eyeFixBorder, outVoxel3D[,nSelectedVoxels,indexBetaZero[indexVarExp]] ) ) ) #extract the prediction parameters for the selected voxel and the selected prediction
       }
       if ( sum(indexBetaZero)==0 ) {
         return( rep(0, dim(predictionGrid_eyeMovingStim)[2]+dim(predictionGrid_eyeFixStim_border)[2]+6+dim(selTsVoxel)[1] ) ) #no positive betas, return array of zeros, 6=r2, beta intercept, beta slope eyeMovingStim, beta slope eyeFixStim_border, index predictor eye moving (da predictionIndexesMatrix), index predictor eye fix border (da predictionIndexesMatrix)
       } 
     }	
-    outModel <- sapply( 1:dim(r2Matrix)[1], extractData )
+    outModel <- sapply( 1:dim(r2Matrix)[1], extractData ) #for every voxel, extract the data, output: model output in full X voxel selected
     return( outModel )
   }
-  #system.time( aaa <- lapply( 1:3, voxelModel ) ) #to test out comment otherwise
+  #system.time( aaa <- lapply( 1:1, voxelModel ) ) #to test out comment otherwise
   library(parallel)
-  detectCores()
+  print( sprintf( 'number of cores overall: %1.0f ...', detectCores() ) )
   nCores <- 4
+  print( sprintf( 'running on %1.0f cores ...', nCores ) )
   cl <- makeCluster(nCores, type='FORK')
   storeTimePar <- system.time( outModel <- parLapply(cl, runIndex, voxelModel ) )
   stopCluster(cl)
+  print( sprintf( 'time to generate predictions:' ) )
   print( storeTimePar )
   
-  for ( nElements in 1:length(outModel) ) { #this concatenates al outputs (49 loops ran in parallel, normally, into 1 matrix with dimensions: outputModel X nVoxel (global))
+  for ( nElements in 1:length(outModel) ) { #this concatenates al outputs (99 loops ran in parallel, normally, into 1 matrix with dimensions: outputModel X nVoxel (global))
     if (nElements==1) {
       outMatrix <- outModel[[nElements]]
     }
@@ -351,7 +374,7 @@ for ( modelFitCounter in 1:dim( multVectorGrid )[1] ) {
     }
   }
   
-  outModel <- outMatrix #this updates the results, taking r2 values (outModel[9,]) across the loops and taking the max
+  outModel <- outMatrix #this updates the results, taking r2 values (outModel[9,]) across the loops and taking the max (across all the voxels)
   if (modelFitCounter==1) { outModelLoop <- outModel }
   if (modelFitCounter>1) { 
     selectedCols <- outModel[9,] > outModelLoop[9,]
@@ -362,55 +385,78 @@ for ( modelFitCounter in 1:dim( multVectorGrid )[1] ) {
   
 }
 
+#######################
+# finish fitting surround and check predictors extraction
+# compute comarisons between predictors (simple anova test, very quick)
+#maybe add the focus size for eye moving??
+#######################
 
 #outModelLoop <- outMatrix
 storeAllPred <- t(outModelLoop[ seq(1,14), ]) #takes all the output except the expected time serie
 #### extract surround size #### fix this bor both stimuli tested and combined
-print('surround size...')
-if (flagSurround==1) { 
-  print('get FWHM...')
-  progress <- 0.05
-  FWHM <- array(0, c( dim(storeAllPred)[1], 2 ) )
-  xFWHM <- seq(-25,25,0.0125)
-  for (k in 1:dim(storeAllPred)[1]) {
-    
-    parameters <- storeAllPred[k,]
-    
-    if ( sum(parameters!=0) ) {
-      a <- dnorm( xFWHM, 0, parameters[3] )
-      b <- dnorm( xFWHM, 0, parameters[4] )
-      r <- a - b
+for (stimuliCondition in 1:2) { 
+  print('surround size...')
+  
+  if (stimuliCondition==1) {
+    flagSurround <- flagSurroundEyeMov
+    sigmaPosIndex <- 3
+    sigmaNegIndex <- 4
+    print( sprintf( 'stimuli: eye moving, extract surround? %1.0f ...', flagSurround  ) )
+  }
+  if (stimuliCondition==2) {
+    flagSurround <- flagSurroundStimBorder
+    sigmaPosIndex <- 7
+    sigmaNegIndex <- 8
+    print( sprintf( 'stimuli: eye fix border, extract surround? %1.0f ...', flagSurround  ) )
+  }
+  
+  if (flagSurround==1) { 
+    print('get FWHM...')
+    progress <- 0.05
+    FWHM <- array(0, c( dim(storeAllPred)[1], 2 ) )
+    xFWHM <- seq(-25,25,0.0125)
+    for (k in 1:dim(storeAllPred)[1]) {
       
-      maxIdx <- which.max(r)
-      rHalf <- r[ maxIdx:length(xFWHM) ]
-      xHalf <- xFWHM[ maxIdx:length(xFWHM) ]
-      halfMax <- max(rHalf)/2
-      xMid <- xHalf[ rHalf<=halfMax  ]  
-      FWHMcenter <- min( xMid )*2 
-      rMin <- which.min(rHalf)
-      FWHMsurround <- xHalf[rMin[1]]*2
-      FWHM[k,] <- c(FWHMcenter,FWHMsurround)
-    }
-    
-    if (k>dim(storeAllPred)[1]*progress) {
-      cat(paste('*',""))
-      progress <- progress + 0.05
+      parameters <- storeAllPred[k,]
+      
+      if ( sum(parameters!=0) ) {
+        a <- dnorm( xFWHM, 0, parameters[sigmaPosIndex] )
+        b <- dnorm( xFWHM, 0, parameters[sigmaNegIndex] )
+        r <- a - b
+        
+        maxIdx <- which.max(r)
+        rHalf <- r[ maxIdx:length(xFWHM) ]
+        xHalf <- xFWHM[ maxIdx:length(xFWHM) ]
+        halfMax <- max(rHalf)/2
+        xMid <- xHalf[ rHalf<=halfMax  ]  
+        FWHMcenter <- min( xMid )*2 
+        rMin <- which.min(rHalf)
+        FWHMsurround <- xHalf[rMin[1]]*2
+        FWHM[k,] <- c(FWHMcenter,FWHMsurround)
+      }
+      if (k>dim(storeAllPred)[1]*progress) {
+        cat(paste('*',""))
+        progress <- progress + 0.05
+      }
     }
   }
-}
-if (flagSurround==0) { 
-  FWHM <- array(0, c( dim(storeAllPred)[1], 2 ) )
-  FWHM[,1] <- storeAllPred[,3]
-  FWHM[,2] <- 1000
+  if (flagSurround==0) { 
+    FWHM <- array(0, c( dim(storeAllPred)[1], 2 ) )
+    FWHM[,1] <- storeAllPred[,sigmaPosIndex]
+    FWHM[,2] <- 1000
+  }
+  if (stimuliCondition==1) { FWHMEyeMovement <- FWHM }
+  if (stimuliCondition==2) { FWHMEyeFixBorder <- FWHM }
 }
 
 storeAllExpectedTs <- array( 0, dim(tsTransposedAll) )
 storeAllExpectedTs[,selIdxVoxel] <- outModelLoop[ 15:dim(outModelLoop)[1], ]	
-storeAllPredOut <- array( 0, c(18, dim(tsTransposedAll)[2] ) )
+storeAllPredOut <- array( 0, c(22, dim(tsTransposedAll)[2] ) )
 
 print('save linear step...')
-polCoords <- cart2pol( storeAllPred[,c(2,1)] )
-storeAllPredOut[,selIdxVoxel] <- t( cbind( storeAllPred, polCoords, FWHM ) )
+polCoordsEyeMoving <- cart2pol( storeAllPred[,c(2,1)] )
+polCoordsEyeFixBorder <- cart2pol( storeAllPred[,c(6,5)] )
+storeAllPredOut[,selIdxVoxel] <- t( cbind( storeAllPred, polCoordsEyeMoving, FWHMEyeMovement, polCoordsEyeFixBorder, FWHMEyeFixBorder ) )
 fileTs <- sprintf('%s_PredixtedTs.nii.gz',outSuffix) 
 fileParams <- sprintf('%s_params.nii.gz',outSuffix)
 
@@ -436,7 +482,7 @@ instr <- sprintf( '3dresample -orient %s -prefix %s -inset __tt_parameters.nii.g
 system( instr)
 system( 'rm __tt_parameters.nii.gz' )
 
-labels <- c('x-Pos','y-Pos','sigmaPos','sigmaNeg','x-PosFix','y-PosFix','sigmaPosFix','sigmaNegFix','varExp','intercept','slopeEyeMoving','slopeEyeFix','indexEyeMoving','indexEyeFix','theta','radius','fwhmCenter','surroundSize')
+labels <- c('x-PosEyeMov','y-PosEyeMov','sigmaPosEyeMov','sigmaNegEyeMov','x-PosEyeFix','y-PosEyeFix','sigmaPosEyeFix','sigmaNegEyeFix','varExp','intercept','slopeEyeMoving','slopeEyeFix','indexEyeMoving','indexEyeFix','thetaEyeMoving','radiusEyeMoving','fwhmCenterEyeMoving','surroundSizeEyeMoving','thetaEyeFix','radiusEyeFix','fwhmCenterEyeFix','surroundSizeEyeFix')
 for (k in 1:length(labels)) {
   instr <- sprintf('3drefit -sublabel %1.0f %s %s', round(k-1,0), labels[k], fileParams )
   print( instr )
