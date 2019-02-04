@@ -14,7 +14,8 @@ print( args )
 #setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
 
 
-#args <- c('meanTs_bars_res_mask.nii', 'meanTs_bars_res.nii', 'output_test_delme_bars','/home/alessiof/abin', '1', '1','1','0.166','4')
+#args <- c('meanTs_bars_res_mask.nii', 'meanTs_bars_res.nii', 'output_test_delme_bars','/home/alessiof/abin', '1', '1','1','0.166','3')
+#args <- c('meanTs_eyeMovement_topUp_res_mask.nii', 'meanTs_eyeMovement_topUp_res.nii', 'output_test_delme','/home/alessiof/abin', '1', '1','1','0.166','1','border_fit_parallel_nohrf_params.nii.gz','border_fit_parallel_nohrf_PredixtedTs.nii.gz')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
@@ -29,9 +30,6 @@ source( sprintf('%s/scaleData.R', generalPurposeDir) )
 #instr <- '3dresample -dxyz 4 4 4 -orient RAI -rmode Lin -prefix eyeTs_res.nii.gz -inset meanTsEye_topUp.nii'
 #system( instr )
 
-
-
-
 source( sprintf('%s/AFNIio.R', afniInstallDir ) )
 library( pracma )
 library( abind )
@@ -44,9 +42,11 @@ outSuffix <- args[3]
 flagSurround <- as.numeric( args[5] )
 fitIntercept <- as.numeric( args[7] )
 polortArg <- as.numeric( args[6] )
-samplingTime <- as.numeric( args[8] )
-stimType <- as.numeric( args[9] )
+samplingTime <- 0.166#as.numeric( args[8] )
+stimType <- as.numeric( args[8] )
 fineFit <- 0
+paramsFile <- args[9]
+predictedTsFile <- args[10]
 
 # load the data
 # get orientation
@@ -79,6 +79,11 @@ system( instr)
 meanEpi <- read.AFNI( '_ttt_mask.nii.gz' )
 system( 'rm _ttt_mask.nii.gz' )
 
+# already fitted model
+tsPredicted <- read.AFNI( predictedTsFile )
+tsArrayPredicted <- array( tsPredicted$brk, c( prod( dim( tsPredicted$brk )[1:3] ), dim(tsPredicted$brk)[4] ) )
+paramsPredicted <- read.AFNI( paramsFile )
+paramsArrayPredicted <- array( paramsPredicted$brk, c( prod( dim( paramsPredicted$brk )[1:3] ), dim(paramsPredicted$brk)[4] ) )
 
 # load stimuli definition
 print('get prfStimuli.RData...')
@@ -114,6 +119,11 @@ if (stimType==5) {
   setwd(mainDir)
   stimMat <- aperm( array( arrayStim, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
 }
+if (stimType==6) { 
+  arrayStim <- scan( 'eyeMovingStim.txt' )
+  setwd(mainDir)
+  stimMat <- aperm( array( arrayStim, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
+}
 
 
 #stimMat <- aperm( array( arrayStim, c(128,620,96) ), c( 1, 3, 2 ) )
@@ -130,7 +140,9 @@ if (stimType==5) {
 
 #stimMatFlip <- stimMat[ ,dim(stimMat)[2]:1, ]
 stimMatFlip <- aperm( stimMat[ dim(stimMat)[1]:1,, ], c(2,1,3) )
-
+if (stimType==6) { 
+  stimMatFlip <- stimMatFlip[ dim(stimMatFlip)[1]:1,dim(stimMatFlip)[2]:1, ]
+}
 
 x11( width=3, height=3 )
 for ( snap in 1:dim(stimMat)[3] ) {
@@ -142,28 +154,23 @@ y <- seq(-6,6,length.out = dim(stimSeq)[2] )
 
 #### get the standard hrf ####
 #print('get hrf...')
-#hrf <- canonicalHRF( seq(0,30,samplingTime), param=list(a1=9, a2=12, b1=0.9, b2=0.9, c=0.35), verbose=FALSE )
+#hrf <- canonicalHRF( seq(0,30,samplingTime), param=list(a1=9, a2=15, b1=0.9, b2=0.9, c=0.35), verbose=FALSE )
 #plot(hrf~seq(0,30,samplingTime))
 
 #this part of the code builds a matrix with all the possible prediction tested, for both models at this stage
 addSpace <- abs( min(x) )*0.1
 print('build prediction...')
-#xPosFit <- seq( min(x)+addSpace, max(x)-addSpace, length.out=8 )
-#yPosFit <- seq( min(y)+addSpace, max(y)-addSpace, length.out=8 )
-xPosFit <- seq( -5, 5, length.out=10 )
-yPosFit <- seq( -4, 4, length.out=10 )
-
-sigmaArrayPositive <- seq( 0.25, 6, length.out=10 )
+xPosFit <- seq( min(x)+addSpace, max(x)-addSpace, length.out=6 )
+yPosFit <- seq( min(y)+addSpace, max(y)-addSpace, length.out=6 )
+sigmaArrayPositive <- seq( 0.25, 6, length.out=6 )
 if (flagSurround==1) { sigmaArrayNegative <- sigmaArrayPositive }
 if (flagSurround==0) { sigmaArrayNegative <- 1000 }
-par_hrf_a1 <- 6#seq( 6, 9, length.out=3 )
-par_hrf_a2 <- 12#seq( 12, 15, length.out=3 )
-predictionGridTemp <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, sigmaArrayNegative, par_hrf_a1, par_hrf_a2 )
+predictionGridTemp <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, sigmaArrayNegative )
 keepPredictionIdx <- predictionGridTemp[ ,3] < predictionGridTemp[ ,4]
 predictionGridGlobal <- predictionGridTemp[ keepPredictionIdx, ]
 
 # this part builds a matrix with the starting and ending prediction index to fit for each loop in the next for loop
-limitsPrediction <- round( seq(1,dim(predictionGridGlobal)[1], length.out=100) ) #split between 100 (arbitrary number) chuncks for iterative fitting
+limitsPrediction <- round( seq(1,dim(predictionGridGlobal)[1], length.out=50) ) #split between 100 (arbitrary number) chuncks for iterative fitting
 limitsPrediction[1] <- 1
 limitsPrediction[ length(limitsPrediction) ] <- dim(predictionGridGlobal)[1]
 limitsPredictionMatrix <- array( 0, c( (length(limitsPrediction)-1) , 2 ) )
@@ -172,42 +179,42 @@ limitsPredictionMatrix[,2] <- limitsPrediction[2:(length(limitsPrediction))]
 limitsPredictionMatrix[2:dim(limitsPredictionMatrix)[1],1] <- limitsPredictionMatrix[2:dim(limitsPredictionMatrix)[1],1] + 1 #matrix with starting ts and ending ts for each chunk to be fitted
 runIndexPredictions <- seq( 1:dim(limitsPredictionMatrix)[1] )
 
-
-#multVector <- c(1)#c(0.8, 0.9, 1, 1.1, 1.2)
+#fit visual respone and hrf
 #modelFitCounter <- 1
 for (modelFitCounter in 1:length(runIndexPredictions)) {
   
   print( sprintf( 'iteration %1.0f of %1.0f, start...', modelFitCounter, length(runIndexPredictions)  ) )
-  
   # here I select the portion of all the predictions that are going to be tested later
+  # I need to work on a voxel by voxel basis
   predictionGrid <- predictionGridGlobal[ limitsPredictionMatrix[modelFitCounter,1]:limitsPredictionMatrix[modelFitCounter,2], ]
-  
-  print( sprintf( 'generate predictions in iteration %1.0f of %1.0f ...', modelFitCounter, length(runIndexPredictions)  ) )
-  
-  #### prepare to generate the predictions ####
-  # addSpace <- abs( min(x) )*0.5
-  # print('build prediction...')
-  # xPosFit <- seq( min(x)-addSpace, max(x)+addSpace, length.out=6 ) * multVector[ modelFitCounter ]
-  # yPosFit <- seq( min(y)-addSpace, max(y)+addSpace, length.out=6 ) * multVector[ modelFitCounter ]
-  # sigmaArrayPositive <- seq( 0.25, 7, length.out=5 ) * multVector[ modelFitCounter ]
-  # 
-  # if (flagSurround==1) { sigmaArrayNegative <- sigmaArrayPositive }
-  # if (flagSurround==0) { sigmaArrayNegative <- 1000 }
-  # predictionGridTemp <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, sigmaArrayNegative )
-  # keepPredictionIdx <- predictionGridTemp[ ,3] < predictionGridTemp[ ,4]
-  # predictionGrid <- predictionGridTemp[ keepPredictionIdx, ]
-  
-  #tsPrediction <- array( 0, c( dim(predictionGrid)[1], dim( ts$brk )[4] ) )
+
+  # define stimuli and timing
   stimSeqMat <- array( stimSeq, c( length(x)*length(y), dim(stimSeq)[3] ) )
   incrementalCounter <- dim(predictionGrid)[1] * 0.05
   timeStimuli <- seq( 0, dim(stimSeq)[3]*samplingTime, length.out = dim(stimSeq)[3] )
   mriTime <- seq( 0, dim(stimSeq)[3]*samplingTime, length.out = dim(ts$brk)[4] )
   
-  #### function to generate the predictions ####
-  generatePrediction <- function( indexPrediction, inputPredictionGrid ) {
+  ## linear fitting in parallel ##
+  print( sprintf( 'linear fitting in iteration %1.0f of %1.0f ...', modelFitCounter, length(runIndexPredictions)  ) )
+  indexVol <- meanEpi$brk[,,,1]
+  indexArray <- array( indexVol, prod( dim( indexVol ) ) )
+  r2ArraySelection <- paramsArrayPredicted[,7]
+  hrf_a1Selection <- paramsArrayPredicted[,5]
+  hrf_a2Selection <- paramsArrayPredicted[,6]
+  tsTransposedAll <- t( tsArray )
+  predictionTransposedAll <- t( tsArrayPredicted )
+  selIdxVoxel <- which( indexArray == 1 ) # selection based on intensity and variance explained
+  tsTransposedSel <- tsTransposedAll[,selIdxVoxel] #all selected time series
+  tsPredictionTransposedSel <- predictionTransposedAll[,selIdxVoxel] #all selected predictions
+  a1Selected <- hrf_a1Selection[ selIdxVoxel ]
+  a2Selected <- hrf_a2Selection[ selIdxVoxel ]
+  
+  print( sprintf( 'generate predictions in iteration %1.0f of %1.0f ...', modelFitCounter, length(runIndexPredictions)  ) )
+  ### function to generate the predictions for each single voxels ###
+  generatePrediction <- function( indexPrediction, inputPredictionGrid, a1_par, a2_par ) {
     prfPar <- as.numeric( inputPredictionGrid[indexPrediction,] )
     
-    hrf <- canonicalHRF( seq(0,30,samplingTime), param=list(a1=prfPar[5], a2=prfPar[6], b1=0.9, b2=0.9, c=0.35), verbose=FALSE )
+    hrf <- canonicalHRF( seq(0,30,samplingTime), param=list(a1=a1_par, a2=a2_par, b1=0.9, b2=0.9, c=0.35), verbose=FALSE )
     #prfPar <- c(-2,-4,1,1.1)
     a <- dnorm( x, prfPar[1], prfPar[3] )
     b <- dnorm( y, prfPar[2], prfPar[3] )
@@ -236,96 +243,80 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
     #return( round( tsPredictionMriInterp / max( tsPredictionMriInterp ), 5 ) ) #### scale predictions to 1 and round them to 5 digits
     return( round( scaleData( tsPredictionMriInterp, 1, 0 ), 5 ) ) #### scale predictions betweeo 0 and 1 and round them to 5 digits
   }
+  #generate all the predictions for a single voxels (needs to be voxel specific for the hrf parameters)
+  #generatePrediction( predictionGrid, a1Selected[1], a2Selected[1] )
+  # a1_par and a2_par are now fixed (6 and 12, respectively, for timing purposes)
+  singleVoxel_predTs <- sapply( 1:dim(predictionGrid)[1], generatePrediction, inputPredictionGrid=predictionGrid, a1_par=a1Selected[1], a2_par=a2Selected[1] )
   
-  #### generate predictions in parallel ####
-  library(parallel)
-  detectCores()
-  nCores <- 4
-  cl <- makeCluster(nCores, type='FORK')
-  storeTimePar <- system.time( tsPredictionTransposed <- parSapply(cl, 1:dim(predictionGrid)[1], generatePrediction, inputPredictionGrid=predictionGrid ) )
-  stopCluster(cl)
-  #storeTimeSerial <- system.time( sapply(1:100, generatePrediction, inputPredictionGrid=predictionGrid ) )
-  print( storeTimePar )
-  #print( storeTimeSerial )
-  
-  #### clean up ts predictions and prediction grid ####
-  tsPrediction <- t( tsPredictionTransposed )
-  controlPredictions <- apply( tsPrediction, 1, sum ) != 0 
-  tsPrediction <- tsPrediction[controlPredictions,]
-  predictionGrid <- predictionGrid[controlPredictions,]
-  print( dim( predictionGrid ) )
-  
-  
-  #### linear fitting in parallel ####
-  print( sprintf( 'linear fitting in iteration %1.0f of %1.0f ...', modelFitCounter, length(runIndexPredictions)  ) )
-  indexVol <- meanEpi$brk[,,,1]
-  indexArray <- array( indexVol, prod( dim( indexVol ) ) )
-  tsTransposedAll <- t( tsArray )
-  selIdxVoxel <- which( indexArray == 1 )
-  tsTransposedSel <- tsTransposedAll[,selIdxVoxel] #all selected time series
-  limitsSelVoxels <- round( seq(1,length(selIdxVoxel), length.out=80) ) #split between 100 (arbitrary number) chuncks for parallel fitting
-  limitsSelVoxels[1] <- 1
-  limitsSelVoxels[ length(limitsSelVoxels) ] <- length(selIdxVoxel)
-  limitsSelVoxelsMatrix <- array( 0, c( (length(limitsSelVoxels)-1) , 2 ) )
-  limitsSelVoxelsMatrix[,1] <- limitsSelVoxels[1:(length(limitsSelVoxels)-1)]
-  limitsSelVoxelsMatrix[,2] <- limitsSelVoxels[2:(length(limitsSelVoxels))]
-  limitsSelVoxelsMatrix[2:dim(limitsSelVoxelsMatrix)[1],1] <- limitsSelVoxelsMatrix[2:dim(limitsSelVoxelsMatrix)[1],1] + 1 #matrix with starting ts and ending ts for each chunk
-  runIndex <- seq( 1:dim(limitsSelVoxelsMatrix)[1] )
-  voxelModel <- function(passIdx) { #this fits the model on serveral voxels at a time, see limitsSelVoxelsMatrix
-    selTsVoxel <- tsTransposedSel[ , limitsSelVoxelsMatrix[passIdx,1]:limitsSelVoxelsMatrix[passIdx,2] ]
-    selTsVoxelMean <- apply( selTsVoxel, 2, mean ) #voxels average
-    ssTot <- apply( (selTsVoxel-selTsVoxelMean)^2, 2, sum) #voxels total sum of squares
-    runLinMod <- function(nIndex) { #get best fit for every prediction (nIndex = counter of predictions)
-      dMat <- cbind( tsPrediction[nIndex,] )      
-      dMat01 <- cbind( rep(1,length(dMat)), dMat ) #column of ones and column of predictor
-      a <- solve( crossprod(dMat01,dMat01), crossprod(dMat01,selTsVoxel) ) #beta coefficients (2: intercept and slope)
-      #a <- solve( qr(dMat01), selTsVoxel)
+  voxelModel <- function( voxelIdx ) { #this fits the model on each selected voxel at a time
+    selTsVoxel <- tsTransposedSel[,voxelIdx]
+    selTsVoxelMean <- mean( selTsVoxel ) #voxel average
+    ssTot <- sum( (selTsVoxel-selTsVoxelMean)^2 ) #voxels total sum of squares
+    visual_predicted <- tsPredictionTransposedSel[,voxelIdx]
+    #run the following to visualize the visual prediction, for testing purposes:
+    #plot( selTsVoxel ); lines( visual_predicted, col='red' ); summary(lm(selTsVoxel~visual_predicted))$r.squared; r2ArraySelection[selIdxVoxel[voxelIdx]] #these last two numbers  must be (almost) idetical
+    #summary(lm(selTsVoxel~visual_predicted)) #why is the parameter always 1?? because I have already estimated it in the previous fit, and this represents the best predicted ts, so the estimate will be very very close to 1 
+    
+    # function to run the model with the visual prediction + the gain field pred
+    #to test: nIndex <- 1; visualPrediction <- visual_predicted
+    runLinMod <- function(nIndex, visualPrediction) { #get best fit for every prediction (nIndex = counter of predictions)
+      dMat <- cbind( singleVoxel_predTs[,nIndex], visualPrediction )      
+      dMat01 <- cbind( rep(1,dim(dMat)[1]), dMat ) #column of ones and column of predictor
+      a <- solve( crossprod(dMat01,dMat01), crossprod(dMat01,selTsVoxel) ) #beta coefficients (3: intercept and slope gain, slope visualPred)
       expectedTs <- crossprod( t(dMat01), a ) #expected ts
+      #run the following to visualize the visual prediction, and the new visual + gain prediction for testing purposes:
+      #plot( selTsVoxel ); lines( visual_predicted, col='red' ); lines( expectedTs, col='blue' );
+      
       residualsSquared <- ( selTsVoxel - expectedTs )^2 
-      ssRes <- apply( residualsSquared, 2, sum )
+      ssRes <- sum( residualsSquared )
       r2 <- 1-(ssRes/ssTot) #r squares
       return( rbind( r2, a, expectedTs ) )
     }
-    outVoxelList <- lapply( 1:dim(tsPrediction)[1], runLinMod  ) #apply the function for all predictions, get a list as output
-    outVoxel3D <- abind( outVoxelList, along=3 ) #reshape the list in a 3dmatrix with fields: output X voxels tested X predictions
-    betaPositiveMatrix <- outVoxel3D[3,,] > 0
-    r2Matrix <- outVoxel3D[1,,]	
-    extractData <- function(nSelectedVoxels) {
-      indexBetaZero <- betaPositiveMatrix[nSelectedVoxels,]
-      if ( sum(indexBetaZero)>0 ) {
-        indexBetaZero <- which( indexBetaZero )
-        indexVarExp <- which.max( r2Matrix[nSelectedVoxels,indexBetaZero] )
-        return( as.numeric( c( predictionGrid[indexBetaZero[indexVarExp],], outVoxel3D[,nSelectedVoxels,indexBetaZero[indexVarExp]] ) ) ) 
-      }
-      if ( sum(indexBetaZero)==0 ) {
-        return( rep(0, dim(predictionGrid)[2]+3+dim(selTsVoxel)[1] ) ) #no positive betas, return array of zeros, 3=r2,beta intercept, beta slope
-      }
-    }	
-    outModel <- sapply( 1:dim(r2Matrix)[1], extractData )
-    return( outModel )
+    
+    # run the model on the singlevoxels for each gain field prediction
+    singleVoxel_output <- sapply( 1:dim(singleVoxel_predTs)[2], runLinMod, visualPrediction=visual_predicted )
+
+    #select positive betas for both visual and gain field predictors
+    selectedBetas <- singleVoxel_output[3,] > 0 & singleVoxel_output[4,] > 0
+    
+    #select highest var exp:
+    selectedBetasIndex <- which( selectedBetas )
+    indexVarExp <- which.max( singleVoxel_output[1,selectedBetasIndex]  )
+    indexSelectedPrediction <- selectedBetasIndex[indexVarExp]
+    
+    if ( sum( selectedBetas )>0 ) {
+      newTs <- singleVoxel_output[5:dim(singleVoxel_output)[1],indexSelectedPrediction]
+      #modVis <- lm( selTsVoxel~visual_predicted )
+      #modVisGain <- lm( selTsVoxel~visual_predicted+newTs )
+      #modTest <- anova(modVis,modVisGain)
+      modTest <- list()
+      modTest$F[2] <- 0
+      modTest$`Pr(>F)`[2] <- 0
+      singleVoxel_selectedOutput <- c( as.numeric( predictionGrid[indexSelectedPrediction,] ),modTest$F[2],modTest$`Pr(>F)`[2], singleVoxel_output[,indexSelectedPrediction] ) #array: 4 prediction, f test comparison, p value comparison,  r2, 3 beta coefficients (intercept and slope gain, slope visualPred) and the time series itself
+    }
+    if ( sum( selectedBetas )==0 ) {
+      singleVoxel_selectedOutput <- rep( 0, dim(predictionGrid)[2]+2+dim(singleVoxel_output)[1] )
+    }
+    #run the following to visualize the visual prediction, and the best visual + gain prediction for testing purposes:
+    #plot( selTsVoxel ); lines( visual_predicted, col='red' ); lines( singleVoxel_selectedOutput[9:length(singleVoxel_selectedOutput)], col='blue' );
+    
+    return( singleVoxel_selectedOutput )
   }
-  #system.time( aaa <- lapply( 1:2, voxelModel ) )
+  
+  #system.time( aaa <- sapply( 1:10, voxelModel ) )
+  print( sprintf( 'fitting in iteration %1.0f of %1.0f ...', modelFitCounter, length(runIndexPredictions)  ) )
   library(parallel)
   detectCores()
   nCores <- 4
   cl <- makeCluster(nCores, type='FORK')
-  storeTimePar <- system.time( outModel <- parLapply(cl, runIndex, voxelModel ) )
+  runIndexVoxel <- 1:length(selIdxVoxel)
+  storeTimePar <- system.time( outModel <- parSapply(cl, runIndexVoxel, voxelModel ) )
   stopCluster(cl)
   print( storeTimePar )
   
-  for ( nElements in 1:length(outModel) ) {
-    if (nElements==1) {
-      outMatrix <- outModel[[nElements]]
-    }
-    if (nElements>1) {
-      outMatrix <- cbind( outMatrix, outModel[[nElements]] )
-    }
-  }
-  
-  outModel <- outMatrix
   if (modelFitCounter==1) { outModelLoop <- outModel }
   if (modelFitCounter>1) { 
-    selectedCols <- outModel[7,] > outModelLoop[7,] #where r2 is store (after 4 prf parameters and 2 hrf parameters)
+    selectedCols <- outModel[7,] > outModelLoop[7,] #where r2 is store (after 6 grid parameters, x,y,sigmaPos,sigmaNeg, f test comparison and p value comparison)
     if ( sum( selectedCols ) > 0 ) {
       outModelLoop[,selectedCols] <- outModel[,selectedCols] 
     }
@@ -333,9 +324,13 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
   
 }
 
+# add a eye fovea parameter???
+
 #outModelLoop <- outMatrix
-storeAllPred <- t(outModelLoop[ seq(1,9), ])
-#### extract surround size ####
+storeAllPred <- t(outModelLoop[ seq(1,10), ])
+
+## extract surround size ##
+
 print('surround size...')
 if (flagSurround==1) { 
   print('get FWHM...')
@@ -374,13 +369,16 @@ if (flagSurround==0) {
   FWHM[,2] <- 1000
 }
 
+#
 storeAllExpectedTs <- array( 0, dim(tsTransposedAll) )
-storeAllExpectedTs[,selIdxVoxel] <- outModelLoop[ 10:dim(outModelLoop)[1], ]	
-storeAllPredOut <- array( 0, c(13, dim(tsTransposedAll)[2] ) )
+storeAllExpectedTs[,selIdxVoxel] <- outModelLoop[ 11:dim(outModelLoop)[1], ]	
+storeAllPredOut <- array( 0, c(14+dim(paramsArrayPredicted)[2], dim(tsTransposedAll)[2] ) )
+
 
 print('save linear step...')
 polCoords <- cart2pol( storeAllPred[,c(2,1)] ) 
-storeAllPredOut[,selIdxVoxel] <- t( cbind( storeAllPred, polCoords, FWHM ) )
+storeAllPredOut[1:14,selIdxVoxel] <- t( cbind( storeAllPred, polCoords, FWHM ) )
+storeAllPredOut[15:dim(storeAllPredOut)[1],selIdxVoxel] <- t( paramsArrayPredicted[ selIdxVoxel,  ] )
 fileTs <- sprintf('%s_PredixtedTs.nii.gz',outSuffix) 
 fileParams <- sprintf('%s_params.nii.gz',outSuffix)
 
@@ -406,7 +404,8 @@ instr <- sprintf( '3dresample -orient %s -prefix %s -inset __tt_parameters.nii.g
 system( instr)
 system( 'rm __tt_parameters.nii.gz' )
 
-labels <- c('x-Pos','y-Pos','sigmaPos','sigmaNeg','hrf_a1','hrf_a2','varExp','intercept','slope','theta','radius','fwhmCenter','surroundSize')
+labels <- c('x-Pos-eye','y-Pos-eye','sigmaPos-eye','sigmaNeg-eye','f-test','pval-f-test','varExp-eye','intercept-eye','slope_eye','slope_vis','theta-eye','radius-eye','fwhmCenter-eye','surroundSize-eye',
+            'x-Pos-vis','y-Pos-vis','sigmaPos-vis','sigmaNeg-vis','hrf_a1-vis','hrf_a2-vis','varExp-vis','intercept-vis','slope-only-vis','theta-vis','radius-vis','fwhmCenter-vis','surroundSize-vis')
 for (k in 1:length(labels)) {
   instr <- sprintf('3drefit -sublabel %1.0f %s %s', round(k-1,0), labels[k], fileParams )
   print( instr )

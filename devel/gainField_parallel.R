@@ -10,11 +10,11 @@ print( args )
 
 #rm(list=ls())
 #setwd('/analyse/Project0226/GN18NE278_HNA10_FEF_19102018_nifti')
-#setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
+setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
 #setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
 
 
-#args <- c('meanTs_bars_res_mask.nii', 'meanTs_bars_res.nii', 'output_test_delme_bars','/home/alessiof/abin', '1', '1','1','0.166','4')
+args <- c('meanTs_eyeMovement_topUp_res_mask.nii', 'meanTs_eyeMovement_topUp_res.nii', 'output_test_delme_bars','/home/alessiof/abin', '1', '1','1','0.166','2')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )

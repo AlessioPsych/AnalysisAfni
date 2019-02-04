@@ -94,6 +94,7 @@ stimMat_eyeMovingStim <- aperm( array( arrayStim_eyeMovingStim, c(200,1510,150) 
 
 ## uncomment these
 arrayStim_eyeFixStim_border <- scan( 'eyeFixStim_border.txt' )
+#arrayStim_eyeFixStim_border <- scan( 'eyeFixStim_border_disappear.txt' )
 #arrayStim_eyeFixStim_border <- scan( 'eyeFixStim.txt' )
 stimMat_eyeFixStim_border <- aperm( array( arrayStim_eyeFixStim_border, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
 setwd(mainDir)
@@ -132,8 +133,8 @@ for ( snap in 1:dim(stimMat_eyeFixStim_border)[3] ) {
 
 stimSeq_eyeMovingStim <- stimMatFlip_eyeMovingStim
 stimSeq_eyeFixStim_border <- stimMatFlip_eyeFixStim_border
-x <- seq(-6,6,length.out = dim(stimSeq_eyeMovingStim)[1] )
-y <- seq(-8,8,length.out = dim(stimSeq_eyeMovingStim)[2] )
+x <- seq(-8,8,length.out = dim(stimSeq_eyeMovingStim)[1] )
+y <- seq(-6,6,length.out = dim(stimSeq_eyeMovingStim)[2] )
 rm( list=c('stimMatFlip_eyeFixStim_border','stimMatFlip_eyeMovingStim','stimMat_eyeFixStim_border','stimMat_eyeMovingStim','arrayStim_eyeFixStim_border','arrayStim_eyeMovingStim') )
 
 #### get the standard hrf ####
@@ -163,7 +164,7 @@ hrf <- canonicalHRF( seq(0,30,samplingTime) )
 # runIndexPredictions <- seq( 1:dim(limitsPredictionMatrix)[1] )
 
 modelType <- stimType
-multVector <- c(0.5,1)#c(0.1, 0.5, 1, 1.25)
+multVector <- c(0.5,0.75,0.9,1)#c(0.1, 0.5, 1, 1.25)
 multVectorGrid <- expand.grid( multVector, multVector, multVector )
 #modelFitCounter <- 3
 for ( modelFitCounter in 1:dim( multVectorGrid )[1] ) {
@@ -187,9 +188,9 @@ for ( modelFitCounter in 1:dim( multVectorGrid )[1] ) {
       addSpace <- abs( min(x) )*0.05
       #xPosFit <- seq( min(x)-addSpace, max(x)+addSpace, length.out=4 ) * multVectorGrid[ modelFitCounter, 1 ]
       #yPosFit <- seq( min(y)-addSpace, max(y)+addSpace, length.out=4 ) * multVectorGrid[ modelFitCounter, 2 ]
-      xPosFit <- seq( -2, 2, length.out=4 ) * multVectorGrid[ modelFitCounter, 1 ]
-      yPosFit <- seq( -3, 3, length.out=4 ) * multVectorGrid[ modelFitCounter, 1 ]
-      sigmaArrayPositive <- seq( 0.25, 4, length.out=4 ) * multVectorGrid[ modelFitCounter, 3 ] #move sigma array positive as a function of the stimuli type, only big for eye model
+      xPosFit <- seq( -4, 4, length.out=3 ) * multVectorGrid[ modelFitCounter, 1 ]
+      yPosFit <- seq( -4, 4, length.out=3 ) * multVectorGrid[ modelFitCounter, 2 ]
+      sigmaArrayPositive <- seq( 0.25, 4, length.out=3 ) * multVectorGrid[ modelFitCounter, 3 ] #move sigma array positive as a function of the stimuli type, only big for eye model
     }
     
     # here I select the portion of all the predictions that are going to be tested later
