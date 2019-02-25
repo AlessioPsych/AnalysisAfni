@@ -9,7 +9,6 @@ SAMPLINGTIME=$6
 STIMTYPE=$7
 FITSURROUND=$8
 
-
 if [ -z "$1" ]
 then
 echo 'computes 2d prf fit on different stimuli'
@@ -28,4 +27,4 @@ echo 'library( parallel ) library(neuRosim)'
 exit 1
 fi
 
-Rscript $AFNI_TOOLBOXDIR/devel/twoDimensionalFit_Glasgow_eyeFix_gain_parallel_multPar.R $MASKFILE $TSFILE $OUTPUTNAME $FLAGFINEFIT $POLORT $SAMPLINGTIME $STIMTYPE $FITSURROUND
+Rscript $AFNI_TOOLBOXDIR/devel/twoDimensionalFit_Glasgow_eyeFix_gain_parallel_plane.R $MASKFILE $TSFILE $OUTPUTNAME $FLAGFINEFIT $POLORT $SAMPLINGTIME $STIMTYPE $FITSURROUND

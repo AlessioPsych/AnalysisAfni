@@ -9,7 +9,7 @@ print( args )
 #setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
 
 
-#args <- c('meanTs_bars_topUp_res_mask.nii', 'meanTs_bars_topUp_res.nii', 'output_full_test_firstStage_hrf', '0', '1','0.166','4','0')
+#args <- c('meanTs_bars_topUp_res_mask.nii', 'meanTs_bars_topUp_res.nii', 'output_del', '3', '1','0.166','4','1')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
@@ -41,6 +41,7 @@ polortArg <- as.numeric( args[5] )
 samplingTime <- as.numeric( args[6] )
 stimType <- as.numeric( args[7] )
 flagSurround <-  as.numeric( args[8] )
+#fitGain <- as.numeric( args[9] )
 
 # load the data
 # get orientation
@@ -134,6 +135,10 @@ for ( snap in 1:dim(stimMat)[3] ) {
 stimSeq <- stimMatFlip
 x <- seq(-10,10,length.out = dim(stimSeq)[1] )
 y <- seq(-5.5,5.5,length.out = dim(stimSeq)[2] )
+outMesh <- meshgrid(y, x)
+outMesh$X <- scaleData( outMesh$X, 1, 0 )
+outMesh$Y <- scaleData( outMesh$Y, 1, 0 )
+
 rm( stimMat )
 
 # stimImageTemp <- array( 0, c( dim(stimMatFlip)[1]+100, dim(stimMatFlip)[2]+100, dim(stimMatFlip)[3] ) )
@@ -151,22 +156,68 @@ rm( stimMat )
 # rm( stimMat )
 
 #this part of the code builds a matrix with all the possible prediction tested, for both models at this stage
-if (fineFit==0) {
+
+if (fineFit==-2) {
   xElements <- 4
   yElements <- 4
   sigmaArrayPositiveElements <- 4
+  multParElements <- 3
+  hrfDelayOnsetElements <- 1
+  hrfDelayUnderShootElements <- 1
+}
+if (fineFit==-1) {
+  xElements <- 7
+  yElements <- 7
+  sigmaArrayPositiveElements <- 5
   multParElements <- 4
   hrfDelayOnsetElements <- 1
   hrfDelayUnderShootElements <- 1
 }
+
+if (fineFit==0) {
+  xElements <- 4
+  yElements <- 4
+  sigmaArrayPositiveElements <- 4
+  multParElements <- 3
+  hrfDelayOnsetElements <- 1
+  hrfDelayUnderShootElements <- 1
+  xGainElements <- 3
+  yGainElements <- 3
+}
 if (fineFit==1) {
-  xElements <- 10
-  yElements <- 10
+  xElements <- 8
+  yElements <- 8
   sigmaArrayPositiveElements <- 9
   multParElements <- 4
-  hrfDelayOnsetElements <- 2
-  hrfDelayUnderShootElements <- 2
+  hrfDelayOnsetElements <- 1
+  hrfDelayUnderShootElements <- 1
+  xGainElements <- 5
+  yGainElements <- 5
 }
+
+if (fineFit==2) {
+  xElements <- 4
+  yElements <- 4
+  sigmaArrayPositiveElements <- 4
+  multParElements <- 3
+  hrfDelayOnsetElements <- 1
+  hrfDelayUnderShootElements <- 1
+  xGainPosElements <- 2
+  yGainPosElements <- 2
+  sizeGainElements <- 2
+}
+if (fineFit==3) {
+  xElements <- 7
+  yElements <- 7
+  sigmaArrayPositiveElements <- 5
+  multParElements <- 4
+  hrfDelayOnsetElements <- 1
+  hrfDelayUnderShootElements <- 1
+  xGainPosElements <- 4
+  yGainPosElements <- 4
+  sizeGainElements <- 4
+}
+
 addSpace <- abs( min(x) )*0.1
 print('build prediction...')
 xPosFit <- seq( -9, 9, length.out=xElements )
@@ -181,9 +232,29 @@ par_hrf_a1 <- seq( 6, 9, length.out=hrfDelayOnsetElements )
 par_hrf_a2 <- seq( 12, 15, length.out=hrfDelayUnderShootElements )
 if (flagSurround==1) { multPar <- seq(0,0.8, length.out = multParElements) }
 if (flagSurround==0) { multPar <- 0 }
-predictionGridTemp <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, sigmaArrayNegative, par_hrf_a1, par_hrf_a2, multPar )
+
+if ( fineFit==-1 | fineFit==-2  ) { # no gain, just prf basically, coarse (-1) and fine (-2)
+  xGain <- 0
+  yGain <- 0
+  addPredictor <- 0
+  predictionGridTemp <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, sigmaArrayNegative, par_hrf_a1, par_hrf_a2, multPar, xGain, yGain, addPredictor )
+}
+if ( fineFit==0 | fineFit==1 ) { # if coarse fit or fine fit with plane gain field
+  xGain <- seq(-1,1,length.out = xGainElements)
+  yGain <- seq(-1,1,length.out = yGainElements)
+  addPredictor <- 0
+  predictionGridTemp <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, sigmaArrayNegative, par_hrf_a1, par_hrf_a2, multPar, xGain, yGain, addPredictor )
+}
+if ( fineFit==2 | fineFit==3 ) { #if coarse fit or fine fit with gaussian plane gain field
+  xGain <- seq(-9,9,length.out = xGainPosElements)
+  yGain <- seq(-4.5,4.5,length.out = yGainPosElements)
+  sigmaArrayGain <- seq( 2, 8, length.out=sizeGainElements )
+  predictionGridTemp <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, sigmaArrayNegative, par_hrf_a1, par_hrf_a2, multPar, xGain, yGain, sigmaArrayGain )
+}
 keepPredictionIdx <- predictionGridTemp[ ,3] < predictionGridTemp[ ,4]
 predictionGridGlobal <- predictionGridTemp[ keepPredictionIdx, ]
+dim( predictionGridGlobal )
+
 
 # this part builds a matrix with the starting and ending prediction index to fit for each loop in the next for loop
 if (dim( predictionGridGlobal )[1] <= 250 ) {
@@ -228,18 +299,31 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
   generatePrediction <- function( indexPrediction, inputPredictionGrid ) {
     prfPar <- as.numeric( inputPredictionGrid[indexPrediction,] )
     
-    #prfPar <- c(-5,-2,1.5,2,6,12,0)
+    #prfPar <- c(0,1,1,2.5,6,12,0.4,-5,-5,7)
     hrf <- canonicalHRF( seq(0,30,samplingTime), param=list(a1=prfPar[5], a2=prfPar[6], b1=0.9, b2=0.9, c=0.35), verbose=FALSE )
     
     a <- dnorm( x, prfPar[1], prfPar[3] )
     b <- dnorm( y, prfPar[2], prfPar[3] )
     imgCenter <- scaleData( tcrossprod(a,b), 1, 0 )
-
+    
     a <- dnorm( x, prfPar[1], prfPar[4] )
     b <- dnorm( y, prfPar[2], prfPar[4] )
     imgSurround <- scaleData( tcrossprod(a,b), 1, 0)*prfPar[7]
+
+    if (fineFit==-1 | fineFit==-2) { #no gain
+      r <- imgCenter - imgSurround
+    }
+    if (fineFit==0 | fineFit==1 ) { #plane gain
+      imgGain <- outMesh$X*prfPar[8] + outMesh$Y*prfPar[9]
+      r <- (imgCenter - imgSurround) + imgGain
+    }
+    if (fineFit==2 | fineFit==3) { #gaussian gain
+      a <- dnorm( x, prfPar[8], prfPar[10] )
+      b <- dnorm( y, prfPar[9], prfPar[10] )
+      imgGain <- scaleData( tcrossprod(a,b), 1, 0 )
+      r <- (imgCenter - imgSurround) + imgGain
+    }
     
-    r <- imgCenter - imgSurround
     rMat <- array(r)
     
     #trMat <- t(stimSeqMat)
@@ -249,10 +333,11 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
     pConvTrim <- pConv[ 1 : dim(stimSeq)[3] ]
     tsPredictionMriInterp <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('linear') )
     returnPrediction <- round( scaleData( tsPredictionMriInterp, 1, 0 ), 5 )
-    #par(mfrow=c(1,3))
+    #par(mfrow=c(2,2))
     #plot( r[,70], type='l' )
     #image( r, col=gray.colors(500) )
     #plot( returnPrediction, type='l' )
+    #image( imgGain, col=gray.colors(500)  )
     
     return( returnPrediction ) #### scale predictions betweeo 0 and 1 and round them to 5 digits
   }
@@ -284,7 +369,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
   # selIdxVoxel <- which( indexArray == 1 )
   # tsTransposedSel <- tsTransposedAll[,selIdxVoxel] #all selected time series
   
-  totalVoxelsIterations <- ceil( length(selIdxVoxel) / 100 )
+  totalVoxelsIterations <- ceil( length(selIdxVoxel) / 300 )
   limitsSelVoxels <- round( seq(1,length(selIdxVoxel), length.out=totalVoxelsIterations) ) #split between chuncks for parallel fitting (about 100 voxels each)
   limitsSelVoxels[1] <- 1
   limitsSelVoxels[ length(limitsSelVoxels) ] <- length(selIdxVoxel)
@@ -354,7 +439,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
   outModel <- outMatrix
   if (modelFitCounter==1) { outModelLoop <- outModel }
   if (modelFitCounter>1) { 
-    selectedCols <- outModel[8,] > outModelLoop[8,] #where r2 is store (after 4 prf parameters and 2 hrf parameters)
+    selectedCols <- outModel[11,] > outModelLoop[11,] #where r2 is store (after 4 prf parameters and 2 hrf parameters, surround parameter and 3 gain field parameters), there remain the intercet and the slope parameter
     if ( sum( selectedCols ) > 0 ) {
       outModelLoop[,selectedCols] <- outModel[,selectedCols] 
     }
@@ -363,7 +448,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
 }
 
 #outModelLoop <- outMatrix #fix it from here
-storeAllPred <- t(outModelLoop[ seq(1,10), ])
+storeAllPred <- t(outModelLoop[ seq(1,13), ])
 #### extract surround size ####
 print('surround size...')
 if (flagSurround==1) { 
@@ -409,8 +494,8 @@ if (flagSurround==0) {
 }
 
 storeAllExpectedTs <- array( 0, dim(tsTransposedAll) )
-storeAllExpectedTs[,selIdxVoxel] <- outModelLoop[ 11:dim(outModelLoop)[1], ]	
-storeAllPredOut <- array( 0, c(14, dim(tsTransposedAll)[2] ) )
+storeAllExpectedTs[,selIdxVoxel] <- outModelLoop[ 14:dim(outModelLoop)[1], ]	
+storeAllPredOut <- array( 0, c(17, dim(tsTransposedAll)[2] ) )
 
 print('save linear step...')
 polCoords <- cart2pol( storeAllPred[,c(2,1)] ) 
@@ -440,7 +525,7 @@ instr <- sprintf( '3dresample -orient %s -prefix %s -inset __tt_parameters.nii.g
 system( instr)
 system( 'rm __tt_parameters.nii.gz' )
 
-labels <- c('x-Pos','y-Pos','sigmaPos','sigmaNeg','hrf_a1','hrf_a2','multpar','varExp','intercept','slope','theta','radius','fwhmCenter','surroundSize')
+labels <- c('x-Pos','y-Pos','sigmaPos','sigmaNeg','hrf_a1','hrf_a2','multPar','gainX','gainY','sigmaGain','varExp','intercept','slope','theta','radius','fwhmCenter','surroundSize')
 for (k in 1:length(labels)) {
   instr <- sprintf('3drefit -sublabel %1.0f %s %s', round(k-1,0), labels[k], fileParams )
   print( instr )

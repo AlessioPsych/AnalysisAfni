@@ -5,11 +5,13 @@ print( args )
 #args <- c( 'curvatureCopy_interp_folder', '8' )
 #print( args )
 
-surfaceFilesTopo <- dir( 'surfaces_folder/', pattern='*.topo'  )
+surfacesDir <- args[3]
+
+surfaceFilesTopo <- dir( surfacesDir, pattern='*.topo'  )
 surfaceFilesTopo <- surfaceFilesTopo[1:length(surfaceFilesTopo)-1]
-surfaceFilesCoords <- dir( 'surfaces_folder/', pattern='*.coord'  )
+surfaceFilesCoords <- dir( surfacesDir, pattern='*.coord'  )
 surfaceFilesCoords <- surfaceFilesCoords[1:length(surfaceFilesCoords)-1]
-surfaceFileSpec <- dir( 'surfaces_folder/', pattern='spec*'  )
+surfaceFileSpec <- dir( surfacesDir, pattern='spec*'  )
 mapfiles <- dir( args[1] )
 
 dirSplit <- strsplit(args[1],'[/]')
@@ -28,8 +30,8 @@ for ( k in 1:length(surfaceFilesCoords) ) {
   outSplitName <- strsplit(mapfiles[k],'[.]')
   newDirSplit <- strsplit(newDir,'[_]')
   outputFile <- sprintf( '%s/%s_%s_%s_smooth', newDir, outSplitName[[1]][1], newDirSplit[[1]][1], args[2] )
-  instr <- sprintf('SurfSmooth -spec surfaces_folder/%s -surf_A surfaces_folder/%s -met HEAT_05 -input %s%s -fwhm %s -output %s',
-                   surfaceFileSpec, surfaceFilesCoords[k], args[1], mapfiles[k], args[2], outputFile )  
+  instr <- sprintf('SurfSmooth -spec %s/%s -surf_A %s/%s -met HEAT_05 -input %s%s -fwhm %s -output %s',
+                   surfacesDir, surfaceFileSpec, surfacesDir, surfaceFilesCoords[k], args[1], mapfiles[k], args[2], outputFile )  
   system( instr )
 }
 
