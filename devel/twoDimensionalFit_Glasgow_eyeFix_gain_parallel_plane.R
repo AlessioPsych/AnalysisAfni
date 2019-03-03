@@ -9,7 +9,7 @@ print( args )
 #setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
 
 
-#args <- c('meanTs_bars_topUp_res_mask.nii', 'meanTs_bars_topUp_res.nii', 'output_del', '3', '1','0.166','4','1')
+#args <- c('maxVarEye.nii.gz', 'meanTs_eye_topUp_res.nii', 'output_del', '5', '3','0.166','3','0')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
@@ -217,8 +217,27 @@ if (fineFit==3) {
   yGainPosElements <- 4
   sizeGainElements <- 4
 }
+if (fineFit==4) { #oblique prfs coarse
+  xElements <- 6
+  yElements <- 6
+  sigmaArrayPositiveElements <- 4
+  multParElements <- 3
+  hrfDelayOnsetElements <- 3
+  hrfDelayUnderShootElements <- 3
+  sigmaArrayPositiveElements_2 <- 4
+  thetaElements <- 4
+}
+if (fineFit==5) { #oblique prfs fine
+  xElements <- 14
+  yElements <- 14
+  sigmaArrayPositiveElements <- 8
+  multParElements <- 4
+  hrfDelayOnsetElements <- 2
+  hrfDelayUnderShootElements <- 2
+  sigmaArrayPositiveElements_2 <- 8
+  thetaElements <- 6
+}
 
-addSpace <- abs( min(x) )*0.1
 print('build prediction...')
 xPosFit <- seq( -9, 9, length.out=xElements )
 yPosFit <- seq( -4.5, 4.5, length.out=yElements )
@@ -228,8 +247,8 @@ sigmaArrayPositive <- seq( 0.25, 7, length.out=sigmaArrayPositiveElements )
 #sigmaArrayPositive <- seq( 0.25, 2, length.out=sigmaArrayPositiveElements )
 if (flagSurround==1) { sigmaArrayNegative <- sigmaArrayPositive }
 if (flagSurround==0) { sigmaArrayNegative <- 1000 }
-par_hrf_a1 <- seq( 6, 9, length.out=hrfDelayOnsetElements )
-par_hrf_a2 <- seq( 12, 15, length.out=hrfDelayUnderShootElements )
+par_hrf_a1 <- seq( 6, 10, length.out=hrfDelayOnsetElements )
+par_hrf_a2 <- seq( 12, 16, length.out=hrfDelayUnderShootElements )
 if (flagSurround==1) { multPar <- seq(0,0.8, length.out = multParElements) }
 if (flagSurround==0) { multPar <- 0 }
 
@@ -251,10 +270,31 @@ if ( fineFit==2 | fineFit==3 ) { #if coarse fit or fine fit with gaussian plane 
   sigmaArrayGain <- seq( 2, 8, length.out=sizeGainElements )
   predictionGridTemp <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, sigmaArrayNegative, par_hrf_a1, par_hrf_a2, multPar, xGain, yGain, sigmaArrayGain )
 }
-keepPredictionIdx <- predictionGridTemp[ ,3] < predictionGridTemp[ ,4]
-predictionGridGlobal <- predictionGridTemp[ keepPredictionIdx, ]
-dim( predictionGridGlobal )
+if (fineFit==4 | fineFit==5 ) {
+  sigmaArrayPositive_02 <- seq( 0.25, 7, length.out=sigmaArrayPositiveElements_2 )
+  if (flagSurround==1) { sigmaArrayNegative_02 <- sigmaArrayPositive }
+  if (flagSurround==0) { sigmaArrayNegative_02 <- 1000 }
+  thetaParameter <- seq( 0, 170, length.out = thetaElements )
+  predictionGridTemp01 <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, sigmaArrayNegative, par_hrf_a1, par_hrf_a2, multPar, sigmaArrayPositive_02, sigmaArrayNegative_02, thetaParameter )
+  keepPredictionIdxTemp01 <- (predictionGridTemp01[ ,3] < predictionGridTemp01[ ,4]) & #positive sigmas01 < than negative sigmas01
+    (predictionGridTemp01[ ,8] < predictionGridTemp01[ ,9]) & #positive sigmas02 < than negative sigmas02
+    (predictionGridTemp01[ ,3] <= predictionGridTemp01[ ,8]) #positive sigmas01 < than positive sigmas02
+  predictionGridTemp02 <- predictionGridTemp01[keepPredictionIdxTemp01,]
 
+  thetaFactor <- as.factor( predictionGridTemp02[,10] )
+  thetaFlag <- thetaFactor==levels(thetaFactor)[1]
+  keepPredictionIdxTemp02_01 <- thetaFlag & (predictionGridTemp02[,3] == predictionGridTemp02[,8]) #in case of identical positive sigmas remove all the thetas, prf is isotropic in this case
+  keepPredictionIdxTemp02_02 <- (predictionGridTemp02[,3] != predictionGridTemp02[,8]) #also keep all the non-isotropic prfs
+  predictionGridTemp02 <- predictionGridTemp02[  keepPredictionIdxTemp02_01 | keepPredictionIdxTemp02_02, ]
+}
+if (fineFit<4) {
+  keepPredictionIdx <- predictionGridTemp[ ,3] < predictionGridTemp[ ,4] 
+  predictionGridGlobal <- predictionGridTemp[ keepPredictionIdx, ]
+}
+if (fineFit==4 | fineFit==5) {
+  predictionGridGlobal <- predictionGridTemp02
+}
+dim( predictionGridGlobal )
 
 # this part builds a matrix with the starting and ending prediction index to fit for each loop in the next for loop
 if (dim( predictionGridGlobal )[1] <= 250 ) {
@@ -272,15 +312,15 @@ limitsPredictionMatrix[,2] <- limitsPrediction[2:(length(limitsPrediction))]
 limitsPredictionMatrix[2:dim(limitsPredictionMatrix)[1],1] <- limitsPredictionMatrix[2:dim(limitsPredictionMatrix)[1],1] + 1 #matrix with starting ts and ending ts for each chunk to be fitted
 runIndexPredictions <- seq( 1:dim(limitsPredictionMatrix)[1] )
 
+# select time series to fit based on the provided mask
 indexVol <- meanEpi$brk[,,,1]
 indexArray <- array( indexVol, prod( dim( indexVol ) ) )
 tsTransposedAll <- t( tsArray )
 selIdxVoxel <- which( indexArray == 1 )
 tsTransposedSel <- tsTransposedAll[,selIdxVoxel] #all selected time series
 
-#multVector <- c(1)#c(0.8, 0.9, 1, 1.1, 1.2)
 #modelFitCounter <- 1
-for (modelFitCounter in 1:length(runIndexPredictions)) {
+for (modelFitCounter in c(1,2,3,4,388,389,390,391) ) { #1:length(runIndexPredictions)
   
   print( sprintf( 'iteration %1.0f of %1.0f, start...', modelFitCounter, length(runIndexPredictions)  ) )
   
@@ -299,7 +339,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
   generatePrediction <- function( indexPrediction, inputPredictionGrid ) {
     prfPar <- as.numeric( inputPredictionGrid[indexPrediction,] )
     
-    #prfPar <- c(0,1,1,2.5,6,12,0.4,-5,-5,7)
+    #prfPar <- c(0, 0, 1.25, 1000, 6, 12, 0, 0.75, 1000, 135) #constraint: sigma pos 1 << sigma pos 2
     hrf <- canonicalHRF( seq(0,30,samplingTime), param=list(a1=prfPar[5], a2=prfPar[6], b1=0.9, b2=0.9, c=0.35), verbose=FALSE )
     
     a <- dnorm( x, prfPar[1], prfPar[3] )
@@ -323,27 +363,60 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
       imgGain <- scaleData( tcrossprod(a,b), 1, 0 )
       r <- (imgCenter - imgSurround) + imgGain
     }
+    if (fineFit==4 | fineFit==5) {
+      meshOut = meshgrid(y, x);
+      X1 <- meshOut$X
+      X2 <- meshOut$Y
+      sigma1 <- prfPar[8];
+      sigma2 <- prfPar[3];
+      Theta <- prfPar[10];
+      mu01 <- prfPar[2];
+      mu02 <- prfPar[1];
+      
+      a <- ((cosd(Theta)^2) / (2*sigma1^2)) + ((sind(Theta)^2) / (2*sigma2^2));
+      b <- -((sind(2*Theta)) / (4*sigma1^2)) + ((sind(2*Theta)) / (4*sigma2^2));
+      c <- ((sind(Theta)^2) / (2*sigma1^2)) + ((cosd(Theta)^2) / (2*sigma2^2));
+      
+      A <- 1;
+      rPos <- A*exp(-(a*(X1 - mu01)^2 + 2*b*(X1 - mu01)*(X2 - mu02) + c*(X2 - mu02)^2))
+      
+      sigma1 <- prfPar[9];
+      sigma2 <- prfPar[4];
+      Theta <- prfPar[10];
+      mu01 <- prfPar[2];
+      mu02 <- prfPar[1];
+      
+      a <- ((cosd(Theta)^2) / (2*sigma1^2)) + ((sind(Theta)^2) / (2*sigma2^2));
+      b <- -((sind(2*Theta)) / (4*sigma1^2)) + ((sind(2*Theta)) / (4*sigma2^2));
+      c <- ((sind(Theta)^2) / (2*sigma1^2)) + ((cosd(Theta)^2) / (2*sigma2^2));
+      
+      A <- 1;
+      rNeg <- A*exp(-(a*(X1 - mu01)^2 + 2*b*(X1 - mu01)*(X2 - mu02) + c*(X2 - mu02)^2))
+      r <- rPos-rNeg*prfPar[7]
+    }
     
+    r[ r<quantile(r,0.1) ] <- 0
+    r <- scaleData(r,1,0)
     rMat <- array(r)
+    
     
     #trMat <- t(stimSeqMat)
     #system.time( predictionLoop <- as.numeric( trMat%*%rMat ) )
     predictionLoop <- as.numeric( crossprod( stimSeqMat,rMat ) ) #### this is the slow step, this is the reason for the parallel computing ####
     pConv <- conv( predictionLoop, hrf )
     pConvTrim <- pConv[ 1 : dim(stimSeq)[3] ]
-    tsPredictionMriInterp <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('linear') )
-    returnPrediction <- round( scaleData( tsPredictionMriInterp, 1, 0 ), 5 )
+    tsPredictionMriInterp <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('nearest') )
+    returnPrediction <- round( scaleData( tsPredictionMriInterp, 1, 0 ), 5 ) #### scale predictions betweeo 0 and 1 and round them to 5 digits
     #par(mfrow=c(2,2))
     #plot( r[,70], type='l' )
     #image( r, col=gray.colors(500) )
     #plot( returnPrediction, type='l' )
     #image( imgGain, col=gray.colors(500)  )
     
-    return( returnPrediction ) #### scale predictions betweeo 0 and 1 and round them to 5 digits
+    return( returnPrediction ) 
   }
   
   #### generate predictions in parallel ####
-  library(parallel)
   detectCores()
   nCores <- 3
   cl <- makeCluster(nCores, type='FORK')
@@ -412,7 +485,6 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
     return( outModel )
   }
   #system.time( aaa <- lapply( 1:2, voxelModel ) )
-  library(parallel)
   detectCores()
   nCores <- 3
   cl <- makeCluster(nCores, type='FORK')
@@ -525,10 +597,21 @@ instr <- sprintf( '3dresample -orient %s -prefix %s -inset __tt_parameters.nii.g
 system( instr)
 system( 'rm __tt_parameters.nii.gz' )
 
-labels <- c('x-Pos','y-Pos','sigmaPos','sigmaNeg','hrf_a1','hrf_a2','multPar','gainX','gainY','sigmaGain','varExp','intercept','slope','theta','radius','fwhmCenter','surroundSize')
-for (k in 1:length(labels)) {
-  instr <- sprintf('3drefit -sublabel %1.0f %s %s', round(k-1,0), labels[k], fileParams )
-  print( instr )
-  system( instr )
-}
+if (fineFit==4 | fineFit==5 ) {
+  labels <- c('x-Pos','y-Pos','sigmaPos','sigmaNeg','hrf_a1','hrf_a2','multPar','sigmaPos_1','sigmaNeg_1','theta','varExp','intercept','slope','theta','radius','fwhmCenter','surroundSize')
+  for (k in 1:length(labels)) {
+    instr <- sprintf('3drefit -sublabel %1.0f %s %s', round(k-1,0), labels[k], fileParams )
+    print( instr )
+    system( instr )
+  }
+} 
+if (fineFit!=4 & fineFit!=5 ) {
+  labels <- c('x-Pos','y-Pos','sigmaPos','sigmaNeg','hrf_a1','hrf_a2','multPar','gainX','gainY','sigmaGain','varExp','intercept','slope','theta','radius','fwhmCenter','surroundSize')
+  for (k in 1:length(labels)) {
+    instr <- sprintf('3drefit -sublabel %1.0f %s %s', round(k-1,0), labels[k], fileParams )
+    print( instr )
+    system( instr )
+  }
+} 
+
 
