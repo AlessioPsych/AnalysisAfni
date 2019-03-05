@@ -1,15 +1,15 @@
-args <- commandArgs(T)
-print( args )
+#args <- commandArgs(T)
+#print( args )
 
 ## prepare the stimuli with the portrait as well
 
-#rm(list=ls())
+rm(list=ls())
 #setwd('/analyse/Project0226/GN18NE278_HNA10_FEF_19102018_nifti')
-#setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
+setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
 #setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
 
 
-#args <- c('maxVarEye.nii.gz', 'meanTs_eye_topUp_res.nii', 'output_del', '5', '3','0.166','3','0')
+args <- c('maxVarEye.nii.gz', 'bars_eye_cat_res.nii', 'output_del', '-2', '0','0.166','6','0')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
@@ -88,26 +88,41 @@ if (stimType==1) {
   arrayStim <- scan( 'eyeMovingStim.txt' )
   setwd(mainDir)
   stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) ) # eye movement
+  stimMatFlip <- aperm( stimMat[ dim(stimMat)[1]:1,, ], c(2,1,3) )
 }
 if (stimType==2) { 
   arrayStim <- scan( 'eyeFixStim.txt' )
   setwd(mainDir)
   stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) ) # eye movement
+  stimMatFlip <- aperm( stimMat[ dim(stimMat)[1]:1,, ], c(2,1,3) )
 }
 if (stimType==3) { 
   arrayStim <- scan( 'eyeFixStim_border.txt' )
   setwd(mainDir)
   stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) ) # eye movement
+  stimMatFlip <- aperm( stimMat[ dim(stimMat)[1]:1,, ], c(2,1,3) )
 }
 if (stimType==4) { 
   arrayStim <- scan( 'prfStim.txt' )
   setwd(mainDir)
   stimMat <- aperm( array( arrayStim, c(240,1860,135) ), c( 3, 1, 2 ) ) # eye movement
+  stimMatFlip <- aperm( stimMat[ dim(stimMat)[1]:1,, ], c(2,1,3) )
 }
 if (stimType==5) { 
   arrayStim <- scan( 'eyeFixStim_border_disappear.txt' )
   setwd(mainDir)
   stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) ) # eye movement
+  stimMatFlip <- aperm( stimMat[ dim(stimMat)[1]:1,, ], c(2,1,3) )
+}
+if (stimType==6) { 
+  arrayStim <- scan( 'prfStim.txt' )
+  stimMat <- aperm( array( arrayStim, c(240,1860,135) ), c( 3, 1, 2 ) ) # eye movement
+  arrayStim <- scan( 'eyeFixStim_border.txt' )
+  stimMatFix <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) ) # eye movement
+  setwd(mainDir)
+  stimMatFlipBars <- aperm( stimMat[ dim(stimMat)[1]:1,, ], c(2,1,3) )
+  stimMatFlipFix <- aperm( stimMatFix[ dim(stimMatFix)[1]:1,, ], c(2,1,3) )
+  stimMatFlip <- abind( stimMatFlipBars, stimMatFlipFix, along=3 )
 }
 
 
@@ -126,10 +141,9 @@ if (stimType==5) {
 #stimMatFlip <- stimMat[ ,dim(stimMat)[2]:1, ]
 
 
-stimMatFlip <- aperm( stimMat[ dim(stimMat)[1]:1,, ], c(2,1,3) )
 
 x11( width=3, height=3 )
-for ( snap in 1:dim(stimMat)[3] ) {
+for ( snap in 1:dim(stimMatFlip)[3] ) {
   image( stimMatFlip[,,snap], axes=FALSE ); par(new=TRUE); Sys.sleep(0.01)
 }
 stimSeq <- stimMatFlip
@@ -140,6 +154,7 @@ outMesh$X <- scaleData( outMesh$X, 1, 0 )
 outMesh$Y <- scaleData( outMesh$Y, 1, 0 )
 
 rm( stimMat )
+rm( stimMatFlip )
 
 # stimImageTemp <- array( 0, c( dim(stimMatFlip)[1]+100, dim(stimMatFlip)[2]+100, dim(stimMatFlip)[3] ) )
 # x11( width=3, height=3 )
@@ -320,7 +335,7 @@ selIdxVoxel <- which( indexArray == 1 )
 tsTransposedSel <- tsTransposedAll[,selIdxVoxel] #all selected time series
 
 #modelFitCounter <- 1
-for (modelFitCounter in c(1,2,3,4,388,389,390,391) ) { #1:length(runIndexPredictions)
+for (modelFitCounter in 1:length(runIndexPredictions) ) { #
   
   print( sprintf( 'iteration %1.0f of %1.0f, start...', modelFitCounter, length(runIndexPredictions)  ) )
   

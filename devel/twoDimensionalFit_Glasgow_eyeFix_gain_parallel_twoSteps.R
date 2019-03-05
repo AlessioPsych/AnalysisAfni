@@ -1,34 +1,19 @@
+#args <- commandArgs(T)
+#print( args )
 
-
-args <- commandArgs(T)
-print( args )
-
-#setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
-#args <- c('meanTs_bars_res_mask.nii','meanTs_bars_res.nii','outTest_delme.nii.gz','/packages/afni/17.0.13','1')
-
-## prepare the stimuli with the portrait as well
-
-#rm(list=ls())
+rm(list=ls())
 #setwd('/analyse/Project0226/GN18NE278_HNA10_FEF_19102018_nifti')
-#setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
+setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
 #setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
 
 
 #args <- c('meanTs_bars_res_mask.nii', 'meanTs_bars_res.nii', 'output_test_delme_bars','/home/alessiof/abin', '1', '1','1','0.166','3')
-#args <- c('meanTs_eyeMovement_topUp_res_mask.nii', 'meanTs_eyeMovement_topUp_res.nii', 'output_test_delme','/home/alessiof/abin', '1', '1','1','0.166','1','border_fit_parallel_nohrf_params.nii.gz','border_fit_parallel_nohrf_PredixtedTs.nii.gz')
+args <- c('maxVarEye.nii.gz', 'meanTs_eye_topUp_res.nii', 'output_test_two_steps', '1', '3','0.166','1','eye_fine_oblique_eyeFixBorder_noSurr_params.nii.gz','eye_fine_oblique_eyeFixBorder_noSurr_PredixtedTs.nii.gz','1')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
 afniInstallDir <- Sys.getenv( x='AFNI_INSTALLDIR' ) 
 source( sprintf('%s/scaleData.R', generalPurposeDir) )
-#instr <- '3dresample -dxyz 4 4 4 -orient RAI -rmode Lin -prefix barsTs_res.nii.gz -inset meanTsBars_topUp.nii'
-#system( instr )
-#instr <- '3dTstat -mean -prefix bars_mean_res.nii.gz barsTs_res.nii.gz'
-#system( instr )
-#instr <- '3dAutomask -prefix bars_mask_res.nii.gz bars_mean_res.nii.gz'
-#system( instr )
-#instr <- '3dresample -dxyz 4 4 4 -orient RAI -rmode Lin -prefix eyeTs_res.nii.gz -inset meanTsEye_topUp.nii'
-#system( instr )
 
 source( sprintf('%s/AFNIio.R', afniInstallDir ) )
 library( pracma )
@@ -39,14 +24,13 @@ library( parallel )
 epiFile <- args[1]
 inputFile <- args[2]
 outSuffix <- args[3]
-flagSurround <- as.numeric( args[5] )
-fitIntercept <- as.numeric( args[7] )
-polortArg <- as.numeric( args[6] )
-samplingTime <- 0.166#as.numeric( args[8] )
-stimType <- as.numeric( args[8] )
-fineFit <- 0
-paramsFile <- args[9]
-predictedTsFile <- args[10]
+fineFit <- args[4]
+polortArg <- as.numeric( args[5] )
+samplingTime <- as.numeric(args[6])
+stimType <- as.numeric( args[7] )
+paramsFile <- args[8]
+predictedTsFile <- args[9]
+flagSurround <- as.numeric(args[10])
 
 # load the data
 # get orientation
@@ -86,59 +70,34 @@ paramsPredicted <- read.AFNI( paramsFile )
 paramsArrayPredicted <- array( paramsPredicted$brk, c( prod( dim( paramsPredicted$brk )[1:3] ), dim(paramsPredicted$brk)[4] ) )
 
 # load stimuli definition
-print('get prfStimuli.RData...')
-#load( file='prfStimuli.RData' )
-#setwd('/analyse/Project0226/scanner_train - Copy/orientationgrating_points_fit_long_glas_large_get_stimuli')
-#arrayStim <- scan( 'eyeMovingStim.txt' )
-#setwd('/analyse/Project0226/scanner_train - Copy/orientationgrating_points_fit_long_glas_large_fixation_get_stimuli_border')
-#arrayStim <- scan( 'eyeFixStim_border.txt' )
-
+print('get stimulus...')
 setwd('/analyse/Project0226/dataSummary')
 if (stimType==1) { 
   arrayStim <- scan( 'eyeMovingStim.txt' )
   setwd(mainDir)
-  stimMat <- aperm( array( arrayStim, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
+  stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) ) # eye movement
 }
 if (stimType==2) { 
   arrayStim <- scan( 'eyeFixStim.txt' )
   setwd(mainDir)
-  stimMat <- aperm( array( arrayStim, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
+  stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) ) 
 }
 if (stimType==3) { 
   arrayStim <- scan( 'eyeFixStim_border.txt' )
   setwd(mainDir)
-  stimMat <- aperm( array( arrayStim, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
+  stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) )
 }
 if (stimType==4) { 
   arrayStim <- scan( 'prfStim.txt' )
   setwd(mainDir)
-  stimMat <- aperm( array( arrayStim, c(200,1860,150) ), c( 3, 1, 2 ) ) # eye movement
+  stimMat <- aperm( array( arrayStim, c(240,1860,135) ), c( 3, 1, 2 ) ) #
 }
 if (stimType==5) { 
   arrayStim <- scan( 'eyeFixStim_border_disappear.txt' )
   setwd(mainDir)
-  stimMat <- aperm( array( arrayStim, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
-}
-if (stimType==6) { 
-  arrayStim <- scan( 'eyeMovingStim.txt' )
-  setwd(mainDir)
-  stimMat <- aperm( array( arrayStim, c(200,1510,150) ), c( 3, 1, 2 ) ) # eye movement
+  stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) ) #
 }
 
-
-#stimMat <- aperm( array( arrayStim, c(128,620,96) ), c( 1, 3, 2 ) )
-#stimMat <- aperm( array( arrayStim, c(200,1860,150) ), c( 3, 1, 2 ) ) # prf
-#stimMatInterp2 <- array( 0,c(60,60,1510) )
-#xStim <- seq(0,200,length.out=200)	
-#yStim <- seq(0,150,length.out=150)	
-#xStimInt <- seq(0,200,length.out=60)	
-#yStimInt <- seq(0,150,length.out=60)	
-#for (interpCounter in 1:dim(stimMat)[2] ) {
-#	imageLoop <- stimMat[,,interpCounter]
-#	stimMatInterp2[,,interpCounter] <- interp2( xStim, yStim, imageLoop, xStimInt, yStimInt, method=c('linear') )
-#}
-
-#stimMatFlip <- stimMat[ ,dim(stimMat)[2]:1, ]
 stimMatFlip <- aperm( stimMat[ dim(stimMat)[1]:1,, ], c(2,1,3) )
 if (stimType==6) { 
   stimMatFlip <- stimMatFlip[ dim(stimMatFlip)[1]:1,dim(stimMatFlip)[2]:1, ]
@@ -149,13 +108,13 @@ for ( snap in 1:dim(stimMat)[3] ) {
   image( stimMatFlip[,,snap], axes=FALSE ); par(new=TRUE); Sys.sleep(0.01) 
 }
 stimSeq <- stimMatFlip
-x <- seq(-8,8,length.out = dim(stimSeq)[1] )
-y <- seq(-6,6,length.out = dim(stimSeq)[2] )
-
-#### get the standard hrf ####
-#print('get hrf...')
-#hrf <- canonicalHRF( seq(0,30,samplingTime), param=list(a1=9, a2=15, b1=0.9, b2=0.9, c=0.35), verbose=FALSE )
-#plot(hrf~seq(0,30,samplingTime))
+x <- seq(-10,10,length.out = dim(stimSeq)[1] )
+y <- seq(-5.5,5.5,length.out = dim(stimSeq)[2] )
+outMesh <- meshgrid(y, x)
+outMesh$X <- scaleData( outMesh$X, 1, 0 )
+outMesh$Y <- scaleData( outMesh$Y, 1, 0 )
+rm( stimMat )
+rm( stimMatFlip )
 
 #this part of the code builds a matrix with all the possible prediction tested, for both models at this stage
 addSpace <- abs( min(x) )*0.1
@@ -170,7 +129,13 @@ keepPredictionIdx <- predictionGridTemp[ ,3] < predictionGridTemp[ ,4]
 predictionGridGlobal <- predictionGridTemp[ keepPredictionIdx, ]
 
 # this part builds a matrix with the starting and ending prediction index to fit for each loop in the next for loop
-limitsPrediction <- round( seq(1,dim(predictionGridGlobal)[1], length.out=50) ) #split between 100 (arbitrary number) chuncks for iterative fitting
+if (dim( predictionGridGlobal )[1] <= 250 ) {
+  totalIterations <- 3
+}
+if (dim( predictionGridGlobal )[1] > 250 ) {
+  totalIterations <- ceil( dim( predictionGridGlobal )[1]/100 )
+}
+limitsPrediction <- round( seq(1,dim(predictionGridGlobal)[1], length.out=totalIterations) ) #split between 100 (arbitrary number) chuncks for iterative fitting
 limitsPrediction[1] <- 1
 limitsPrediction[ length(limitsPrediction) ] <- dim(predictionGridGlobal)[1]
 limitsPredictionMatrix <- array( 0, c( (length(limitsPrediction)-1) , 2 ) )
@@ -179,7 +144,6 @@ limitsPredictionMatrix[,2] <- limitsPrediction[2:(length(limitsPrediction))]
 limitsPredictionMatrix[2:dim(limitsPredictionMatrix)[1],1] <- limitsPredictionMatrix[2:dim(limitsPredictionMatrix)[1],1] + 1 #matrix with starting ts and ending ts for each chunk to be fitted
 runIndexPredictions <- seq( 1:dim(limitsPredictionMatrix)[1] )
 
-#fit visual respone and hrf
 #modelFitCounter <- 1
 for (modelFitCounter in 1:length(runIndexPredictions)) {
   
@@ -198,7 +162,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
   print( sprintf( 'linear fitting in iteration %1.0f of %1.0f ...', modelFitCounter, length(runIndexPredictions)  ) )
   indexVol <- meanEpi$brk[,,,1]
   indexArray <- array( indexVol, prod( dim( indexVol ) ) )
-  r2ArraySelection <- paramsArrayPredicted[,7]
+  r2ArraySelection <- paramsArrayPredicted[,11]
   hrf_a1Selection <- paramsArrayPredicted[,5]
   hrf_a2Selection <- paramsArrayPredicted[,6]
   tsTransposedAll <- t( tsArray )
@@ -316,7 +280,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
   
   if (modelFitCounter==1) { outModelLoop <- outModel }
   if (modelFitCounter>1) { 
-    selectedCols <- outModel[7,] > outModelLoop[7,] #where r2 is store (after 6 grid parameters, x,y,sigmaPos,sigmaNeg, f test comparison and p value comparison)
+    selectedCols <- outModel[11,] > outModelLoop[11,] #where r2 is store (after 6 grid parameters, x,y,sigmaPos,sigmaNeg, f test comparison and p value comparison)
     if ( sum( selectedCols ) > 0 ) {
       outModelLoop[,selectedCols] <- outModel[,selectedCols] 
     }
