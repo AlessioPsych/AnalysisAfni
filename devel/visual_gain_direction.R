@@ -9,7 +9,7 @@ print( args )
 #setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
 
 
-#args <- c('maxVarEye.nii.gz', 'meanTs_eye_topUp_res.nii', 'output_del', '0', '3','0.166')
+#args <- c('roiTestEpi.nii.gz', 'meanTs_eye_topUp_res.nii', 'output_del', '0', '3','0.166')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
@@ -124,17 +124,17 @@ outMesh <- meshgrid(y, x)
 outMesh$X <- scaleData( outMesh$X, 1, 0 )
 outMesh$Y <- scaleData( outMesh$Y, 1, 0 )
 
-xElements <- 6
-yElements <- 6
-sigmaArrayPositiveElements <- 4
-hrfDelayOnsetElements <- 1
-hrfDelayUnderShootElements <- 1
-multParElements <- 2
-centerVonElements <- 4
-kVonElements <- 4
-xElementsGain <- 4
-yElementsGain <- 4
-sigmaArrayPositiveElementsGain <- 4
+xElements <- 2 #6
+yElements <- 2 #6
+sigmaArrayPositiveElements <- 2 #4
+hrfDelayOnsetElements <- 1 #1
+hrfDelayUnderShootElements <- 1 #1
+multParElements <- 2 #2
+centerVonElements <- 3 #4
+kVonElements <- 2 #4
+xElementsGain <- 3 #4
+yElementsGain <- 3 #4
+sigmaArrayPositiveElementsGain <- 3 #4
 
 print('build prediction...')
 xPosFit <- seq( -9, 9, length.out=xElements )
@@ -253,7 +253,8 @@ for (modelFitCounter in 1:length(runIndexPredictions) ) { #length(runIndexPredic
   eyePredictions_direction <- sapply( 1:dim(predictionGrid)[1], eyeDirectionPrediction, inputPredictionGrid=predictionGrid )
   
   #### prepare to generate the predictions, eye fix ####
-  stimSeqMat <- array( stimSeq_eyeFix, c( length(x)*length(y), dim(stimSeq_eyeFix)[3] ) )
+  stimSeqMatEyeFix <- array( stimSeq_eyeFix, c( length(x)*length(y), dim(stimSeq_eyeFix)[3] ) )
+  stimSeqMatEyeMoving <- array( stimSeq_eyeMoving, c( length(x)*length(y), dim(stimSeq_eyeMoving)[3] ) )
   incrementalCounter <- dim(predictionGrid)[1] * 0.05
   timeStimuli <- seq( 0, dim(stimSeq_eyeFix)[3]*samplingTime, length.out = dim(stimSeq_eyeFix)[3] )
   mriTime <- seq( 0, dim(stimSeq_eyeFix)[3]*samplingTime, length.out = dim(ts$brk)[4] )
@@ -279,7 +280,7 @@ for (modelFitCounter in 1:length(runIndexPredictions) ) { #length(runIndexPredic
     r <- imgCenter - imgSurround
     rMat <- array(r)
     
-    predictionLoop <- as.numeric( crossprod( stimSeqMat,rMat ) ) #### this is the slow step, this is the reason for the parallel computing ####
+    predictionLoop <- as.numeric( crossprod( stimSeqMatEyeFix,rMat ) ) #### this is the slow step, this is the reason for the parallel computing ####
     pConv <- conv( predictionLoop, hrf )
     pConvTrim <- pConv[ 1 : dim(stimSeq_eyeFix)[3] ]
     tsPredictionMriInterp <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('nearest') )
@@ -302,12 +303,6 @@ for (modelFitCounter in 1:length(runIndexPredictions) ) { #length(runIndexPredic
   stopCluster(cl)
   print( storeTimePar )
 
-  #### prepare to generate the predictions, eye moving ####
-  stimSeqMat <- array( stimSeq_eyeFix, c( length(x)*length(y), dim(stimSeq_eyeFix)[3] ) )
-  incrementalCounter <- dim(predictionGrid)[1] * 0.05
-  timeStimuli <- seq( 0, dim(stimSeq_eyeFix)[3]*samplingTime, length.out = dim(stimSeq_eyeFix)[3] )
-  mriTime <- seq( 0, dim(stimSeq_eyeFix)[3]*samplingTime, length.out = dim(ts$brk)[4] )
-  
   #### function to generate the predictions, eye moving ####
   generatePrediction_moving <- function( indexPrediction, inputPredictionGrid ) {
     
@@ -329,9 +324,9 @@ for (modelFitCounter in 1:length(runIndexPredictions) ) { #length(runIndexPredic
     r <- imgCenter
     rMat <- array(r)
     
-    predictionLoop <- as.numeric( crossprod( stimSeqMat,rMat ) ) #### this is the slow step, this is the reason for the parallel computing ####
+    predictionLoop <- as.numeric( crossprod( stimSeqMatEyeMoving,rMat ) ) #### this is the slow step, this is the reason for the parallel computing ####
     pConv <- conv( predictionLoop, hrf )
-    pConvTrim <- pConv[ 1 : dim(stimSeq_eyeFix)[3] ]
+    pConvTrim <- pConv[ 1 : dim(stimSeq_eyeMoving)[3] ]
     tsPredictionMriInterp <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('nearest') )
     returnPrediction <- round( scaleData( tsPredictionMriInterp, 1, 0 ), 5 ) #### scale predictions betweeo 0 and 1 and round them to 5 digits
     
@@ -367,7 +362,12 @@ for (modelFitCounter in 1:length(runIndexPredictions) ) { #length(runIndexPredic
   #### linear fitting in parallel ####
   print( sprintf( 'linear fitting in iteration %1.0f of %1.0f ...', modelFitCounter, length(runIndexPredictions)  ) )
 
-  totalVoxelsIterations <- ceil( length(selIdxVoxel) / 200 )
+  if (length(selIdxVoxel) <= 200 ) {
+    totalVoxelsIterations <- 3
+  }
+  if (length(selIdxVoxel) > 200 ) {
+    totalVoxelsIterations <- ceil( length(selIdxVoxel)/100 )
+  }
   limitsSelVoxels <- round( seq(1,length(selIdxVoxel), length.out=totalVoxelsIterations) ) #split between chuncks for parallel fitting (about 100 voxels each)
   limitsSelVoxels[1] <- 1
   limitsSelVoxels[ length(limitsSelVoxels) ] <- length(selIdxVoxel)
@@ -527,7 +527,7 @@ stopCluster(cl)
 print( storeTimePar )
 #sum( outModelStats[1,] - outModelLoop[13,c(1:dim(outModelStats)[2])] < 0.0001 )
 #outModelStats <- array(0,c( dim(fittedPredictionGrid)[1], 9 ))
-storeAllPred <- cbind( t(outModelLoop[ seq(1,17), ]), outModelStats )
+storeAllPred <- cbind( t(outModelLoop[ seq(1,17), ]), t( outModelStats ) )
 
 #### extract surround size ####
 print('surround size...')

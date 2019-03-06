@@ -1,15 +1,14 @@
-args <- commandArgs(T)
-print( args )
+#args <- commandArgs(T)
+#print( args )
 
 ## prepare the stimuli with the portrait as well
 
-#rm(list=ls())
+rm(list=ls())
 #setwd('/analyse/Project0226/GN18NE278_HNA10_FEF_19102018_nifti')
-#setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
+setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
 #setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
 
-
-#args <- c('meanTs_bars_topUp_res_mask.nii', 'meanTs_bars_topUp_res.nii', 'output_full_test_firstStage_hrf', '0', '1','0.166','4','0')
+args <- c('roiTestEpi.nii.gz', 'meanTs_bars_topUp_res.nii', 'delMeTest', '0', '1','0.166','4','0')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
@@ -192,7 +191,7 @@ if (dim( predictionGridGlobal )[1] <= 250 ) {
 if (dim( predictionGridGlobal )[1] > 250 ) {
   totalIterations <- ceil( dim( predictionGridGlobal )[1]/100 )
 }
-limitsPrediction <- round( seq(1,dim(predictionGridGlobal)[1], length.out=totalIterations) ) 
+limitsPrediction <- round( seq(1,dim(predictionGridGlobal)[1], length.out=totalIterations ) ) 
 limitsPrediction[1] <- 1
 limitsPrediction[ length(limitsPrediction) ] <- dim(predictionGridGlobal)[1]
 limitsPredictionMatrix <- array( 0, c( (length(limitsPrediction)-1) , 2 ) )
@@ -230,7 +229,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
     
     #prfPar <- c(-5,-2,1.5,2,6,12,0)
     hrf <- canonicalHRF( seq(0,30,samplingTime), param=list(a1=prfPar[5], a2=prfPar[6], b1=0.9, b2=0.9, c=0.35), verbose=FALSE )
-    
+
     a <- dnorm( x, prfPar[1], prfPar[3] )
     b <- dnorm( y, prfPar[2], prfPar[3] )
     imgCenter <- scaleData( tcrossprod(a,b), 1, 0 )
@@ -247,7 +246,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
     predictionLoop <- as.numeric( crossprod( stimSeqMat,rMat ) ) #### this is the slow step, this is the reason for the parallel computing ####
     pConv <- conv( predictionLoop, hrf )
     pConvTrim <- pConv[ 1 : dim(stimSeq)[3] ]
-    tsPredictionMriInterp <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('linear') )
+    tsPredictionMriInterp <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('nearest') )
     returnPrediction <- round( scaleData( tsPredictionMriInterp, 1, 0 ), 5 )
     #par(mfrow=c(1,3))
     #plot( r[,70], type='l' )
