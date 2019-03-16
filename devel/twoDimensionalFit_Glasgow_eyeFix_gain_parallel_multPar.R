@@ -8,24 +8,12 @@ rm(list=ls())
 setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
 #setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
 
-args <- c('roiTestEpi.nii.gz', 'meanTs_bars_topUp_res.nii', 'delMeTest', '0', '1','0.166','4','0')
+args <- c('greyMask.nii.gz', 'meanTs_bars_topUp_res.nii', 'delMeTest', '0', '1','0.166','4','0')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
 afniInstallDir <- Sys.getenv( x='AFNI_INSTALLDIR' ) 
 source( sprintf('%s/scaleData.R', generalPurposeDir) )
-#instr <- '3dresample -dxyz 4 4 4 -orient RAI -rmode Lin -prefix barsTs_res.nii.gz -inset meanTsBars_topUp.nii'
-#system( instr )
-#instr <- '3dTstat -mean -prefix bars_mean_res.nii.gz barsTs_res.nii.gz'
-#system( instr )
-#instr <- '3dAutomask -prefix bars_mask_res.nii.gz bars_mean_res.nii.gz'
-#system( instr )
-#instr <- '3dresample -dxyz 4 4 4 -orient RAI -rmode Lin -prefix eyeTs_res.nii.gz -inset meanTsEye_topUp.nii'
-#system( instr )
-
-
-
-
 source( sprintf('%s/AFNIio.R', afniInstallDir ) )
 library( pracma )
 library( abind )
@@ -72,14 +60,8 @@ system( instr)
 meanEpi <- read.AFNI( '_ttt_mask.nii.gz' )
 system( 'rm _ttt_mask.nii.gz' )
 
-
 # load stimuli definition
 print('get prfStimuli.RData...')
-#load( file='prfStimuli.RData' )
-#setwd('/analyse/Project0226/scanner_train - Copy/orientationgrating_points_fit_long_glas_large_get_stimuli')
-#arrayStim <- scan( 'eyeMovingStim.txt' )
-#setwd('/analyse/Project0226/scanner_train - Copy/orientationgrating_points_fit_long_glas_large_fixation_get_stimuli_border')
-#arrayStim <- scan( 'eyeFixStim_border.txt' )
 
 setwd('/analyse/Project0226/dataSummary')
 if (stimType==1) { 
@@ -108,22 +90,6 @@ if (stimType==5) {
   stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) ) # eye movement
 }
 
-
-#stimMat <- aperm( array( arrayStim, c(128,620,96) ), c( 1, 3, 2 ) )
-#stimMat <- aperm( array( arrayStim, c(200,1860,150) ), c( 3, 1, 2 ) ) # prf
-#stimMatInterp2 <- array( 0,c(60,60,1510) )
-#xStim <- seq(0,200,length.out=200)	
-#yStim <- seq(0,150,length.out=150)	
-#xStimInt <- seq(0,200,length.out=60)	
-#yStimInt <- seq(0,150,length.out=60)	
-#for (interpCounter in 1:dim(stimMat)[2] ) {
-#	imageLoop <- stimMat[,,interpCounter]
-#	stimMatInterp2[,,interpCounter] <- interp2( xStim, yStim, imageLoop, xStimInt, yStimInt, method=c('linear') )
-#}
-
-#stimMatFlip <- stimMat[ ,dim(stimMat)[2]:1, ]
-
-
 stimMatFlip <- aperm( stimMat[ dim(stimMat)[1]:1,, ], c(2,1,3) )
 
 x11( width=3, height=3 )
@@ -134,20 +100,6 @@ stimSeq <- stimMatFlip
 x <- seq(-10,10,length.out = dim(stimSeq)[1] )
 y <- seq(-5.5,5.5,length.out = dim(stimSeq)[2] )
 rm( stimMat )
-
-# stimImageTemp <- array( 0, c( dim(stimMatFlip)[1]+100, dim(stimMatFlip)[2]+100, dim(stimMatFlip)[3] ) )
-# x11( width=3, height=3 )
-# for ( snap in 1:dim(stimMat)[3] ) {
-#   imageTemp <- stimMatFlip[,,snap]
-#   imageTemp <- cbind( matrix(1, nrow = dim(imageTemp)[1], 50 ), imageTemp, matrix(1, nrow = dim(imageTemp)[1], 50 ) )
-#   imageTemp <- rbind( matrix(1, ncol = dim(imageTemp)[2], 50 ), imageTemp, matrix(1, ncol = dim(imageTemp)[2], 50 ) )
-#   image( imageTemp, axes=FALSE ); par(new=TRUE); Sys.sleep(0.01)
-#   stimImageTemp[,,snap] <- imageTemp
-# }
-# stimSeq <- stimImageTemp
-# x <- seq(-12,12,length.out = dim(stimSeq)[1] )
-# y <- seq(-10,10,length.out = dim(stimSeq)[2] )
-# rm( stimMat )
 
 #this part of the code builds a matrix with all the possible prediction tested, for both models at this stage
 if (fineFit==0) {
