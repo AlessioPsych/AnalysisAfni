@@ -37,6 +37,7 @@ outSuffix <- args[3]
 flagSurround <- as.numeric( args[4] )
 polortArg <- as.numeric( args[5] )
 samplingTime <- as.numeric( args[6] )
+fittype <- as.numeric( args[7] )
 
 # load the data
 # get orientation
@@ -159,6 +160,7 @@ outMesh <- meshgrid(y, x)
 outMesh$X <- scaleData( outMesh$X, 1, 0 )
 outMesh$Y <- scaleData( outMesh$Y, 1, 0 )
 
+if (fittype==1) {
 xElements <- 6 #8
 yElements <- 6 #8
 sigmaArrayPositiveElements <- 5 #5
@@ -171,6 +173,21 @@ saccSuppressionElements <- 1 #4
 xElementsGain <- 4 #4
 yElementsGain <- 4 #4
 sigmaArrayPositiveElementsGain <- 4 #4
+}
+if (fittype==0) {
+xElements <- 6 #8
+yElements <- 6 #8
+sigmaArrayPositiveElements <- 5 #5
+hrfDelayOnsetElements <- 1 #2
+hrfDelayUnderShootElements <- 1 #2
+multParElements <- 4 #4
+centerVonElements <- 1 #4
+kVonElements <- 1 #4
+saccSuppressionElements <- 1 #4
+xElementsGain <- 1 #4
+yElementsGain <- 1 #4
+sigmaArrayPositiveElementsGain <- 1 #4
+}
 
 print('build prediction...')
 xPosFit <- seq( -8, 8, length.out=xElements )
@@ -218,7 +235,7 @@ selIdxVoxel <- which( indexArray == 1 )
 tsTransposedSel <- tsTransposedAll[,selIdxVoxel] #all selected time series
 
 #modelFitCounter <- 1
-for (modelFitCounter in 1:5 ) { #length(runIndexPredictions)
+for (modelFitCounter in 1:length(runIndexPredictions) ) { #length(runIndexPredictions)
   
   print( sprintf( 'iteration %1.0f of %1.0f, start...', modelFitCounter, length(runIndexPredictions)  ) )
   
@@ -436,8 +453,14 @@ for (modelFitCounter in 1:5 ) { #length(runIndexPredictions)
       #dMat <- cbind( tsPrediction_eyeFix[nIndex,], tsPrediction_eyeMoving[nIndex,], tsPrediction_direction[nIndex,] )  #visual, movement and direction predictors    
       #dMat <- cbind( tsPrediction_direction[nIndex,], tsPrediction_baseline[nIndex,] )  #visual, movement and direction predictors, multiplied to avoid collinearity issues    
       #dMat <- cbind( tsPrediction_baseline[nIndex,] )  #visual, movement and direction predictors, multiplied to avoid collinearity issues    
-      dMat <- cbind( tsPrediction_eyeFix[nIndex,], tsPrediction_eyeMoving[nIndex,] )
-      
+
+      if (fittype==1) {	
+      	dMat <- cbind( tsPrediction_eyeFix[nIndex,], tsPrediction_eyeMoving[nIndex,] )
+      }      
+      if (fittype==0) {	
+      	dMat <- cbind( tsPrediction_eyeFix[nIndex,] )
+      }      
+
       dMat01 <- cbind( rep(1,dim(dMat)[1]), dMat ) #column of ones and column of predictor
       a <- solve( crossprod(dMat01,dMat01), crossprod(dMat01,selTsVoxel) ) #beta coefficients (4: intercept, beta eyeFix, beta eyeMoving, beta direction
       expectedTs <- crossprod( t(dMat01), a ) #expected ts
@@ -452,8 +475,13 @@ for (modelFitCounter in 1:5 ) { #length(runIndexPredictions)
     outVoxel3D <- abind( outVoxelList, along=3 ) #reshape the list in a 3dmatrix with fields: output X voxels tested X predictions
     
     #betaPositiveMatrix <- outVoxel3D[3,,] > 0 & outVoxel3D[4,,] > 0 & outVoxel3D[5,,] > 0 # each beta must be positive
-    betaPositiveMatrix <- outVoxel3D[3,,] > 0 & outVoxel3D[4,,] > 0
-    
+    if (fittype==1) {
+    	betaPositiveMatrix <- outVoxel3D[3,,] > 0 & outVoxel3D[4,,] > 0
+    }    
+    if (fittype==0) {
+    	betaPositiveMatrix <- outVoxel3D[3,,] > 0 
+    }    
+
     r2Matrix <- outVoxel3D[1,,]	
     extractData <- function(nSelectedVoxels) {
       indexBetaZero <- betaPositiveMatrix[nSelectedVoxels,]
@@ -463,10 +491,12 @@ for (modelFitCounter in 1:5 ) { #length(runIndexPredictions)
         return( as.numeric( c( predictionGrid[indexBetaZero[indexVarExp],], outVoxel3D[,nSelectedVoxels,indexBetaZero[indexVarExp]] ) ) ) 
       }
       if ( sum(indexBetaZero)==0 ) {
-        
-        #return( rep(0, dim(predictionGrid)[2]+5+dim(selTsVoxel)[1] ) ) #no positive betas, return array of zeros, 5=r2,beta intercept, beta slope visual, beta slope movement, beta slope direction 
-        return( rep(0, dim(predictionGrid)[2]+1+3+dim(selTsVoxel)[1] ) ) #no positive betas, return array of zeros, 1+3=r2,+intercept, slope eye fix, slope eye moving
-        
+	if (fittype==1) {
+	        return( rep(0, dim(predictionGrid)[2]+1+3+dim(selTsVoxel)[1] ) ) #no positive betas, return array of zeros, 1+3=r2,+intercept, slope eye fix, slope eye moving
+        }
+	if (fittype==0) {
+	        return( rep(0, dim(predictionGrid)[2]+1+2+dim(selTsVoxel)[1] ) ) #no positive betas, return array of zeros, 1+3=r2,+intercept, slope eye fix
+        }
       }
     }	
     outModel <- sapply( 1:dim(r2Matrix)[1], extractData )
@@ -490,7 +520,7 @@ for (modelFitCounter in 1:5 ) { #length(runIndexPredictions)
   outModel <- outMatrix
   if (modelFitCounter==1) { outModelLoop <- outModel }
   if (modelFitCounter>1) { 
-    selectedCols <- outModel[14,] > outModelLoop[14,] #where r2 is store (after 12 model parameters, there are: r2, beta intercept, beta slope visual, beta slope movement, beta slope direction 
+    selectedCols <- outModel[14,] > outModelLoop[14,] #where r2 is store (after 13 model parameters, there are: r2, beta intercept, beta slope visual, beta slope movement, beta slope direction 
     if ( sum( selectedCols ) > 0 ) {
       outModelLoop[,selectedCols] <- outModel[,selectedCols] 
     }
@@ -562,8 +592,13 @@ for (modelFitCounter in 1:5 ) { #length(runIndexPredictions)
 # print( storeTimePar )
 # 
 # storeAllPred <- cbind( t(outModelLoop[ seq(1,15), ]), t( outModelStats ) )
+if (fittype==1) {
+	nPredictiors <- 2
+}
+if (fittype==0) {
+	nPredictiors <- 1
+}
 
-nPredictiors <- 2
 if (nPredictiors==1) {
   storeAllPred <- cbind( t(outModelLoop[ seq(1,16), ]) ) # 13 parameters + R2 + intercept and slope
 }
@@ -668,8 +703,8 @@ system( 'rm __tt_parameters.nii.gz' )
 # }
 
 if (nPredictiors==1) {
-  labels <- c('x-Pos','y-Pos','sigmaPos','sigmaNeg','hrf_a1','hrf_a2','multPar','centerVonMis','kVonMis','xGain','yGain','sigmaGain',
-              'varExp','intercept','b_direction','theta','radius','FWHM_center','surround_size')
+  labels <- c('x-Pos','y-Pos','sigmaPos','sigmaNeg','hrf_a1','hrf_a2','multPar','centerVonMis','kVonMis','saccSuppression','xGain','yGain','sigmaGain',
+              'varExp','intercept','b_visual','theta','radius','FWHM_center','surround_size')
   for (k in 1:length(labels)) {
     instr <- sprintf('3drefit -sublabel %1.0f %s %s', round(k-1,0), labels[k], fileParams )
     print( instr )
