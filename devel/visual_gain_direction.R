@@ -1,14 +1,14 @@
-args <- commandArgs(T)
-print( args )
+#args <- commandArgs(T)
+#print( args )
 
 
-#rm(list=ls())
+rm(list=ls())
 #setwd('/analyse/Project0226/GN18NE278_HNA10_FEF_19102018_nifti')
 #setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
-#setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
+setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
 
 
-#args <- c('greyMask.nii.gz', 'meanTs_eye_topUp_res.nii', 'test_parallel', '1', '1','0.166')
+args <- c('greyMask.nii.gz', 'meanTs_eye_topUp_res.nii', 'sacc_test', '1', '1','0.166')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
@@ -160,6 +160,7 @@ outMesh <- meshgrid(y, x)
 outMesh$X <- scaleData( outMesh$X, 1, 0 )
 outMesh$Y <- scaleData( outMesh$Y, 1, 0 )
 
+fittype <- 1
 if (fittype==1) {
 xElements <- 6 #8
 yElements <- 6 #8

@@ -31,7 +31,7 @@ INSTRCOMP=$(printf 'import sys; sys.path.insert(0,'\''%s'\''); print(sys.path); 
 
 echo $INSTRCOMP >> _tttt.py
 
-python _tttt.py
+python3 _tttt.py
 
 rm _tttt.py
 
