@@ -6,9 +6,7 @@ print( args )
 #setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
 #setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
 
-
-#args <- c('meanTs_bars_res_mask.nii', 'meanTs_bars_res.nii', 'output_test_delme_bars','/home/alessiof/abin', '1', '1','1','0.166','3')
-#args <- c('maxVarEye.nii.gz', 'meanTs_eye_topUp_res.nii', 'output_test_two_steps', '1', '3','0.166','1','eye_fine_oblique_eyeFixBorder_noSurr_params.nii.gz','eye_fine_oblique_eyeFixBorder_noSurr_PredixtedTs.nii.gz','1')
+#args <- c('greyMask_res.nii.gz', 'meanTs_eyeMovement_topUp_detrend_res.nii', 'eyeBorderSecondStep', '1', '0', '0.166', '1', 'eyeBorder_params.nii.gz', 'eyeBorder_PredixtedTs.nii.gz')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
@@ -30,7 +28,6 @@ samplingTime <- as.numeric(args[6])
 stimType <- as.numeric( args[7] )
 paramsFile <- args[8]
 predictedTsFile <- args[9]
-#flagSurround <- as.numeric(args[10])
 
 
 # load the data
@@ -84,7 +81,7 @@ if (stimType==2) {
   stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) ) 
 }
 if (stimType==3) { 
-  arrayStim <- scan( 'eyeFixStim_border.txt' )
+  arrayStim <- scan( 'eyeFixStim_border_kat.txt' )
   setwd(mainDir)
   stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) )
 }
@@ -124,10 +121,12 @@ addSpace <- abs( min(x) )*0.1
 print('build prediction...')
 xPosFit <- seq( min(x)+addSpace, max(x)-addSpace, length.out=6 )
 yPosFit <- seq( min(y)+addSpace, max(y)-addSpace, length.out=6 )
-sigmaArrayPositive <- seq( 4.2, 7, length.out=6 )
+sigmaArrayPositive <- seq( 2, 9, length.out=6 )
 if (flagSurround==1) { sigmaArrayNegative <- sigmaArrayPositive }
 if (flagSurround==0) { sigmaArrayNegative <- 1000 }
-predictionGridTemp <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, sigmaArrayNegative )
+if (flagSurround==1) { multPar <- seq(0,0.8, length.out = 3) }
+if (flagSurround==0) { multPar <- 0 }
+predictionGridTemp <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, sigmaArrayNegative, multPar )
 keepPredictionIdx <- predictionGridTemp[ ,3] < predictionGridTemp[ ,4]
 predictionGridGlobal <- predictionGridTemp[ keepPredictionIdx, ]
 
@@ -170,7 +169,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
   hrf_a2Selection <- paramsArrayPredicted[,6]
   tsTransposedAll <- t( tsArray )
   predictionTransposedAll <- t( tsArrayPredicted )
-  selIdxVoxel <- which( indexArray == 1 ) # selection based on intensity and variance explained
+  selIdxVoxel <- which( indexArray == 1 & apply(tsTransposedAll,2,mean) != 0 & apply(predictionTransposedAll,2,mean) != 0  ) 
   tsTransposedSel <- tsTransposedAll[,selIdxVoxel] #all selected time series
   tsPredictionTransposedSel <- predictionTransposedAll[,selIdxVoxel] #all selected predictions
   a1Selected <- hrf_a1Selection[ selIdxVoxel ]
@@ -185,6 +184,8 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
     #prfPar <- c(-2,-4,1,1.1)
     a <- dnorm( x, prfPar[1], prfPar[3] )
     b <- dnorm( y, prfPar[2], prfPar[3] )
+    a[ x<qnorm( 0.01, mean=prfPar[1], sd=prfPar[3] ) | x>qnorm( 0.99, mean=prfPar[1], sd=prfPar[3] ) ] <- 0 #cut the tails x
+    b[ y<qnorm( 0.01, mean=prfPar[2], sd=prfPar[3] ) | y>qnorm( 0.99, mean=prfPar[2], sd=prfPar[3] ) ] <- 0 #cut the tails y 
     #a <- normFun( x, prfPar[1], prfPar[3] )
     #b <- normFun( y, prfPar[1], prfPar[3] )
     imgCenter <- tcrossprod(a,b)
@@ -192,11 +193,13 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
     
     a <- dnorm( x, prfPar[1], prfPar[4] )
     b <- dnorm( y, prfPar[2], prfPar[4] )
+    a[ x<qnorm( 0.01, mean=prfPar[1], sd=prfPar[4] ) | x>qnorm( 0.99, mean=prfPar[1], sd=prfPar[4] ) ] <- 0 #cut the tails x
+    b[ y<qnorm( 0.01, mean=prfPar[2], sd=prfPar[4] ) | y>qnorm( 0.99, mean=prfPar[2], sd=prfPar[4] ) ] <- 0 #cut the tails y 
     #a <- normFun( x, prfPar[1], prfPar[4] )
     #b <- normFun( y, prfPar[1], prfPar[4] )
     imgSurround <- tcrossprod(a,b)
     
-    if (flagSurround==1) { r <- imgCenter - imgSurround }
+    if (flagSurround==1) { r <- imgCenter - imgSurround*prfPar[5] }
     if (flagSurround==0) { r <- imgCenter }
     rMat <- array(r)
     
@@ -245,7 +248,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
 
     #select positive betas for both visual and gain field predictors
     selectedBetas <- singleVoxel_output[3,] > 0 & singleVoxel_output[4,] > 0
-    
+
     #select highest var exp:
     selectedBetasIndex <- which( selectedBetas )
     indexVarExp <- which.max( singleVoxel_output[1,selectedBetasIndex]  )
@@ -259,7 +262,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
       modTest <- list()
       modTest$F[2] <- 0
       modTest$`Pr(>F)`[2] <- 0
-      singleVoxel_selectedOutput <- c( as.numeric( predictionGrid[indexSelectedPrediction,] ),modTest$F[2],modTest$`Pr(>F)`[2], singleVoxel_output[,indexSelectedPrediction] ) #array: 4 prediction, f test comparison, p value comparison,  r2, 3 beta coefficients (intercept and slope gain, slope visualPred) and the time series itself
+      singleVoxel_selectedOutput <- c( as.numeric( predictionGrid[indexSelectedPrediction,] ), modTest$F[2], modTest$`Pr(>F)`[2], singleVoxel_output[,indexSelectedPrediction] ) #array: 4 prediction, f test comparison, p value comparison,  r2, 3 beta coefficients (intercept and slope gain, slope visualPred) and the time series itself
     }
     if ( sum( selectedBetas )==0 ) {
       singleVoxel_selectedOutput <- rep( 0, dim(predictionGrid)[2]+2+dim(singleVoxel_output)[1] )
@@ -270,7 +273,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
     return( singleVoxel_selectedOutput )
   }
   
-  #system.time( aaa <- sapply( 1:10, voxelModel ) )
+  #system.time( aaa <- sapply( 22539:22539, voxelModel ) )
   print( sprintf( 'fitting in iteration %1.0f of %1.0f ...', modelFitCounter, length(runIndexPredictions)  ) )
   library(parallel)
   detectCores()
@@ -283,7 +286,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
   
   if (modelFitCounter==1) { outModelLoop <- outModel }
   if (modelFitCounter>1) { 
-    selectedCols <- outModel[11,] > outModelLoop[11,] #where r2 is store (after 6 grid parameters, x,y,sigmaPos,sigmaNeg, f test comparison and p value comparison)
+    selectedCols <- outModel[8,] > outModelLoop[8,] #where r2 is store (after 6 grid parameters, x,y,sigmaPos,sigmaNeg, f test comparison and p value comparison)
     if ( sum( selectedCols ) > 0 ) {
       outModelLoop[,selectedCols] <- outModel[,selectedCols] 
     }
@@ -292,12 +295,10 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
 }
 
 # add a eye fovea parameter???
-
 #outModelLoop <- outMatrix
-storeAllPred <- t(outModelLoop[ seq(1,10), ])
+storeAllPred <- t(outModelLoop[ seq(1,11), ])
 
 ## extract surround size ##
-
 print('surround size...')
 if (flagSurround==1) { 
   print('get FWHM...')
@@ -336,16 +337,14 @@ if (flagSurround==0) {
   FWHM[,2] <- 1000
 }
 
-#
 storeAllExpectedTs <- array( 0, dim(tsTransposedAll) )
-storeAllExpectedTs[,selIdxVoxel] <- outModelLoop[ 11:dim(outModelLoop)[1], ]	
-storeAllPredOut <- array( 0, c(14+dim(paramsArrayPredicted)[2], dim(tsTransposedAll)[2] ) )
-
+storeAllExpectedTs[,selIdxVoxel] <- outModelLoop[ 12:dim(outModelLoop)[1], ]	
+storeAllPredOut <- array( 0, c(15+dim(paramsArrayPredicted)[2], dim(tsTransposedAll)[2] ) )
 
 print('save linear step...')
 polCoords <- cart2pol( storeAllPred[,c(2,1)] ) 
-storeAllPredOut[1:14,selIdxVoxel] <- t( cbind( storeAllPred, polCoords, FWHM ) )
-storeAllPredOut[15:dim(storeAllPredOut)[1],selIdxVoxel] <- t( paramsArrayPredicted[ selIdxVoxel,  ] )
+storeAllPredOut[1:15,selIdxVoxel] <- t( cbind( storeAllPred, polCoords, FWHM ) )
+storeAllPredOut[16:dim(storeAllPredOut)[1],selIdxVoxel] <- t( paramsArrayPredicted[ selIdxVoxel,  ] )
 fileTs <- sprintf('%s_PredixtedTs.nii.gz',outSuffix) 
 fileParams <- sprintf('%s_params.nii.gz',outSuffix)
 
@@ -371,8 +370,8 @@ instr <- sprintf( '3dresample -orient %s -prefix %s -inset __tt_parameters.nii.g
 system( instr)
 system( 'rm __tt_parameters.nii.gz' )
 
-labels <- c('x-Pos-eye','y-Pos-eye','sigmaPos-eye','sigmaNeg-eye','f-test','pval-f-test','varExp-eye','intercept-eye','slope_eye','slope_vis','theta-eye','radius-eye','fwhmCenter-eye','surroundSize-eye',
-            'x-Pos-vis','y-Pos-vis','sigmaPos-vis','sigmaNeg-vis','hrf_a1-vis','hrf_a2-vis','varExp-vis','intercept-vis','slope-only-vis','theta-vis','radius-vis','fwhmCenter-vis','surroundSize-vis')
+labels <- c('x-Pos-eye','y-Pos-eye','sigmaPos-eye','sigmaNeg-eye','multPar','f-test','pval-f-test','varExp-eye','intercept-eye','slope_eye','slope_vis','theta-eye','radius-eye','fwhmCenter-eye','surroundSize-eye',
+            'x-Pos-vis','y-Pos-vis','sigmaPos-vis','sigmaNeg-vis','hrf_a1-vis','hrf_a2-vis','multPar','varExp-vis','intercept-vis','slope-only-vis','theta-vis','radius-vis','fwhmCenter-vis','surroundSize-vis')
 for (k in 1:length(labels)) {
   instr <- sprintf('3drefit -sublabel %1.0f %s %s', round(k-1,0), labels[k], fileParams )
   print( instr )

@@ -8,7 +8,7 @@ rm(list=ls())
 setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
 
 
-args <- c('greyMask.nii.gz', 'meanTs_eye_topUp_res.nii', 'sacc_test', '1', '1','0.166')
+args <- c('greyMask.nii.gz', 'meanTs_eyeMovement_topUp_detrend_res.nii','outTestGain','0.166',0)
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
@@ -17,13 +17,13 @@ source( sprintf('%s/scaleData.R', generalPurposeDir ) )
 source( sprintf('%s/AFNIio.R', afniInstallDir ) )
 source( sprintf('%s/vonMisesDist.R', generalPurposeDir ) )
 
-## test vonMises distribution ##
-par(mfrow=c(1,3))
-x <- seq(-pi,pi,0.1)
-mu <- pi*0.1
-k <- 2
-vonValues <- vonMisesDist( x, mu, k, 3, 0.3, 0.6 )
-plot( vonValues~x )
+# ## test vonMises distribution ##
+# par(mfrow=c(1,3))
+# x <- seq(-pi,pi,0.1)
+# mu <- pi*0.1
+# k <- 2
+# vonValues <- vonMisesDist( x, mu, k, 3, 0.3, 0.6 )
+# plot( vonValues~x )
 
 library( pracma )
 library( abind )
@@ -34,10 +34,8 @@ library( matrixcalc )
 epiFile <- args[1]
 inputFile <- args[2]
 outSuffix <- args[3]
-flagSurround <- as.numeric( args[4] )
+samplingTime <- as.numeric( args[4] )
 polortArg <- as.numeric( args[5] )
-samplingTime <- as.numeric( args[6] )
-fittype <- as.numeric( args[7] )
 
 # load the data
 # get orientation
@@ -77,22 +75,22 @@ arrayStim <- scan( 'eyeMovingStim.txt' )
 stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) ) # eye movement
 stimMatFlip_eyeMoving <- aperm( stimMat[ dim(stimMat)[1]:1,, ], c(2,1,3) )
 
-arrayStim <- scan( 'eyeFixStim_border_occluded.txt' )
+arrayStim <- scan( 'eyeFixStim_border_kat.txt' )
 stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) ) # eye movement
 stimMatFlip_eyeFix <- aperm( stimMat[ dim(stimMat)[1]:1,, ], c(2,1,3) )
 
-# load design eye fix to get the baseline
-eyeDesignFile <- read.table( file='eyeMovingDesign.txt', header = FALSE, as.is=TRUE )
-eyeDesignBaseline <- ifelse( eyeDesignFile[,3]>15, 0, 1 )
-baselines <- eyeDesignBaseline
-directionPol <- eyeDesignFile[,c(1,2)]
-directionPol[,1] <- deg2rad( round( directionPol[,1], 3 ) )
-directionArray <- directionPol[,1]
-directionArrayCart <- pol2cart( cbind( directionPol[,1], directionPol[,2] ) )
-polar( directionPol[,1]*baselines, directionPol[,2]*baselines, type='p' )
-stimuliSequenceTr <- samplingTime
-directionImages <- array( 0, c( 20, 360, dim( directionPol )[1] ) )
-degreesDirection <- round( directionArray*180/pi + 180, 0 ) #build an image ofthe direction from 1 to 360 degrees
+# # load design eye fix to get the baseline
+# eyeDesignFile <- read.table( file='eyeMovingDesign.txt', header = FALSE, as.is=TRUE )
+# eyeDesignBaseline <- ifelse( eyeDesignFile[,3]>15, 0, 1 )
+# baselines <- eyeDesignBaseline
+# directionPol <- eyeDesignFile[,c(1,2)]
+# directionPol[,1] <- deg2rad( round( directionPol[,1], 3 ) )
+# directionArray <- directionPol[,1]
+# directionArrayCart <- pol2cart( cbind( directionPol[,1], directionPol[,2] ) )
+# polar( directionPol[,1]*baselines, directionPol[,2]*baselines, type='p' )
+# stimuliSequenceTr <- samplingTime
+# directionImages <- array( 0, c( 20, 360, dim( directionPol )[1] ) )
+# degreesDirection <- round( directionArray*180/pi + 180, 0 ) #build an image ofthe direction from 1 to 360 degrees
 # x11( width=3, height=3 )
 # for (k in 1:dim(directionImages)[3]) {
 #   imgTemp <- directionImages[,,k]
@@ -150,7 +148,7 @@ for ( snap in 1:dim(stimMatFlip_eyeFix)[3] ) {
 }
 x11( width=3, height=3 )
 for ( snap in 1:dim(stimMatFlip_eyeMoving)[3] ) {
-   image( stimMatFlip_eyeMoving[,,snap], axes=FALSE ); par(new=TRUE); Sys.sleep(0.01)
+  image( stimMatFlip_eyeMoving[,,snap], axes=FALSE ); par(new=TRUE); Sys.sleep(0.01)
 }
 stimSeq_eyeFix <- stimMatFlip_eyeFix
 stimSeq_eyeMoving <- stimMatFlip_eyeMoving
@@ -171,9 +169,9 @@ if (fittype==1) {
   centerVonElements <- 1 #4
   kVonElements <- 1 #4
   saccSuppressionElements <- 1 #4
-  xElementsGain <- 4 #4
-  yElementsGain <- 4 #4
-  sigmaArrayPositiveElementsGain <- 4 #4
+  xElementsGain <- 3
+  yElementsGain <- 3
+  sigmaArrayPositiveElementsGain <- 3
 }
 if (fittype==0) {
   xElements <- 6 #8
@@ -185,30 +183,48 @@ if (fittype==0) {
   centerVonElements <- 1 #4
   kVonElements <- 1 #4
   saccSuppressionElements <- 1 #4
-  xElementsGain <- 1 #4
-  yElementsGain <- 1 #4
-  sigmaArrayPositiveElementsGain <- 1 #4
+  xElementsGain <- 3
+  yElementsGain <- 3
+  sigmaArrayPositiveElementsGain <- 3
 }
 
+# #ts gain:
+# mat01 <- matrix( rep( rep( c(1,2,3), rep(80,3) ), 45 ), nrow=45, ncol = 240, byrow=TRUE )
+# mat02 <- matrix( rep( rep( c(4,5,6), rep(80,3) ), 45 ), nrow=45, ncol = 240, byrow=TRUE  )
+# mat03 <- matrix( rep( rep( c(7,8,9), rep(80,3) ), 45 ), nrow=45, ncol = 240, byrow=TRUE  )
+# matImg <- rbind( mat01, mat02, mat03  )
+# image( matImg )
+# unique( array(matImg) )
+# for (k in 1:9) {
+#   matImgLoop <- matImg==k
+#   matImgLoopArray <- array(matImgLoop)
+#   stimSeqMatEyeFix <- array( stimSeq_eyeFix, c( length(x)*length(y), dim(stimSeq_eyeFix)[3] ) )
+#   stimSeqMatEyeMoving <- array( stimSeq_eyeMoving, c( length(x)*length(y), dim(stimSeq_eyeMoving)[3] ) )
+#   timeStimuli <- seq( 0, dim(stimSeq_eyeFix)[3]*samplingTime, length.out = dim(stimSeq_eyeFix)[3] )
+#   mriTime <- seq( 0, dim(stimSeq_eyeFix)[3]*samplingTime, length.out = dim(ts$brk)[4] )
+#   hrf <- canonicalHRF( seq(0,30,samplingTime), param=list(a1=6, a2=12, b1=0.9, b2=0.9, c=0.35), verbose=FALSE )
+#   predictionLoop <- as.numeric( crossprod( stimSeqMatEyeFix,matImgLoopArray ) ) #### this is the slow step, this is the reason for the parallel computing ####
+#   pConv <- conv( predictionLoop, hrf )
+#   pConvTrim <- pConv[ 1 : dim(stimSeq_eyeFix)[3] ]
+#   tsPredictionMriInterp <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('nearest') )
+#   tsSpaceMriInterp <- round( scaleData( tsPredictionMriInterp, 1, 0 ), 5 ) #### scale predictions betweeo 0 and 1 and round them to 5 digits
+#   if (k==1) {designOut <- tsSpaceMriInterp }
+#   if (k>1) {designOut <- cbind( designOut, tsSpaceMriInterp) }
+# }
+
+flagSurround <- 1
 print('build prediction...')
 xPosFit <- seq( -8, 8, length.out=xElements )
 yPosFit <- seq( -3.5, 3.5, length.out=yElements )
-sigmaArrayPositive <- seq( 0.7, 3, length.out=sigmaArrayPositiveElements )
+sigmaArrayPositive <- seq( 0.3, 8, length.out=sigmaArrayPositiveElements )
+sigmaArrayNegative <- sigmaArrayPositive
 par_hrf_a1 <- seq( 6, 10, length.out=hrfDelayOnsetElements )
 par_hrf_a2 <- seq( 12, 16, length.out=hrfDelayUnderShootElements )
 if (flagSurround==1) { multPar <- seq(0,0.8, length.out = multParElements) }
 if (flagSurround==0) { multPar <- 0 }
-centerVon <- seq( -0.9*pi, 0.9*pi, length.out=centerVonElements ) 
-kVon <- seq( 0.1, 3.5, length.out=kVonElements ) 
-saccSuppression <- seq( 0, 0.9, length.out=saccSuppressionElements )
-xPosFit_gain <- seq( -8, 8, length.out=xElementsGain )
-yPosFit_gain <- seq( -3.5, 3.5, length.out=yElementsGain )
-sigmaArrayPositive_gain <- seq( 4, 6, length.out=sigmaArrayPositiveElementsGain )
 
-predictionGridTemp01 <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, par_hrf_a1, par_hrf_a2, multPar, centerVon, kVon, saccSuppression, xPosFit_gain, yPosFit_gain, sigmaArrayPositive_gain )
-sigmaArrayNegative <- sigmaArrayPositive*1.25
-predictionGridTemp <- cbind( predictionGridTemp01[,c(1:3)], sigmaArrayNegative, predictionGridTemp01[,c(4:dim(predictionGridTemp01)[2])] )
-predictionGridGlobal <- predictionGridTemp
+predictionGridTemp01 <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, sigmaArrayNegative, par_hrf_a1, par_hrf_a2, multPar )
+predictionGridGlobal <- predictionGridTemp01[ predictionGridTemp01[,3]<predictionGridTemp01[,4],  ]
 
 dim( predictionGridGlobal )
 
@@ -314,7 +330,7 @@ for (modelFitCounter in 1:length(runIndexPredictions) ) { #length(runIndexPredic
   #   
   # }
   # #saccadeOn_direction <- sapply( 1:dim(predictionGrid)[1], saccadeOnPrediction, inputPredictionGrid=predictionGrid )
-
+  
   #### prepare to generate the predictions, eye fix ####
   stimSeqMatEyeFix <- array( stimSeq_eyeFix, c( length(x)*length(y), dim(stimSeq_eyeFix)[3] ) )
   stimSeqMatEyeMoving <- array( stimSeq_eyeMoving, c( length(x)*length(y), dim(stimSeq_eyeMoving)[3] ) )
@@ -369,7 +385,7 @@ for (modelFitCounter in 1:length(runIndexPredictions) ) { #length(runIndexPredic
   storeTimePar <- system.time( tsPredictionTransposed_eyeFix <- parSapply(cl, 1:dim(predictionGrid)[1], generatePrediction_visual, inputPredictionGrid=predictionGrid ) )
   stopCluster(cl)
   print( storeTimePar )
-
+  
   #### function to generate the predictions, eye moving ####
   generatePrediction_moving <- function( indexPrediction, inputPredictionGrid ) {
     
@@ -430,7 +446,7 @@ for (modelFitCounter in 1:length(runIndexPredictions) ) { #length(runIndexPredic
   
   #### linear fitting in parallel ####
   print( sprintf( 'linear fitting in iteration %1.0f of %1.0f ...', modelFitCounter, length(runIndexPredictions)  ) )
-
+  
   if (length(selIdxVoxel) <= 200 ) {
     totalVoxelsIterations <- 3
   }
@@ -454,14 +470,14 @@ for (modelFitCounter in 1:length(runIndexPredictions) ) { #length(runIndexPredic
       #dMat <- cbind( tsPrediction_eyeFix[nIndex,], tsPrediction_eyeMoving[nIndex,], tsPrediction_direction[nIndex,] )  #visual, movement and direction predictors    
       #dMat <- cbind( tsPrediction_direction[nIndex,], tsPrediction_baseline[nIndex,] )  #visual, movement and direction predictors, multiplied to avoid collinearity issues    
       #dMat <- cbind( tsPrediction_baseline[nIndex,] )  #visual, movement and direction predictors, multiplied to avoid collinearity issues    
-
+      
       if (fittype==1) {	
-      	dMat <- cbind( tsPrediction_eyeFix[nIndex,], tsPrediction_eyeMoving[nIndex,] )
+        dMat <- cbind( tsPrediction_eyeFix[nIndex,], tsPrediction_eyeMoving[nIndex,] )
       }      
       if (fittype==0) {	
-      	dMat <- cbind( tsPrediction_eyeFix[nIndex,] )
+        dMat <- cbind( tsPrediction_eyeFix[nIndex,] )
       }      
-
+      
       dMat01 <- cbind( rep(1,dim(dMat)[1]), dMat ) #column of ones and column of predictor
       a <- solve( crossprod(dMat01,dMat01), crossprod(dMat01,selTsVoxel) ) #beta coefficients (4: intercept, beta eyeFix, beta eyeMoving, beta direction
       expectedTs <- crossprod( t(dMat01), a ) #expected ts
@@ -477,12 +493,12 @@ for (modelFitCounter in 1:length(runIndexPredictions) ) { #length(runIndexPredic
     
     #betaPositiveMatrix <- outVoxel3D[3,,] > 0 & outVoxel3D[4,,] > 0 & outVoxel3D[5,,] > 0 # each beta must be positive
     if (fittype==1) {
-    	betaPositiveMatrix <- outVoxel3D[3,,] > 0 & outVoxel3D[4,,] > 0
+      betaPositiveMatrix <- outVoxel3D[3,,] > 0 & outVoxel3D[4,,] > 0
     }    
     if (fittype==0) {
-    	betaPositiveMatrix <- outVoxel3D[3,,] > 0 
+      betaPositiveMatrix <- outVoxel3D[3,,] > 0 
     }    
-
+    
     r2Matrix <- outVoxel3D[1,,]	
     extractData <- function(nSelectedVoxels) {
       indexBetaZero <- betaPositiveMatrix[nSelectedVoxels,]
@@ -492,11 +508,11 @@ for (modelFitCounter in 1:length(runIndexPredictions) ) { #length(runIndexPredic
         return( as.numeric( c( predictionGrid[indexBetaZero[indexVarExp],], outVoxel3D[,nSelectedVoxels,indexBetaZero[indexVarExp]] ) ) ) 
       }
       if ( sum(indexBetaZero)==0 ) {
-	if (fittype==1) {
-	        return( rep(0, dim(predictionGrid)[2]+1+3+dim(selTsVoxel)[1] ) ) #no positive betas, return array of zeros, 1+3=r2,+intercept, slope eye fix, slope eye moving
+        if (fittype==1) {
+          return( rep(0, dim(predictionGrid)[2]+1+3+dim(selTsVoxel)[1] ) ) #no positive betas, return array of zeros, 1+3=r2,+intercept, slope eye fix, slope eye moving
         }
-	if (fittype==0) {
-	        return( rep(0, dim(predictionGrid)[2]+1+2+dim(selTsVoxel)[1] ) ) #no positive betas, return array of zeros, 1+3=r2,+intercept, slope eye fix
+        if (fittype==0) {
+          return( rep(0, dim(predictionGrid)[2]+1+2+dim(selTsVoxel)[1] ) ) #no positive betas, return array of zeros, 1+3=r2,+intercept, slope eye fix
         }
       }
     }	
@@ -594,10 +610,10 @@ for (modelFitCounter in 1:length(runIndexPredictions) ) { #length(runIndexPredic
 # 
 # storeAllPred <- cbind( t(outModelLoop[ seq(1,15), ]), t( outModelStats ) )
 if (fittype==1) {
-	nPredictiors <- 2
+  nPredictiors <- 2
 }
 if (fittype==0) {
-	nPredictiors <- 1
+  nPredictiors <- 1
 }
 
 if (nPredictiors==1) {

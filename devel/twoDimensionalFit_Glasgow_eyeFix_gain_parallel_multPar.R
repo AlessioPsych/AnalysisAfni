@@ -8,7 +8,7 @@ print( args )
 #setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
 #setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
 
-#args <- c('greyMask.nii.gz', 'meanTs_bars_topUp_res.nii', 'delMeTest', '0', '1','0.166','4','0')
+#args <- c('greyMask_res.nii.gz', 'meanTs_bars_topUp_detrend_res.nii', 'prfBorder', '0', '0', '0.166', '7', '1')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
@@ -72,12 +72,12 @@ if (stimType==1) {
 if (stimType==2) { 
   arrayStim <- scan( 'eyeFixStim.txt' )
   setwd(mainDir)
-  stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) ) # eye movement
+  stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) ) 
 }
 if (stimType==3) { 
-  arrayStim <- scan( 'eyeFixStim_border.txt' )
+  arrayStim <- scan( 'eyeFixStim_border_kat.txt' )
   setwd(mainDir)
-  stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) ) # eye movement
+  stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) )
 }
 if (stimType==4) { 
   arrayStim <- scan( 'prfStim.txt' )
@@ -94,6 +94,11 @@ if (stimType==6) {
   setwd(mainDir)
   stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) ) # eye movement
 }
+if (stimType==7) { 
+  arrayStim <- scan( 'prfStim_borders_fixation_kat.txt' )
+  setwd(mainDir)
+  stimMat <- aperm( array( arrayStim, c(240,1860,135) ), c( 3, 1, 2 ) ) # eye movement
+}
 
 stimMatFlip <- aperm( stimMat[ dim(stimMat)[1]:1,, ], c(2,1,3) )
 
@@ -108,10 +113,10 @@ rm( stimMat )
 
 #this part of the code builds a matrix with all the possible prediction tested, for both models at this stage
 if (fineFit==0) {
-  xElements <- 4
-  yElements <- 4
-  sigmaArrayPositiveElements <- 4
-  multParElements <- 4
+  xElements <- 6
+  yElements <- 6
+  sigmaArrayPositiveElements <- 6
+  multParElements <- 5
   hrfDelayOnsetElements <- 1
   hrfDelayUnderShootElements <- 1
 }
@@ -120,14 +125,14 @@ if (fineFit==1) {
   yElements <- 10
   sigmaArrayPositiveElements <- 9
   multParElements <- 4
-  hrfDelayOnsetElements <- 2
-  hrfDelayUnderShootElements <- 2
+  hrfDelayOnsetElements <- 1
+  hrfDelayUnderShootElements <- 1
 }
 addSpace <- abs( min(x) )*0.1
 print('build prediction...')
 xPosFit <- seq( -9, 9, length.out=xElements )
 yPosFit <- seq( -4.5, 4.5, length.out=yElements )
-sigmaArrayPositive <- seq( 0.25, 4, length.out=sigmaArrayPositiveElements )
+sigmaArrayPositive <- seq( 0.25, 9, length.out=sigmaArrayPositiveElements )
 #xPosFit <- seq( -2, 2, length.out=xElements )
 #yPosFit <- seq( -2, 2, length.out=yElements )
 #sigmaArrayPositive <- seq( 0.25, 2, length.out=sigmaArrayPositiveElements )
@@ -182,20 +187,31 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
   
   #### function to generate the predictions ####
   generatePrediction <- function( indexPrediction, inputPredictionGrid ) {
+    #to test: 
+    #inputPredictionGrid <- predictionGrid; indexPrediction <- 2
     prfPar <- as.numeric( inputPredictionGrid[indexPrediction,] )
     
-    #prfPar <- c(-5,-2,1.5,2,6,12,0)
+    #prfPar <- c(2,2,1.5,2,6,12,0.3)
     hrf <- canonicalHRF( seq(0,30,samplingTime), param=list(a1=prfPar[5], a2=prfPar[6], b1=0.9, b2=0.9, c=0.35), verbose=FALSE )
 
     a <- dnorm( x, prfPar[1], prfPar[3] )
     b <- dnorm( y, prfPar[2], prfPar[3] )
+    a[ x<qnorm( 0.01, mean=prfPar[1], sd=prfPar[3] ) | x>qnorm( 0.99, mean=prfPar[1], sd=prfPar[3] ) ] <- 0 #cut the tails x
+    b[ y<qnorm( 0.01, mean=prfPar[2], sd=prfPar[3] ) | y>qnorm( 0.99, mean=prfPar[2], sd=prfPar[3] ) ] <- 0 #cut the tails y 
     imgCenter <- scaleData( tcrossprod(a,b), 1, 0 )
-
+    #cut the tails, to plot:
+    #par(mfrow=c(2,1))
+    #plot( a ~ x, bty='n', las=1 ); abline( v=qnorm( 0.01, mean=prfPar[1], sd=prfPar[3] ), col='red', lty=2, lwd=1  ); abline( v=qnorm( 0.99, mean=prfPar[1], sd=prfPar[3] ), col='red', lty=2, lwd=1  )
+    #plot( b ~ y, bty='n', las=1 ); abline( v=qnorm( 0.01, mean=prfPar[2], sd=prfPar[3] ), col='red', lty=2, lwd=1  ); abline( v=qnorm( 0.99, mean=prfPar[2], sd=prfPar[3] ), col='red', lty=2, lwd=1  )
+    
     a <- dnorm( x, prfPar[1], prfPar[4] )
     b <- dnorm( y, prfPar[2], prfPar[4] )
+    a[ x<qnorm( 0.01, mean=prfPar[1], sd=prfPar[4] ) | x>qnorm( 0.99, mean=prfPar[1], sd=prfPar[4] ) ] <- 0 #cut the tails x
+    b[ y<qnorm( 0.01, mean=prfPar[2], sd=prfPar[4] ) | y>qnorm( 0.99, mean=prfPar[2], sd=prfPar[4] ) ] <- 0 #cut the tails y 
     imgSurround <- scaleData( tcrossprod(a,b), 1, 0)*prfPar[7]
     
     r <- imgCenter - imgSurround
+    #image( r, col=grey.colors(1000) )
     rMat <- array(r)
     
     #trMat <- t(stimSeqMat)
@@ -203,7 +219,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
     predictionLoop <- as.numeric( crossprod( stimSeqMat,rMat ) ) #### this is the slow step, this is the reason for the parallel computing ####
     pConv <- conv( predictionLoop, hrf )
     pConvTrim <- pConv[ 1 : dim(stimSeq)[3] ]
-    tsPredictionMriInterp <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('nearest') )
+    tsPredictionMriInterp <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('linear') )
     returnPrediction <- round( scaleData( tsPredictionMriInterp, 1, 0 ), 5 )
     #par(mfrow=c(1,3))
     #plot( r[,70], type='l' )
@@ -216,7 +232,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
   #### generate predictions in parallel ####
   library(parallel)
   detectCores()
-  nCores <- 3
+  nCores <- 4
   cl <- makeCluster(nCores, type='FORK')
   storeTimePar <- system.time( tsPredictionTransposed <- parSapply(cl, 1:dim(predictionGrid)[1], generatePrediction, inputPredictionGrid=predictionGrid ) )
   stopCluster(cl)
@@ -226,7 +242,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
   
   #### clean up ts predictions and prediction grid ####
   tsPrediction <- t( tsPredictionTransposed )
-  controlPredictions <- apply( tsPrediction, 1, sum ) != 0 
+  controlPredictions <- apply( tsPrediction, 1, sum ) != 0 & apply( is.na(tsPrediction), 1, sum ) == 0
   tsPrediction <- tsPrediction[controlPredictions,]
   predictionGrid <- predictionGrid[controlPredictions,]
   print( dim( predictionGrid ) )
@@ -282,10 +298,10 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
     outModel <- sapply( 1:dim(r2Matrix)[1], extractData )
     return( outModel )
   }
-  #system.time( aaa <- lapply( 1:2, voxelModel ) )
+  #system.time( aaa <- lapply( 4:5, voxelModel ) )
   library(parallel)
   detectCores()
-  nCores <- 3
+  nCores <- 4
   cl <- makeCluster(nCores, type='FORK')
   storeTimePar <- system.time( outModel <- parLapply(cl, runIndex, voxelModel ) )
   stopCluster(cl)
