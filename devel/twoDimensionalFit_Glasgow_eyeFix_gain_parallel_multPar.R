@@ -121,18 +121,18 @@ if (fineFit==0) {
   hrfDelayUnderShootElements <- 1
 }
 if (fineFit==1) {
-  xElements <- 10
-  yElements <- 10
+  xElements <- 12
+  yElements <- 12
   sigmaArrayPositiveElements <- 9
-  multParElements <- 4
+  multParElements <- 5
   hrfDelayOnsetElements <- 1
   hrfDelayUnderShootElements <- 1
 }
 addSpace <- abs( min(x) )*0.1
 print('build prediction...')
-xPosFit <- seq( -9, 9, length.out=xElements )
-yPosFit <- seq( -4.5, 4.5, length.out=yElements )
-sigmaArrayPositive <- seq( 0.25, 9, length.out=sigmaArrayPositiveElements )
+xPosFit <- seq( -11.5, 11.5, length.out=xElements )
+yPosFit <- seq( -7, 7, length.out=yElements )
+sigmaArrayPositive <- seq( 0.25, 10, length.out=sigmaArrayPositiveElements )
 #xPosFit <- seq( -2, 2, length.out=xElements )
 #yPosFit <- seq( -2, 2, length.out=yElements )
 #sigmaArrayPositive <- seq( 0.25, 2, length.out=sigmaArrayPositiveElements )
