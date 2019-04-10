@@ -1,12 +1,12 @@
 args <- commandArgs(T)
 print( args )
 
-#rm(list=ls())
+rm(list=ls())
 #setwd('/analyse/Project0226/GN18NE278_HNA10_FEF_19102018_nifti')
 #setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
-#setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
+setwd('/analyse/Project0226/KMA25')
 
-#args <- c('greyMask_res.nii.gz', 'meanTs_eyeMovement_topUp_detrend_res.nii', 'eyeBorderSecondStep', '1', '0', '0.166', '1', 'eyeBorder_params.nii.gz', 'eyeBorder_PredixtedTs.nii.gz')
+args <- c('greyMask_res.nii.gz', 'meanTs_eyeMovement_topUp_detrend_res.nii', 'eyeBorderSecondStep' ,'1', '0', '0.166', '1', 'eyeBorder_params.nii.gz', 'eyeBorder_PredixtedTs.nii.gz')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
@@ -153,7 +153,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
   # here I select the portion of all the predictions that are going to be tested later
   # I need to work on a voxel by voxel basis
   predictionGrid <- predictionGridGlobal[ limitsPredictionMatrix[modelFitCounter,1]:limitsPredictionMatrix[modelFitCounter,2], ]
-
+  
   # define stimuli and timing
   stimSeqMat <- array( stimSeq, c( length(x)*length(y), dim(stimSeq)[3] ) )
   incrementalCounter <- dim(predictionGrid)[1] * 0.05
@@ -202,21 +202,29 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
     if (flagSurround==1) { r <- imgCenter - imgSurround*prfPar[5] }
     if (flagSurround==0) { r <- imgCenter }
     rMat <- array(r)
+    #### from here!!!!!!!!!!!
+    if ( sum( is.na(rMat) ) == 0 ) {
+      predictionLoop <- as.numeric( crossprod( stimSeqMat,rMat ) ) #### this is the slow step, this is the reason for the parallel computing ####
+      pConv <- conv( predictionLoop, hrf )
+      pConvTrim <- pConv[ 1 : dim(stimSeq)[3] ]
+      returnPrediction <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('linear') )
+      returnPrediction <- round( scaleData( returnPrediction, 1, 0 ), 5 )
+    }
+    if ( sum( is.na(rMat) ) > 0 ) {
+      returnPrediction <- rep(0,length(mriTime))
+    }
     
-    #trMat <- t(stimSeqMat)
-    #system.time( predictionLoop <- as.numeric( trMat%*%rMat ) )
-    predictionLoop <- as.numeric( crossprod( stimSeqMat,rMat ) ) #### this is the slow step, this is the reason for the parallel computing ####
-    pConv <- conv( predictionLoop, hrf )
-    pConvTrim <- pConv[ 1 : dim(stimSeq)[3] ]
-    tsPredictionMriInterp <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('linear') )
-    #tsPrediction[nPrediction,] <- tsPredictionMriInterp / max( tsPredictionMriInterp )
-    #return( round( tsPredictionMriInterp / max( tsPredictionMriInterp ), 5 ) ) #### scale predictions to 1 and round them to 5 digits
-    return( round( scaleData( tsPredictionMriInterp, 1, 0 ), 5 ) ) #### scale predictions betweeo 0 and 1 and round them to 5 digits
+    return( returnPrediction ) #### scale predictions betweeo 0 and 1 and round them to 5 digits
   }
   #generate all the predictions for a single voxels (needs to be voxel specific for the hrf parameters)
   #generatePrediction( predictionGrid, a1Selected[1], a2Selected[1] )
   # a1_par and a2_par are now fixed (6 and 12, respectively, for timing purposes)
   singleVoxel_predTs <- sapply( 1:dim(predictionGrid)[1], generatePrediction, inputPredictionGrid=predictionGrid, a1_par=a1Selected[1], a2_par=a2Selected[1] )
+  
+  controlPredictions <- apply( singleVoxel_predTs, 2, sum ) != 0 & apply( is.na(singleVoxel_predTs), 2, sum ) ==0
+  singleVoxel_predTs <- singleVoxel_predTs[,controlPredictions]
+  predictionGrid <- predictionGrid[controlPredictions,]
+  print( dim( predictionGrid ) )
   
   voxelModel <- function( voxelIdx ) { #this fits the model on each selected voxel at a time
     selTsVoxel <- tsTransposedSel[,voxelIdx]
@@ -245,10 +253,10 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
     
     # run the model on the singlevoxels for each gain field prediction
     singleVoxel_output <- sapply( 1:dim(singleVoxel_predTs)[2], runLinMod, visualPrediction=visual_predicted )
-
+    
     #select positive betas for both visual and gain field predictors
     selectedBetas <- singleVoxel_output[3,] > 0 & singleVoxel_output[4,] > 0
-
+    
     #select highest var exp:
     selectedBetasIndex <- which( selectedBetas )
     indexVarExp <- which.max( singleVoxel_output[1,selectedBetasIndex]  )

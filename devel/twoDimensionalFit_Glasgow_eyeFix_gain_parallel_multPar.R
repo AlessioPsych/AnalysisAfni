@@ -6,7 +6,7 @@ print( args )
 #rm(list=ls())
 #setwd('/analyse/Project0226/GN18NE278_HNA10_FEF_19102018_nifti')
 #setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
-#setwd('/analyse/Project0226/GN18NE278_KMA25_FEF_28092018_nifti')
+#setwd('/analyse/Project0226/KMA25')
 
 #args <- c('greyMask_res.nii.gz', 'meanTs_bars_topUp_detrend_res.nii', 'prfBorder', '0', '0', '0.166', '7', '1')
 
@@ -85,7 +85,7 @@ if (stimType==4) {
   stimMat <- aperm( array( arrayStim, c(240,1860,135) ), c( 3, 1, 2 ) ) # eye movement
 }
 if (stimType==5) { 
-  arrayStim <- scan( 'eyeFixStim_border_disappear.txt' )
+  arrayStim <- scan( 'eyeFixStim_border_kat_disapp.txt' )
   setwd(mainDir)
   stimMat <- aperm( array( arrayStim, c(240,1510,135) ), c( 3, 1, 2 ) ) # eye movement
 }
@@ -99,6 +99,13 @@ if (stimType==7) {
   setwd(mainDir)
   stimMat <- aperm( array( arrayStim, c(240,1860,135) ), c( 3, 1, 2 ) ) # eye movement
 }
+if (stimType==8) { 
+  arrayStim <- scan( 'prfStim_borders_fixation_kat_occluded.txt' )
+  setwd(mainDir)
+  stimMat <- aperm( array( arrayStim, c(240,1860,135) ), c( 3, 1, 2 ) ) # eye movement
+}
+
+
 
 stimMatFlip <- aperm( stimMat[ dim(stimMat)[1]:1,, ], c(2,1,3) )
 
@@ -115,8 +122,8 @@ rm( stimMat )
 if (fineFit==0) {
   xElements <- 6
   yElements <- 6
-  sigmaArrayPositiveElements <- 6
-  multParElements <- 5
+  sigmaArrayPositiveElements <- 5
+  multParElements <- 4
   hrfDelayOnsetElements <- 1
   hrfDelayUnderShootElements <- 1
 }
@@ -130,8 +137,8 @@ if (fineFit==1) {
 }
 addSpace <- abs( min(x) )*0.1
 print('build prediction...')
-xPosFit <- seq( -11.5, 11.5, length.out=xElements )
-yPosFit <- seq( -7, 7, length.out=yElements )
+xPosFit <- seq( -12.5, 12.5, length.out=xElements )
+yPosFit <- seq( -8, 8, length.out=yElements )
 sigmaArrayPositive <- seq( 0.25, 10, length.out=sigmaArrayPositiveElements )
 #xPosFit <- seq( -2, 2, length.out=xElements )
 #yPosFit <- seq( -2, 2, length.out=yElements )
@@ -214,17 +221,22 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
     #image( r, col=grey.colors(1000) )
     rMat <- array(r)
     
-    #trMat <- t(stimSeqMat)
-    #system.time( predictionLoop <- as.numeric( trMat%*%rMat ) )
-    predictionLoop <- as.numeric( crossprod( stimSeqMat,rMat ) ) #### this is the slow step, this is the reason for the parallel computing ####
-    pConv <- conv( predictionLoop, hrf )
-    pConvTrim <- pConv[ 1 : dim(stimSeq)[3] ]
-    tsPredictionMriInterp <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('linear') )
-    returnPrediction <- round( scaleData( tsPredictionMriInterp, 1, 0 ), 5 )
-    #par(mfrow=c(1,3))
-    #plot( r[,70], type='l' )
-    #image( r, col=gray.colors(500) )
-    #plot( returnPrediction, type='l' )
+    if ( sum( is.na(rMat) ) == 0 ) {
+      #trMat <- t(stimSeqMat)
+      #system.time( predictionLoop <- as.numeric( trMat%*%rMat ) )
+      predictionLoop <- as.numeric( crossprod( stimSeqMat,rMat ) ) #### this is the slow step, this is the reason for the parallel computing ####
+      pConv <- conv( predictionLoop, hrf )
+      pConvTrim <- pConv[ 1 : dim(stimSeq)[3] ]
+      tsPredictionMriInterp <- interp1( x=timeStimuli, y=pConvTrim, xi=mriTime, method=c('linear') )
+      returnPrediction <- round( scaleData( tsPredictionMriInterp, 1, 0 ), 5 )
+      #par(mfrow=c(1,3))
+      #plot( r[,70], type='l' )
+      #image( r, col=gray.colors(500) )
+      #plot( returnPrediction, type='l' )
+    }
+    if ( sum( is.na(rMat) ) > 0 ) {
+      returnPrediction <- rep(0,length(mriTime))
+    }
     
     return( returnPrediction ) #### scale predictions betweeo 0 and 1 and round them to 5 digits
   }
