@@ -1,12 +1,12 @@
 args <- commandArgs(T)
 print( args )
 
-rm(list=ls())
+#rm(list=ls())
 #setwd('/analyse/Project0226/GN18NE278_HNA10_FEF_19102018_nifti')
 #setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
-setwd('/analyse/Project0226/KMA25')
+#setwd('/analyse/Project0226/KMA25')
 
-args <- c('greyMask_res.nii.gz', 'meanTs_eyeMovement_topUp_detrend_res.nii', 'eyeBorderSecondStep' ,'1', '0', '0.166', '1', 'eyeBorder_params.nii.gz', 'eyeBorder_PredixtedTs.nii.gz')
+#args <- c('greyMask_res.nii.gz', 'meanTs_eyeMovement_topUp_detrend_res.nii', 'eyeBorderSecondStep' ,'1', '0', '0.166', '1', 'eyeBorder_params.nii.gz', 'eyeBorder_PredixtedTs.nii.gz')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
