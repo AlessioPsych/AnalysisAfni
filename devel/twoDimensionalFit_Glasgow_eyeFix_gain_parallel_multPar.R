@@ -3,12 +3,12 @@ print( args )
 
 ## prepare the stimuli with the portrait as well
 
-rm(list=ls())
+#rm(list=ls())
 #setwd('/analyse/Project0226/GN18NE278_HNA10_FEF_19102018_nifti')
 #setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
-setwd('/analyse/Project0226/GVW19')
+#setwd('/analyse/Project0226/GVW19')
 
-args <- c('greyMaskPrf10.nii.gz', 'meanTs_eyeMovement_topUp_detrend_res.nii', 'eyeNoBorder', '1', '0', '0.166', '2', '1')
+#args <- c('greyMaskPrf10.nii.gz', 'meanTs_eyeMovement_topUp_detrend_res.nii', 'eyeNoBorder', '1', '0', '0.166', '2', '1')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
