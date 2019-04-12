@@ -3,12 +3,12 @@ print( args )
 
 ## prepare the stimuli with the portrait as well
 
-#rm(list=ls())
+rm(list=ls())
 #setwd('/analyse/Project0226/GN18NE278_HNA10_FEF_19102018_nifti')
 #setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
-#setwd('/analyse/Project0226/KMA25')
+setwd('/analyse/Project0226/GVW19')
 
-#args <- c('greyMask_res.nii.gz', 'meanTs_bars_topUp_detrend_res.nii', 'prfBorder', '0', '0', '0.166', '7', '1')
+args <- c('greyMaskPrf10.nii.gz', 'meanTs_eyeMovement_topUp_detrend_res.nii', 'eyeNoBorder', '1', '0', '0.166', '2', '1')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
@@ -139,7 +139,7 @@ addSpace <- abs( min(x) )*0.1
 print('build prediction...')
 xPosFit <- seq( -12.5, 12.5, length.out=xElements )
 yPosFit <- seq( -8, 8, length.out=yElements )
-sigmaArrayPositive <- seq( 0.25, 10, length.out=sigmaArrayPositiveElements )
+sigmaArrayPositive <- seq( 0.25, 9, length.out=sigmaArrayPositiveElements )
 #xPosFit <- seq( -2, 2, length.out=xElements )
 #yPosFit <- seq( -2, 2, length.out=yElements )
 #sigmaArrayPositive <- seq( 0.25, 2, length.out=sigmaArrayPositiveElements )
@@ -177,7 +177,7 @@ tsTransposedSel <- tsTransposedAll[,selIdxVoxel] #all selected time series
 
 #multVector <- c(1)#c(0.8, 0.9, 1, 1.1, 1.2)
 #modelFitCounter <- 1
-for (modelFitCounter in 1:length(runIndexPredictions)) {
+for (modelFitCounter in 1:length(runIndexPredictions)) { #
   
   print( sprintf( 'iteration %1.0f of %1.0f, start...', modelFitCounter, length(runIndexPredictions)  ) )
   
@@ -200,7 +200,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
     
     #prfPar <- c(2,2,1.5,2,6,12,0.3)
     hrf <- canonicalHRF( seq(0,30,samplingTime), param=list(a1=prfPar[5], a2=prfPar[6], b1=0.9, b2=0.9, c=0.35), verbose=FALSE )
-
+    
     a <- dnorm( x, prfPar[1], prfPar[3] )
     b <- dnorm( y, prfPar[2], prfPar[3] )
     a[ x<qnorm( 0.01, mean=prfPar[1], sd=prfPar[3] ) | x>qnorm( 0.99, mean=prfPar[1], sd=prfPar[3] ) ] <- 0 #cut the tails x
@@ -259,81 +259,75 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
   predictionGrid <- predictionGrid[controlPredictions,]
   print( dim( predictionGrid ) )
   
-  
-  #### linear fitting in parallel ####
-  print( sprintf( 'linear fitting in iteration %1.0f of %1.0f ...', modelFitCounter, length(runIndexPredictions)  ) )
-  # indexVol <- meanEpi$brk[,,,1]
-  # indexArray <- array( indexVol, prod( dim( indexVol ) ) )
-  # tsTransposedAll <- t( tsArray )
-  # selIdxVoxel <- which( indexArray == 1 )
-  # tsTransposedSel <- tsTransposedAll[,selIdxVoxel] #all selected time series
-  
-  totalVoxelsIterations <- ceil( length(selIdxVoxel) / 100 )
-  limitsSelVoxels <- round( seq(1,length(selIdxVoxel), length.out=totalVoxelsIterations) ) #split between chuncks for parallel fitting (about 100 voxels each)
-  limitsSelVoxels[1] <- 1
-  limitsSelVoxels[ length(limitsSelVoxels) ] <- length(selIdxVoxel)
-  limitsSelVoxelsMatrix <- array( 0, c( (length(limitsSelVoxels)-1) , 2 ) )
-  limitsSelVoxelsMatrix[,1] <- limitsSelVoxels[1:(length(limitsSelVoxels)-1)]
-  limitsSelVoxelsMatrix[,2] <- limitsSelVoxels[2:(length(limitsSelVoxels))]
-  limitsSelVoxelsMatrix[2:dim(limitsSelVoxelsMatrix)[1],1] <- limitsSelVoxelsMatrix[2:dim(limitsSelVoxelsMatrix)[1],1] + 1 #matrix with starting ts and ending ts for each chunk
-  runIndex <- seq( 1:dim(limitsSelVoxelsMatrix)[1] )
-  voxelModel <- function(passIdx) { #this fits the model on serveral voxels at a time, see limitsSelVoxelsMatrix
-    selTsVoxel <- tsTransposedSel[ , limitsSelVoxelsMatrix[passIdx,1]:limitsSelVoxelsMatrix[passIdx,2] ]
-    selTsVoxelMean <- apply( selTsVoxel, 2, mean ) #voxels average
-    ssTot <- apply( (selTsVoxel-selTsVoxelMean)^2, 2, sum) #voxels total sum of squares
-    runLinMod <- function(nIndex) { #get best fit for every prediction (nIndex = counter of predictions)
-      dMat <- cbind( tsPrediction[nIndex,] )      
-      dMat01 <- cbind( rep(1,length(dMat)), dMat ) #column of ones and column of predictor
-      a <- solve( crossprod(dMat01,dMat01), crossprod(dMat01,selTsVoxel) ) #beta coefficients (2: intercept and slope)
-      #a <- solve( qr(dMat01), selTsVoxel)
-      expectedTs <- crossprod( t(dMat01), a ) #expected ts
-      residualsSquared <- ( selTsVoxel - expectedTs )^2 
-      ssRes <- apply( residualsSquared, 2, sum )
-      r2 <- 1-(ssRes/ssTot) #r squares
-      return( rbind( r2, a, expectedTs ) )
+  if (dim( predictionGrid )[1]==0) { outMatrix <- array(0, c(dim(tsTransposedSel)[1]+10,dim(tsTransposedSel)[2])) }
+  if (dim( predictionGrid )[1]!=0) { 
+    
+    #### linear fitting in parallel ####
+    print( sprintf( 'linear fitting in iteration %1.0f of %1.0f ...', modelFitCounter, length(runIndexPredictions)  ) )
+    # indexVol <- meanEpi$brk[,,,1]
+    # indexArray <- array( indexVol, prod( dim( indexVol ) ) )
+    # tsTransposedAll <- t( tsArray )
+    # selIdxVoxel <- which( indexArray == 1 )
+    # tsTransposedSel <- tsTransposedAll[,selIdxVoxel] #all selected time series
+    
+    totalVoxelsIterations <- ceil( length(selIdxVoxel) / 100 )
+    limitsSelVoxels <- round( seq(1,length(selIdxVoxel), length.out=totalVoxelsIterations) ) #split between chuncks for parallel fitting (about 100 voxels each)
+    limitsSelVoxels[1] <- 1
+    limitsSelVoxels[ length(limitsSelVoxels) ] <- length(selIdxVoxel)
+    limitsSelVoxelsMatrix <- array( 0, c( (length(limitsSelVoxels)-1) , 2 ) )
+    limitsSelVoxelsMatrix[,1] <- limitsSelVoxels[1:(length(limitsSelVoxels)-1)]
+    limitsSelVoxelsMatrix[,2] <- limitsSelVoxels[2:(length(limitsSelVoxels))]
+    limitsSelVoxelsMatrix[2:dim(limitsSelVoxelsMatrix)[1],1] <- limitsSelVoxelsMatrix[2:dim(limitsSelVoxelsMatrix)[1],1] + 1 #matrix with starting ts and ending ts for each chunk
+    runIndex <- seq( 1:dim(limitsSelVoxelsMatrix)[1] )
+    voxelModel <- function(passIdx) { #this fits the model on serveral voxels at a time, see limitsSelVoxelsMatrix
+      selTsVoxel <- tsTransposedSel[ , limitsSelVoxelsMatrix[passIdx,1]:limitsSelVoxelsMatrix[passIdx,2] ]
+      selTsVoxelMean <- apply( selTsVoxel, 2, mean ) #voxels average
+      ssTot <- apply( (selTsVoxel-selTsVoxelMean)^2, 2, sum) #voxels total sum of squares
+      runLinMod <- function(nIndex) { #get best fit for every prediction (nIndex = counter of predictions)
+        dMat <- cbind( tsPrediction[nIndex,] )      
+        dMat01 <- cbind( rep(1,length(dMat)), dMat ) #column of ones and column of predictor
+        a <- solve( crossprod(dMat01,dMat01), crossprod(dMat01,selTsVoxel) ) #beta coefficients (2: intercept and slope)
+        #a <- solve( qr(dMat01), selTsVoxel)
+        expectedTs <- crossprod( t(dMat01), a ) #expected ts
+        residualsSquared <- ( selTsVoxel - expectedTs )^2 
+        ssRes <- apply( residualsSquared, 2, sum )
+        r2 <- 1-(ssRes/ssTot) #r squares
+        return( rbind( r2, a, expectedTs ) )
+      }
+      outVoxelList <- lapply( 1:dim(tsPrediction)[1], runLinMod  ) #apply the function for all predictions, get a list as output
+      outVoxel3D <- abind( outVoxelList, along=3 ) #reshape the list in a 3dmatrix with fields: output X voxels tested X predictions
+      betaPositiveMatrix <- outVoxel3D[3,,] > 0
+      r2Matrix <- outVoxel3D[1,,]	
+      extractData <- function(nSelectedVoxels) {
+        indexBetaZero <- betaPositiveMatrix[nSelectedVoxels,]
+        if ( sum(indexBetaZero)>0 ) {
+          indexBetaZero <- which( indexBetaZero )
+          indexVarExp <- which.max( r2Matrix[nSelectedVoxels,indexBetaZero] )
+          return( as.numeric( c( predictionGrid[indexBetaZero[indexVarExp],], outVoxel3D[,nSelectedVoxels,indexBetaZero[indexVarExp]] ) ) ) 
+        }
+        if ( sum(indexBetaZero)==0 ) {
+          return( rep(0, dim(predictionGrid)[2]+3+dim(selTsVoxel)[1] ) ) #no positive betas, return array of zeros, 3=r2,beta intercept, beta slope
+        }
+      }	
+      outModel <- sapply( 1:dim(r2Matrix)[1], extractData )
+      return( outModel )
     }
-    outVoxelList <- lapply( 1:dim(tsPrediction)[1], runLinMod  ) #apply the function for all predictions, get a list as output
-    outVoxel3D <- abind( outVoxelList, along=3 ) #reshape the list in a 3dmatrix with fields: output X voxels tested X predictions
-    betaPositiveMatrix <- outVoxel3D[3,,] > 0
-    r2Matrix <- outVoxel3D[1,,]	
-    extractData <- function(nSelectedVoxels) {
-      indexBetaZero <- betaPositiveMatrix[nSelectedVoxels,]
-      if ( sum(indexBetaZero)>0 ) {
-        indexBetaZero <- which( indexBetaZero )
-        indexVarExp <- which.max( r2Matrix[nSelectedVoxels,indexBetaZero] )
-        return( as.numeric( c( predictionGrid[indexBetaZero[indexVarExp],], outVoxel3D[,nSelectedVoxels,indexBetaZero[indexVarExp]] ) ) ) 
-      }
-      if ( sum(indexBetaZero)==0 ) {
-        return( rep(0, dim(predictionGrid)[2]+3+dim(selTsVoxel)[1] ) ) #no positive betas, return array of zeros, 3=r2,beta intercept, beta slope
-      }
-    }	
-    outModel <- sapply( 1:dim(r2Matrix)[1], extractData )
-    return( outModel )
-  }
-  #system.time( aaa <- lapply( 4:5, voxelModel ) )
-  library(parallel)
-  detectCores()
-  nCores <- 4
-  cl <- makeCluster(nCores, type='FORK')
-  storeTimePar <- system.time( outModel <- parLapply(cl, runIndex, voxelModel ) )
-  stopCluster(cl)
-  print( storeTimePar )
-  
-  outMatrix <- array(0, c( dim(outModel[[1]])[1], length(selIdxVoxel) ) )
-  for ( nElements in 1:length(outModel) ) {
-    tempNElementsStart <- limitsSelVoxelsMatrix[nElements,1]
-    tempNElementsEnd <- limitsSelVoxelsMatrix[nElements,2]
-    outMatrix[,tempNElementsStart:tempNElementsEnd] <- outModel[[nElements]]
-  }
-  
-  # for ( nElements in 1:length(outModel) ) {
-  #   if (nElements==1) {
-  #     outMatrix <- outModel[[nElements]]
-  #   }
-  #   if (nElements>1) {
-  #     outMatrix <- cbind( outMatrix, outModel[[nElements]] )
-  #   }
-  # }
+    #system.time( aaa <- lapply( 4:5, voxelModel ) )
+    library(parallel)
+    detectCores()
+    nCores <- 4
+    cl <- makeCluster(nCores, type='FORK')
+    storeTimePar <- system.time( outModel <- parLapply(cl, runIndex, voxelModel ) )
+    stopCluster(cl)
+    print( storeTimePar )
+    
+    outMatrix <- array(0, c( dim(outModel[[1]])[1], length(selIdxVoxel) ) )
+    for ( nElements in 1:length(outModel) ) {
+      tempNElementsStart <- limitsSelVoxelsMatrix[nElements,1]
+      tempNElementsEnd <- limitsSelVoxelsMatrix[nElements,2]
+      outMatrix[,tempNElementsStart:tempNElementsEnd] <- outModel[[nElements]]
+    }
+  }  
   
   outModel <- outMatrix
   if (modelFitCounter==1) { outModelLoop <- outModel }

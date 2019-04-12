@@ -6,7 +6,7 @@ print( args )
 #setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
 #setwd('/analyse/Project0226/KMA25')
 
-#args <- c('greyMask_res.nii.gz', 'meanTs_eyeMovement_topUp_detrend_res.nii', 'eyeBorderSecondStep' ,'1', '0', '0.166', '1', 'eyeBorder_params.nii.gz', 'eyeBorder_PredixtedTs.nii.gz')
+#args <- c('greyMaskPrf10.nii.gz', 'meanTs_eyeMovement_topUp_detrend_res.nii', 'eyeNoBorder', '1', '0', '0.166', '2', '1')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
@@ -225,7 +225,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) {
   singleVoxel_predTs <- singleVoxel_predTs[,controlPredictions]
   predictionGrid <- predictionGrid[controlPredictions,]
   print( dim( predictionGrid ) )
-  
+
   voxelModel <- function( voxelIdx ) { #this fits the model on each selected voxel at a time
     selTsVoxel <- tsTransposedSel[,voxelIdx]
     selTsVoxelMean <- mean( selTsVoxel ) #voxel average
