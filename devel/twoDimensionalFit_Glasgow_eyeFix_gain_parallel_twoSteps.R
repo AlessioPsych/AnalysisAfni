@@ -120,7 +120,7 @@ rm( stimMatFlip )
 addSpace <- abs( min(x) )*0.1
 print('build prediction...')
 xPosFit <- seq( -11.5, 11.5, length.out=8 )
-yPosFit <- seq( 7, 7, length.out=8 )
+yPosFit <- seq( -7, 7, length.out=8 )
 sigmaArrayPositive <- seq( 2, 10, length.out=7 )
 if (flagSurround==1) { sigmaArrayNegative <- sigmaArrayPositive }
 if (flagSurround==0) { sigmaArrayNegative <- 1000 }
