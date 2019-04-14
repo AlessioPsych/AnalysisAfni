@@ -158,7 +158,7 @@ if (dim( predictionGridGlobal )[1] <= 250 ) {
   totalIterations <- 3
 }
 if (dim( predictionGridGlobal )[1] > 250 ) {
-  totalIterations <- ceil( dim( predictionGridGlobal )[1]/100 )
+  totalIterations <- ceil( dim( predictionGridGlobal )[1]/200 )
 }
 limitsPrediction <- round( seq(1,dim(predictionGridGlobal)[1], length.out=totalIterations ) ) 
 limitsPrediction[1] <- 1
@@ -270,8 +270,8 @@ for (modelFitCounter in 1:length(runIndexPredictions)) { #
     # selIdxVoxel <- which( indexArray == 1 )
     # tsTransposedSel <- tsTransposedAll[,selIdxVoxel] #all selected time series
     
-    totalVoxelsIterations <- ceil( length(selIdxVoxel) / 100 )
-    limitsSelVoxels <- round( seq(1,length(selIdxVoxel), length.out=totalVoxelsIterations) ) #split between chuncks for parallel fitting (about 100 voxels each)
+    totalVoxelsIterations <- ceil( length(selIdxVoxel) / 200 )
+    limitsSelVoxels <- round( seq(1,length(selIdxVoxel), length.out=totalVoxelsIterations) ) #split between chuncks for parallel fitting (about 200 voxels each)
     limitsSelVoxels[1] <- 1
     limitsSelVoxels[ length(limitsSelVoxels) ] <- length(selIdxVoxel)
     limitsSelVoxelsMatrix <- array( 0, c( (length(limitsSelVoxels)-1) , 2 ) )
