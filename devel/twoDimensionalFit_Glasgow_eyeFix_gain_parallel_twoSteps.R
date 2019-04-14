@@ -119,12 +119,12 @@ rm( stimMatFlip )
 #this part of the code builds a matrix with all the possible prediction tested, for both models at this stage
 addSpace <- abs( min(x) )*0.1
 print('build prediction...')
-xPosFit <- seq( -11.5, 11.5, length.out=6 )
-yPosFit <- seq( -7, 7, length.out=6 )
-sigmaArrayPositive <- seq( 2, 10, length.out=6 )
+xPosFit <- seq( -11.5, 11.5, length.out=8 )
+yPosFit <- seq( -7, 7, length.out=8 )
+sigmaArrayPositive <- seq( 2, 10, length.out=7 )
 if (flagSurround==1) { sigmaArrayNegative <- sigmaArrayPositive }
 if (flagSurround==0) { sigmaArrayNegative <- 1000 }
-if (flagSurround==1) { multPar <- seq(0,0.8, length.out = 2) }
+if (flagSurround==1) { multPar <- seq(0,0.8, length.out = 3) }
 if (flagSurround==0) { multPar <- 0 }
 predictionGridTemp <- expand.grid( xPosFit, yPosFit, sigmaArrayPositive, sigmaArrayNegative, multPar )
 keepPredictionIdx <- predictionGridTemp[ ,3] < predictionGridTemp[ ,4]

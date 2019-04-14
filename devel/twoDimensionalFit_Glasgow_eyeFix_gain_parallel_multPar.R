@@ -128,8 +128,8 @@ if (fineFit==0) {
   hrfDelayUnderShootElements <- 1
 }
 if (fineFit==1) {
-  xElements <- 12
-  yElements <- 12
+  xElements <- 10
+  yElements <- 10
   sigmaArrayPositiveElements <- 9
   multParElements <- 5
   hrfDelayOnsetElements <- 1
