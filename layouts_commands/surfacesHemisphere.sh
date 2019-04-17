@@ -4,7 +4,7 @@ MPRAGE=$1
 SEGMENTATIONFILE=$2
 BOUNDARIESFILE=$3
 
-hemisphereSeparation.sh $MPRAGE $SEGMENTATIONFILE /usr/local/bin/TT_icbm452+tlrc 1
+hemisphereSeparation.sh $MPRAGE $SEGMENTATIONFILE /home/alessiof/abin/TT_icbm452+tlrc 1
 
 3dTcat -prefix _del_boundariesSel.nii.gz $BOUNDARIESFILE[1,3,6] 
 
