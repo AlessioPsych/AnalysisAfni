@@ -8,7 +8,7 @@ print( args )
 #setwd('/analyse/Project0226/GN18NE278_GVW19_FEF_05102018_nifti')
 #setwd('/analyse/Project0226/GVW19')
 
-#args <- c('greyMaskPrf10.nii.gz', 'meanTs_eyeMovement_topUp_detrend_res.nii', 'eyeNoBorder', '1', '0', '0.166', '2', '1')
+#args <- c('greyMaskPrf10.nii.gz', 'meanTs_bars_topUp_detrend_res.nii', 'deleteMe', '0', '0', '0.166', '4', '1')
 
 mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
@@ -195,7 +195,7 @@ for (modelFitCounter in 1:length(runIndexPredictions)) { #
   #### function to generate the predictions ####
   generatePrediction <- function( indexPrediction, inputPredictionGrid ) {
     #to test: 
-    #inputPredictionGrid <- predictionGrid; indexPrediction <- 2
+    #inputPredictionGrid <- predictionGrid; indexPrediction <- 15
     prfPar <- as.numeric( inputPredictionGrid[indexPrediction,] )
     
     #prfPar <- c(2,2,1.5,2,6,12,0.3)

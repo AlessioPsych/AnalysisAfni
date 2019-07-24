@@ -73,7 +73,12 @@ print( instr )
 system( instr )
 
 system( sprintf('rm %s.BRIK.gz', roiFileName ) )
+system( sprintf('rm %s.BRIK', roiFileName ) )
 system( sprintf('rm %s.HEAD', roiFileName ) )
 system('rm _ttt_clust.nii.gz')
 system('rm surfVolWMRoi+orig.HEAD')
 system('rm surfVolWMRoi+orig.BRIK.gz')
+system('rm surfVolWMRoi+orig.BRIK')
+
+
+
