@@ -15,17 +15,20 @@ instr <- sprintf('3dcopy %s ttt_data.nii.gz',args[1])
 system( instr )
 instr <- '3dTstat -mean -prefix ttt_mean.nii.gz ttt_data.nii.gz'
 system( instr )
-instr <- '3dcalc -a ttt_data.nii.gz -b ttt_mean.nii.gz -expr \u0027min((a/b)*100,200)\u0027 -prefix ttt_percent.nii.gz'
-system( instr )
+#instr <- '3dcalc -a ttt_data.nii.gz -b ttt_mean.nii.gz -expr \u0027min((a/b)*100,200)\u0027 -prefix ttt_percent.nii.gz'
+#system( instr )
 #instr <- '3dDetrend -polort 1 -prefix ttt_data_detrend.nii.gz ttt_data.nii.gz'
-instr <- sprintf( '3dDetrend -polort %s -prefix ttt_data_detrend.nii.gz ttt_percent.nii.gz', args[5] )
-print(instr)
-system( instr )
+#instr <- sprintf( '3dDetrend -polort %s -prefix ttt_data_detrend.nii.gz ttt_percent.nii.gz', args[5] )
+#print(instr)
+#system( instr )
 
 dataMean <- read.AFNI( filename='ttt_data.nii.gz')
 dataBrkMean <- dataMean$brk 
-dataFile <- read.AFNI( filename='ttt_data_detrend.nii.gz' )
+#dataFile <- read.AFNI( filename='ttt_data_detrend.nii.gz' )
+#dataBrk <- dataFile$brk
+dataFile <- read.AFNI( filename='ttt_data.nii.gz' )
 dataBrk <- dataFile$brk
+
 
 emptyVol <- array( 0, c( dim(dataBrk)[c(1:3)], 3 ) )
 nCycles <- as.numeric( args[2] )
