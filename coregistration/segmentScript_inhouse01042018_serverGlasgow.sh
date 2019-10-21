@@ -47,26 +47,26 @@ cp Segsy/Posterior+orig.HEAD Posterior+orig.HEAD
 
 3dcalc -a csfProb.nii.gz -expr 'step(a-0.8)*a' -prefix csfProb_filter.nii.gz
 
-run_nighres_command.sh 'cortex.cruise_cortex_extraction(init_image="white_matter_mask.nii.gz", wm_image="white_matter_mask.nii.gz", gm_image="gray_matter_mask_out.nii.gz", csf_image="csfProb_filter.nii.gz", vd_image="filter_rdg.nii.gz", data_weight=0.4, regularization_weight=0.1, max_iterations=500, normalize_probabilities=False, correct_wm_pv=True, wm_dropoff_dist=1.0, topology="wcs", topology_lut_dir=None, save_data=True, output_dir="cruise_whole/", file_name="test_cruise_whole")'
+run_nighres_command_server_Glasgow.sh 'cortex.cruise_cortex_extraction(init_image="white_matter_mask.nii.gz", wm_image="white_matter_mask.nii.gz", gm_image="gray_matter_mask_out.nii.gz", csf_image="csfProb_filter.nii.gz", vd_image="filter_rdg.nii.gz", data_weight=0.4, regularization_weight=0.1, max_iterations=500, normalize_probabilities=False, correct_wm_pv=True, wm_dropoff_dist=1.0, topology="wcs", topology_lut_dir=None, save_data=True, output_dir="cruise_whole/", file_name="test_cruise_whole")'
 
 cp cruise_whole/test_cruise_whole_cruise_cortex.nii.gz cruise_cortex.nii.gz
 
 3dcalc -a cruise_cortex.nii.gz -expr 'step(a)' -prefix greyMatterCruise.nii.gz
 3dcalc -a cruise_cortex.nii.gz -expr 'within(a,1.9,2.1)' -prefix whiteMatterCruise.nii.gz
 
-run_nighres_command.sh 'surface.probability_to_levelset(probability_image="whiteMatterCruise.nii.gz", save_data=True, output_dir="whiteMatter", file_name="whiteMatterLevelset.nii.gz")'
+run_nighres_command_server_Glasgow.sh 'surface.probability_to_levelset(probability_image="whiteMatterCruise.nii.gz", save_data=True, output_dir="whiteMatter", file_name="whiteMatterLevelset.nii.gz")'
 cp whiteMatter/*.nii.gz whiteMatterLevelset.nii.gz
  
-run_nighres_command.sh 'surface.probability_to_levelset(probability_image="greyMatterCruise.nii.gz", save_data=True, output_dir="greyMatter", file_name="greyMatterLevelset.nii.gz")'
+run_nighres_command_server_Glasgow.sh 'surface.probability_to_levelset(probability_image="greyMatterCruise.nii.gz", save_data=True, output_dir="greyMatter", file_name="greyMatterLevelset.nii.gz")'
 cp greyMatter/*.nii.gz greyMatterLevelset.nii.gz
 
-run_nighres_command.sh 'laminar.volumetric_layering(inner_levelset="whiteMatterLevelset.nii.gz", outer_levelset="greyMatterLevelset.nii.gz", n_layers=7, topology_lut_dir=None, save_data=True, output_dir="volumetric", file_name="volumetricData")'
+run_nighres_command_server_Glasgow.sh 'laminar.volumetric_layering(inner_levelset="whiteMatterLevelset.nii.gz", outer_levelset="greyMatterLevelset.nii.gz", n_layers=7, topology_lut_dir=None, save_data=True, output_dir="volumetric", file_name="volumetricData")'
 
 cp volumetric/volumetricData_layering-boundaries.nii.gz volumetricData_layering_boundaries.nii.gz
 cp volumetric/volumetricData_layering-depth.nii.gz volumetricData_layering_depth.nii.gz
 cp volumetric/volumetricData_layering-layers.nii.gz volumetricData_layering_layers.nii.gz
 
-run_nighres_command.sh 'laminar.profile_sampling(profile_surface_image="volumetricData_layering_boundaries.nii.gz", intensity_image="anatCopy.nii.gz", save_data=True, output_dir="profilesDir", file_name="profilesOut")'
+run_nighres_command_server_Glasgow.sh 'laminar.profile_sampling(profile_surface_image="volumetricData_layering_boundaries.nii.gz", intensity_image="anatCopy.nii.gz", save_data=True, output_dir="profilesDir", file_name="profilesOut")'
 
 cp profilesDir/profilesOut** profilesOut_profiles.nii.gz
 
