@@ -23,11 +23,11 @@ segment_gray_matter.sh MP2RAGE_RAI_SKULL_STRIP_BOX.nii.gz white_matter_mask.nii.
 
 cp MP2RAGE_RAI_SKULL_STRIP_BOX.nii.gz anatCopy.nii.gz
 
-run_nighres_command.sh 'filtering.filter_ridge_structures(input_image="anatCopy.nii.gz", structure_intensity="dark", output_type="probability", use_strict_min_max_filter=True, save_data=True, output_dir="filter_dark/", file_name="filter")'
+run_nighres_command_server_Glasgow.sh 'filtering.filter_ridge_structures(input_image="anatCopy.nii.gz", structure_intensity="dark", output_type="probability", use_strict_min_max_filter=True, save_data=True, output_dir="filter_dark/", file_name="filter")'
 
 cp filter_dark/filter* filter_rdg_dark.nii.gz
 
-run_nighres_command.sh 'filtering.filter_ridge_structures(input_image="anatCopy.nii.gz", structure_intensity="bright", output_type="probability", use_strict_min_max_filter=True, save_data=True, output_dir="filter_bright/", file_name="filter")'
+run_nighres_command_server_Glasgow.sh 'filtering.filter_ridge_structures(input_image="anatCopy.nii.gz", structure_intensity="bright", output_type="probability", use_strict_min_max_filter=True, save_data=True, output_dir="filter_bright/", file_name="filter")'
 
 cp filter_bright/filter* filter_rdg_bright.nii.gz
 
