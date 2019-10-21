@@ -62,9 +62,9 @@ cp greyMatter/*.nii.gz greyMatterLevelset.nii.gz
 
 run_nighres_command_server_Glasgow.sh 'laminar.volumetric_layering(inner_levelset="whiteMatterLevelset.nii.gz", outer_levelset="greyMatterLevelset.nii.gz", n_layers=7, topology_lut_dir=None, save_data=True, output_dir="volumetric", file_name="volumetricData")'
 
-cp volumetric/volumetricData_layering_boundaries.nii.gz volumetricData_layering_boundaries.nii.gz
-cp volumetric/volumetricData_layering_depth.nii.gz volumetricData_layering_depth.nii.gz
-cp volumetric/volumetricData_layering_layers.nii.gz volumetricData_layering_layers.nii.gz
+cp volumetric/volumetricData_layering-boundaries.nii.gz volumetricData_layering_boundaries.nii.gz
+cp volumetric/volumetricData_layering-depth.nii.gz volumetricData_layering_depth.nii.gz
+cp volumetric/volumetricData_layering-layers.nii.gz volumetricData_layering_layers.nii.gz
 
 run_nighres_command_server_Glasgow.sh 'laminar.profile_sampling(profile_surface_image="volumetricData_layering_boundaries.nii.gz", intensity_image="anatCopy.nii.gz", save_data=True, output_dir="profilesDir", file_name="profilesOut")'
 
