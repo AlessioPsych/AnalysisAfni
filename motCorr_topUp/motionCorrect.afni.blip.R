@@ -122,7 +122,7 @@ for ( nEpi in 1:length(epiArray) ) {
   nTRs_loop <- as.numeric( trString[6] )
   system('rm infoEPI.1D')
   
-  instr <- sprintf('3dvolreg -verbose -zpad 1 -base %s[%1.0f] -1Dfile %s -1Dmatrix_save %s -prefix %s -Fourier %s[%1.0f..%1.0f] ', epiFiles[selectedEpi], nTRs-1, motion1DfileLin, motion1DfileAff, prefixName, epiFiles[epiArray[nEpi]], nTRs_loop-nTRsTOPUP, nTRs_loop-1 ) #because it starts from counting form 0
+  instr <- sprintf('3dvolreg -verbose -zpad 1 -base %s[%1.0f] -1Dfile %s -1Dmatrix_save %s -prefix %s -heptic %s[%1.0f..%1.0f] ', epiFiles[selectedEpi], nTRs-1, motion1DfileLin, motion1DfileAff, prefixName, epiFiles[epiArray[nEpi]], nTRs_loop-nTRsTOPUP, nTRs_loop-1 ) #because it starts from counting form 0
   print( instr )
   system( instr )
 }
@@ -163,7 +163,7 @@ for ( nTop in 1:length(topArray) ) {
   prefixName <- sprintf('pb.%s.volreg+orig', filename)
   motion1DfileAff <- sprintf('pb.%s.volreg.1D', filename)  
   motion1DfileLin <- sprintf('pb.%s.lin.volreg', filename)  
-  instr <- sprintf('3dvolreg -verbose -zpad 1 -base %s[0] -1Dfile %s -1Dmatrix_save %s -prefix %s -Fourier %s', topFiles[selectedTop], motion1DfileLin, motion1DfileAff, prefixName, topFiles[topArray[nTop]] )
+  instr <- sprintf('3dvolreg -verbose -zpad 1 -base %s[0] -1Dfile %s -1Dmatrix_save %s -prefix %s -heptic %s', topFiles[selectedTop], motion1DfileLin, motion1DfileAff, prefixName, topFiles[topArray[nTop]] )
   print( instr )
   system( instr )
 }

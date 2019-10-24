@@ -37,7 +37,7 @@ for ( nEpi in 1:length(epiFiles) ) {
   prefixName <- sprintf('pb.%s.volreg+orig', filename)
   motion1DfileAff <- sprintf('pb.%s.volreg', filename)  
   motion1DfileLin <- sprintf('pb.%s.lin.volreg', filename)  
-  instr <- sprintf('3dvolreg -verbose -zpad 1 -base %s[%1.0f] -1Dfile %s -1Dmatrix_save %s -prefix %s -Fourier %s ', epiFiles[selectedEpi], nTRs-1, motion1DfileLin, motion1DfileAff, prefixName, epiFiles[nEpi] )
+  instr <- sprintf('3dvolreg -verbose -zpad 1 -base %s[%1.0f] -1Dfile %s -1Dmatrix_save %s -prefix %s -heptic %s ', epiFiles[selectedEpi], nTRs-1, motion1DfileLin, motion1DfileAff, prefixName, epiFiles[nEpi] )
   print( instr )
   system( instr )
 }
