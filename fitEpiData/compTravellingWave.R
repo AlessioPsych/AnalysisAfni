@@ -2,45 +2,60 @@ args <- commandArgs(T)
 print( args )
 
 #rm(list=ls())
-#setwd('/home/fracasso/data/stripesPSF/participants/S01')
-#args <- c('meanTs_cat.nii', '7', '/packages/afni/16.1.13','/home/fracasso/analysisAfni/surfaces')
+#setwd('/media/alessiof/Data/tests/phaseEncodedTest')
+#args <- c('meanWedges_cat.nii.gz', '7', '1' )
 
-source( sprintf('%s/AFNIio.R', args[3] ) )
-source( sprintf('%s/coordinateFromLinearIndex.r', args[4] ) )
-source( sprintf('%s/linearIndexFromCoordinate.r', args[4] ) )
-source( sprintf('%s/scaleData.R', args[7] ) )
-ph_shift_input <- as.numeric( args[6] )
+AFNI_INSTALLDIR <- Sys.getenv( x = 'AFNI_INSTALLDIR' )
+generalPurpose_DIR <- Sys.getenv( x = 'AFNI_TOOLBOXDIRGENERALPURPOSE' )
+surfaces_Dir <- Sys.getenv( x = 'AFNI_TOOLBOXDIRSURFACES' )
+source( sprintf('%s/AFNIio.R', AFNI_INSTALLDIR ) )
+source( sprintf('%s/coordinateFromLinearIndex.r', surfaces_Dir ) )
+source( sprintf('%s/linearIndexFromCoordinate.r', surfaces_Dir ) )
+source( sprintf('%s/scaleData.R', generalPurpose_DIR ) )
+library( pracma )
+#ph_shift_input <- as.numeric( args[4] )
 tsFilename <- args[1]
 instr <- sprintf('3dcopy %s ttt_data.nii.gz',args[1])
 system( instr )
 instr <- '3dTstat -mean -prefix ttt_mean.nii.gz ttt_data.nii.gz'
 system( instr )
-#instr <- '3dcalc -a ttt_data.nii.gz -b ttt_mean.nii.gz -expr \u0027min((a/b)*100,200)\u0027 -prefix ttt_percent.nii.gz'
-#system( instr )
-#instr <- '3dDetrend -polort 1 -prefix ttt_data_detrend.nii.gz ttt_data.nii.gz'
-#instr <- sprintf( '3dDetrend -polort %s -prefix ttt_data_detrend.nii.gz ttt_percent.nii.gz', args[5] )
-#print(instr)
-#system( instr )
+instr <- '3dcalc -a ttt_data.nii.gz -b ttt_mean.nii.gz -expr \u0027min((a/b)*100,200)\u0027 -prefix ttt_percent.nii.gz'
+system( instr )
+instr <- sprintf( '3dDetrend -polort %s -prefix ttt_data_detrend.nii.gz ttt_percent.nii.gz', args[3] )
+print(instr)
+system( instr )
 
 dataMean <- read.AFNI( filename='ttt_data.nii.gz')
 dataBrkMean <- dataMean$brk 
-#dataFile <- read.AFNI( filename='ttt_data_detrend.nii.gz' )
-#dataBrk <- dataFile$brk
-dataFile <- read.AFNI( filename='ttt_data.nii.gz' )
+dataFile <- read.AFNI( filename='ttt_data_detrend.nii.gz' )
 dataBrk <- dataFile$brk
+#dataFile <- read.AFNI( filename='ttt_data.nii.gz' )
+#dataBrk <- dataFile$brk
 
-
+progress <- 0.05
 emptyVol <- array( 0, c( dim(dataBrk)[c(1:3)], 3 ) )
 nCycles <- as.numeric( args[2] )
-selIdx <- seq( 1, ceiling( dim(dataBrk)[4]/2 ) )
+#selIdx <- seq( 1, ceiling( dim(dataBrk)[4]/2 ) )
+selIdx <- seq( 1, 1+round( dim(dataBrk)[4]/2 ) )
 emptyFFT <- array( 0, c( dim(dataBrk)[c(1:3)], length(selIdx) ) )
-for (k in 1:dim(dataBrk)[3] ) {
+for ( k in 1:dim(dataBrk)[3] ) {
   
   dataLoop <- dataBrk[,,k,]
   dataMeanLoop <- dataBrkMean[,,k,]
   dimData <- dim( dataLoop )
   arraySlice <- array( dataLoop, c( prod( dimData[1:2] ), dimData[3] ) )
   arrayMeanSlice <- array( dataMeanLoop, c( prod( dimData[1:2] ), dimData[3] ) )
+  
+  #ft <- apply( arraySlice, 1, fft )
+  #selIdx <- seq( 1, 1+round( dim(ft)[1]/2 ) )
+  #ft <- ft[ selIdx , ];
+  #scaledAmp <- abs( ft );
+  #amp <- 2*( scaledAmp[nCycles+1, ] ) / dim(arraySlice)[1];
+  #sqrtsummagsq <- sqrt( apply( scaledAmp^2, 2, sum ) )
+  #coSlice <- scaledAmp[ nCycles+1, ] / sqrtsummagsq 
+  #ph <- -( pi/2 ) - angle( ft[ nCycles+1, : ] );
+  #ph(ph<0) = ph(ph<0)+pi*2;
+  
   
   sliceFFT <- apply( arraySlice, 1, fft )
   sliceFFT <- t(sliceFFT)
@@ -58,9 +73,10 @@ for (k in 1:dim(dataBrk)[3] ) {
 # 2) minus sign because sin(x-phi) is shifted to the right by phi.
 # 3) Add 2pi to any negative values so phases increase from 0 to 2pi.
 
-  ph_slice <- -(pi/2) - atan2( Im( sliceFFT[,nCycles+1] ), Re( sliceFFT[,nCycles+1] ) ) 
+  #ph_slice <- -(pi/2) - atan2( Im( sliceFFT[,nCycles+1] ), Re( sliceFFT[,nCycles+1] ) ) 
+  ph_slice <- -(pi/2) - angle( sliceFFT[,nCycles+1] )
   ph_slice[ph_slice<0] = ph_slice[ph_slice<0]+pi*2;
-  ph_slice <- ( ph_slice + ph_shift_input ) %% pi*2
+  #ph_slice <- ( ph_slice + ph_shift_input ) %% pi*2
   
   #emptyVol[,,k,1] <- round( amp/sliceMean*100, 4)
   emptyVol[,,k,1] <- round( amp, 4)
@@ -69,7 +85,15 @@ for (k in 1:dim(dataBrk)[3] ) {
   
   periodogram <- 2*( abs( sliceFFT ) / dim(dataBrk)[4] )
   emptyFFT[,,k,] <- round( periodogram[,selIdx], 4 )                          
+  
+  if (k>dim(dataBrk)[3]*progress) {
+    cat(paste('*',""))
+    progress <- progress + 0.05
+  }
+  
 }
+
+print('prepare and save output...')
 
 dataFileOut <- read.AFNI( filename='ttt_mean.nii.gz')
 emptyOut <- array(0,dim(dataFileOut$brk))

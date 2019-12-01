@@ -12,6 +12,6 @@ fi
 
 afni_proc.py -subj_id motionCorrect \
 	-dsets $INPUTDIR*.nii	\
-	-blocks despike volreg -volreg_interp -Fourier
+	-blocks despike volreg
 
 tcsh -xef proc.motionCorrect |& tee output.proc.motionCorrect
