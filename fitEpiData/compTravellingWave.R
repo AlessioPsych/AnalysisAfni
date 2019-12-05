@@ -3,7 +3,7 @@ print( args )
 
 #rm(list=ls())
 #setwd('/media/alessiof/Data/tests/phaseEncodedTest')
-#args <- c('meanWedges_cat.nii.gz', '7', '1' )
+#args <- c('meanWedges_cat_bp.nii.gz', '7' )
 
 AFNI_INSTALLDIR <- Sys.getenv( x = 'AFNI_INSTALLDIR' )
 generalPurpose_DIR <- Sys.getenv( x = 'AFNI_TOOLBOXDIRGENERALPURPOSE' )
@@ -19,18 +19,18 @@ instr <- sprintf('3dcopy %s ttt_data.nii.gz',args[1])
 system( instr )
 instr <- '3dTstat -mean -prefix ttt_mean.nii.gz ttt_data.nii.gz'
 system( instr )
-instr <- '3dcalc -a ttt_data.nii.gz -b ttt_mean.nii.gz -expr \u0027min((a/b)*100,200)\u0027 -prefix ttt_percent.nii.gz'
-system( instr )
-instr <- sprintf( '3dDetrend -polort %s -prefix ttt_data_detrend.nii.gz ttt_percent.nii.gz', args[3] )
-print(instr)
-system( instr )
+#instr <- '3dcalc -a ttt_data.nii.gz -b ttt_mean.nii.gz -expr \u0027min((a/b)*100,200)\u0027 -prefix ttt_percent.nii.gz'
+#system( instr )
+#instr <- sprintf( '3dDetrend -polort %s -prefix ttt_data_detrend.nii.gz ttt_percent.nii.gz', args[3] )
+#print(instr)
+#system( instr )
 
-dataMean <- read.AFNI( filename='ttt_data.nii.gz')
-dataBrkMean <- dataMean$brk 
-dataFile <- read.AFNI( filename='ttt_data_detrend.nii.gz' )
-dataBrk <- dataFile$brk
-#dataFile <- read.AFNI( filename='ttt_data.nii.gz' )
+#dataMean <- read.AFNI( filename='ttt_data.nii.gz')
+#dataBrkMean <- dataMean$brk 
+#dataFile <- read.AFNI( filename='ttt_data_detrend.nii.gz' )
 #dataBrk <- dataFile$brk
+dataFile <- read.AFNI( filename='ttt_data.nii.gz' )
+dataBrk <- dataFile$brk
 
 progress <- 0.05
 emptyVol <- array( 0, c( dim(dataBrk)[c(1:3)], 3 ) )
@@ -41,10 +41,10 @@ emptyFFT <- array( 0, c( dim(dataBrk)[c(1:3)], length(selIdx) ) )
 for ( k in 1:dim(dataBrk)[3] ) {
   
   dataLoop <- dataBrk[,,k,]
-  dataMeanLoop <- dataBrkMean[,,k,]
+  #dataMeanLoop <- dataBrkMean[,,k,]
   dimData <- dim( dataLoop )
   arraySlice <- array( dataLoop, c( prod( dimData[1:2] ), dimData[3] ) )
-  arrayMeanSlice <- array( dataMeanLoop, c( prod( dimData[1:2] ), dimData[3] ) )
+  #arrayMeanSlice <- array( dataMeanLoop, c( prod( dimData[1:2] ), dimData[3] ) )
   
   #ft <- apply( arraySlice, 1, fft )
   #selIdx <- seq( 1, 1+round( dim(ft)[1]/2 ) )
@@ -59,8 +59,8 @@ for ( k in 1:dim(dataBrk)[3] ) {
   
   sliceFFT <- apply( arraySlice, 1, fft )
   sliceFFT <- t(sliceFFT)
-  sliceMean <- apply( arrayMeanSlice, 1, mean )
-  sliceMean <- t(sliceMean)
+  #sliceMean <- apply( arrayMeanSlice, 1, mean )
+  #sliceMean <- t(sliceMean)
   sliceFFT_h <- sliceFFT[ , selIdx ] 
   
   scaledSliceFFT_h <- abs( sliceFFT_h )
