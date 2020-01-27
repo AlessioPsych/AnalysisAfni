@@ -35,6 +35,8 @@ for (levelCounter in 1:dim(inputProfilesVolume)[4]) {
 }
 profilesMat <- profilesMatRaw
 
+profilesMat <- round( scaleData( profilesMat, 8000, 2000) ) # scaling the profiles between 8000 (max) and 2000 (min)
+
 #corticalDepthRaw <- seq( 0, 1, length.out = dim(profilesMatRaw)[2] )
 #corticalDepth <- seq( 0, 1, length.out = 20 )
 #profilesMat <- array(0, c( dim(profilesMatRaw)[1], length( corticalDepth ) ) )
@@ -128,6 +130,20 @@ predictedProfilesName <- sprintf( '%s_predictedProfiles.nii.gz' , outputFilename
 write.AFNI( predictedProfilesName, brk = storePredictedProfiles,
             origin = inputProfilesFile$origin, orient = inputProfilesFile$orient,
             defhead = inputProfilesFile$NI_head)
+
+print('saving scaled profiles...')
+trasposedScaledProfiles <- t( profilesMat )
+storeScaledProfiles <- array( 0, dim(inputProfilesVolume) )
+for (levelCounter in 1:dim(inputProfilesVolume)[4]) {
+  tempVolume <- storeScaledProfiles[,,,levelCounter]
+  tempVolume[ roiIdx ] <- trasposedScaledProfiles[levelCounter,]
+  storeScaledProfiles[,,,levelCounter] <- tempVolume
+}
+scaledProfilesName <- sprintf( '%s_scaledProfiles.nii.gz' , outputFilename )
+write.AFNI( scaledProfilesName, brk = storeScaledProfiles,
+            origin = inputProfilesFile$origin, orient = inputProfilesFile$orient,
+            defhead = inputProfilesFile$NI_head)
+
 
 # saving profiles parameters
 print('saving profiles parameters...')
