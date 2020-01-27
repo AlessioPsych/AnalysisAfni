@@ -64,7 +64,7 @@ runModel <- function(testIndex,runIndex) { #run all models on a single profile
     pGauss <- sumLL$coefficients[2,4]
     #comp <- anova(modLLBase,modLL)
     targetProfile <- modLL$fitted.values
-    return( c( modLL$fitted.values, a, b, tGauss, pGauss, modLL$coefficients, summary(modLL)$r.squared ) )
+    return( c( modLL$fitted.values, a, b, tGauss,17 pGauss, modLL$coefficients, summary(modLL)$r.squared ), sumLL$coefficients[,3] )
   }
   if (modelType==2) {
     modLL <- lm( inData ~ gaussArray + poly(linArray,1) )
@@ -73,7 +73,7 @@ runModel <- function(testIndex,runIndex) { #run all models on a single profile
     pGauss <- sumLL$coefficients[2,4]
     #comp <- anova(modLLBase,modLL)
     targetProfile <- modLL$fitted.values
-    return( c( modLL$fitted.values, a, b, tGauss, pGauss, modLL$coefficients, 999, summary(modLL)$r.squared ) )
+    return( c( modLL$fitted.values, a, b, tGauss, pGauss, modLL$coefficients, 999, summary(modLL)$r.squared ), sumLL$coefficients[,3], 999 )
   }
   
   #return( c( modLL$fitted.values, a, b, comp$F[2], comp$`Pr(>F)`[2], modLL$coefficients, summary(modLL)$r.squared ) )
@@ -82,7 +82,7 @@ runModel <- function(testIndex,runIndex) { #run all models on a single profile
 
 runAllProfiles <- function(nProfile) { #run all profiles
   singleProfileWholeResults <- sapply( 1:dim(testMat)[1], runModel, runIndex=nProfile )
-  positiveGaussParLogical <- singleProfileWholeResults[ dim(singleProfileWholeResults)[1]-3, ] > 0 # are there gaussian parameters > zero
+  positiveGaussParLogical <- singleProfileWholeResults[ dim(singleProfileWholeResults)[1]-7, ] > 0 # are there gaussian parameters > zero
   if (sum( positiveGaussParLogical )>0) { #if there are gaussian parameters larger than zero:
     positiveGaussPar <- which( positiveGaussParLogical )
     winningModelIdx <- which.max( singleProfileWholeResults[ dim(singleProfileWholeResults)[1], positiveGaussPar ] )
@@ -90,7 +90,7 @@ runAllProfiles <- function(nProfile) { #run all profiles
     return( singleProfileResults )
   }
   if (sum( positiveGaussParLogical )==0) { #otherwise
-    return( rep(0, dim(profilesMat)[2]+9 ) ) #parameters stored: the fitted profile + gaussianCenter, sd, f comparison, p comparison, intercept, slope gauss, slope lin, slope quad, r2 
+    return( rep(0, dim(profilesMat)[2]+13 ) ) #parameters stored: the fitted profile + gaussianCenter, sd, f comparison, p comparison, intercept, slope gauss, slope lin, slope quad, r2, t int, t gauss, t lin, t quad
   }
 }
 #system.time( allProfilesResults <- sapply( 1:15, runAllProfiles ) ); dim(allProfilesResults)
@@ -157,7 +157,7 @@ predictedProfilesName <- sprintf( '%s_parameterProfiles.nii.gz' , outputFilename
 write.AFNI( predictedProfilesName, brk = storeParameterProfiles,
             origin = inputProfilesFile$origin, orient = inputProfilesFile$orient,
             defhead = inputProfilesFile$NI_head)
-labels <- c('gaussianCenter', 'sd', 't_gauss', 'p_gauss', 'intercept', 'slope_gauss', 'slope_lin', 'slope_quad', 'r2' )
+labels <- c('gaussianCenter', 'sd', 't_gauss', 'p_gauss', 'intercept', 'slope_gauss', 'slope_lin', 'slope_quad', 'r2', 't_intercept', 't_gauss01', 't_lin', 't_quad' )
 for (k in 1:length(labels)) {
   instr <- sprintf('3drefit -sublabel %1.0f %s %s', round(k-1,0), labels[k], predictedProfilesName )
   print( instr )
