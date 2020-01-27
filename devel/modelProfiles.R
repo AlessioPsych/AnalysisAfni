@@ -64,7 +64,7 @@ runModel <- function(testIndex,runIndex) { #run all models on a single profile
     pGauss <- sumLL$coefficients[2,4]
     #comp <- anova(modLLBase,modLL)
     targetProfile <- modLL$fitted.values
-    return( c( modLL$fitted.values, a, b, tGauss,17 pGauss, modLL$coefficients, summary(modLL)$r.squared ), sumLL$coefficients[,3] )
+    return( c( modLL$fitted.values, a, b, tGauss, pGauss, modLL$coefficients, summary(modLL)$r.squared ), sumLL$coefficients[,3] )
   }
   if (modelType==2) {
     modLL <- lm( inData ~ gaussArray + poly(linArray,1) )
