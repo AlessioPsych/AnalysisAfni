@@ -35,7 +35,7 @@ for (levelCounter in 1:dim(inputProfilesVolume)[4]) {
 }
 profilesMat <- profilesMatRaw
 
-profilesMat <- round( scaleData( profilesMat, 8000, 2000) ) # scaling the profiles between 8000 (max) and 2000 (min)
+#profilesMat <- round( scaleData( profilesMat, 8000, 2000) ) # scaling the profiles between 8000 (max) and 2000 (min)
 
 #corticalDepthRaw <- seq( 0, 1, length.out = dim(profilesMatRaw)[2] )
 #corticalDepth <- seq( 0, 1, length.out = 20 )
