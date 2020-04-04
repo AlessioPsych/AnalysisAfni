@@ -40,7 +40,7 @@ dataPh <- dataFile$brk[,,,volToShift]
 # plot( sin( (piSpace+phi) ) ~ piSpace, type='l', col='red'  ); lines( piSpace, sin( piSpace ) ); legend(4,0.5, legend=c('original','shifted'), fill=c('black','red')  )
 
 # shift phase data
-dataPhShift <- ( dataPh + shiftRadiants ) %% (2*pi)
+dataPhShift <- ( ( dataPh + shiftRadiants ) %% (2*pi) ) - pi
 dataFile$brk[,,,volToShift] <- dataPhShift
 
 print('prepare and save output...')

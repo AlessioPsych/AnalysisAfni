@@ -7,7 +7,7 @@ POLORT=$3
 
 if [ -z "$1" ]
 then
-echo 'detrends time series'
+echo 'scales and detrends time series'
 echo 'Inputs:'
 echo 'INPUTDIR=$1, input directory, put the backslash!'
 echo 'FILEFORMAT=$2, file format in regex (like: *.BRIK)' 
