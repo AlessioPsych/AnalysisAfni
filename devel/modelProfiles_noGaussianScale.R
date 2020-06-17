@@ -83,14 +83,20 @@ runModel <- function(testIndex,runIndex) { #run all models on a single profile
 
 runAllProfiles <- function(nProfile) { #run all profiles
   singleProfileWholeResults <- sapply( 1:dim(testMat)[1], runModel, runIndex=nProfile )
+
   positiveGaussParLogical <- singleProfileWholeResults[ dim(singleProfileWholeResults)[1]-7, ] > 0 # are there gaussian parameters > zero
-  if (sum( positiveGaussParLogical )>0) { #if there are gaussian parameters larger than zero:
-    positiveGaussPar <- which( positiveGaussParLogical )
+  positiveInterceptParLogical <- singleProfileWholeResults[ dim(singleProfileWholeResults)[1]-8, ] > 0 # are there intercept parameters > zero
+  negativeLinearParLogical <- singleProfileWholeResults[ dim(singleProfileWholeResults)[1]-6, ] < 0 # are there linear parameters < zero
+
+  globalLogical <- positiveGaussParLogical & positiveInterceptParLogical & negativeLinearParLogical
+
+  if (sum( globalLogical )>0) { #if we meet the logical criteria (set in global logical)
+    positiveGaussPar <- which( globalLogical )
     winningModelIdx <- which.max( singleProfileWholeResults[ dim(singleProfileWholeResults)[1], positiveGaussPar ] )
     singleProfileResults <- singleProfileWholeResults[, positiveGaussPar[ winningModelIdx ] ]
     return( singleProfileResults )
   }
-  if (sum( positiveGaussParLogical )==0) { #otherwise
+  if (sum( globalLogical )==0) { #otherwise
     return( rep(0, dim(profilesMat)[2]+13 ) ) #parameters stored: the fitted profile + gaussianCenter, sd, f comparison, p comparison, intercept, slope gauss, slope lin, slope quad, r2, t int, t gauss, t lin, t quad
   }
 }
