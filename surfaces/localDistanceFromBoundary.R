@@ -7,9 +7,12 @@ mainDir <- getwd()
 #setwd( mainDir )
 #args <- c('roiBoundary00.1D.roi','0.1','boundary00','mapOnSurface_smoothed_8/','15','/packages/afni/16.1.13','/home/fracasso/analysisAfni')
 
+mainDir <- '/analyse/Project0226/stripesData/P1/analysis_figures' 
+setwd( mainDir )
+args <- c( 'testRoi.1D.roi', '0', '5', 'phaseSpecCohMax_interp_surfaces_folder/','7','/home/alessiof/abin','/home/alessiof/Programs/AnalysisAfni')
+
 source( sprintf('%s/AFNIio.R', args[6]) )
-source( sprintf('%s/load1DData.R', args[7]) )
-source( sprintf('%s/generateProfiles.R', args[7]) )
+source( sprintf('%s/generalPurpose/load1DData.R', args[7]) )
 
 instr <- sprintf( 'cp %s ttt_tempRoi.1D.roi', args[1] )
 system( instr )
@@ -24,8 +27,6 @@ indexSurface <- as.numeric( args[5] )
 
 setwd(mainDir)
 roiData <- read.table( 'ttt_tempRoi.1D.roi' )
-#instr <- sprintf( 'mappingBetweenSurfaces_ROI.sh ttt_tempRoi.1D.roi %s', as.character( columnIndex-1 ) )  
-#system( instr )
 
 setwd(mainDir)
 setwd( args[4]  )
@@ -54,9 +55,11 @@ mapValListStat <- load1DData( args[4], fileNumber, 5, '*.1D.dset' )
 #selNodesIdx <- which( abs( pRoi_01$intensity[,columnIndex] ) < as.numeric( args[2] ) )
 #selNodes <- surfValListRoi[[columnIndex]][selNodesIdx,1]
 #write.table( cbind( selNodes, rep(1, length(selNodes) ) ), file = 'ttt_bound.1D.roi', row.names = FALSE, col.names = FALSE  ) 
+
 setwd(mainDir)
 roiIntensity <- mapValListStat[[columnIndex]][ roiData[,1]+1  ,indexSurface]
-selNodesIdx <- which( abs( roiIntensity ) <= as.numeric( args[2] ) )
+selNodesIdx <- which( roiIntensity <= as.numeric( args[2] ) )
+#selNodesIdx <- selNodesIdx[ seq(1,length(selNodesIdx),by=15) ] #downsample
 selNodes <- roiData[selNodesIdx,1]
 write.table( cbind( selNodes, rep(1, length(selNodes) ) ), file = 'ttt_bound.1D.roi', row.names = FALSE, col.names = FALSE  ) 
 
@@ -86,11 +89,12 @@ write.table( cbind( selNodes, rep(1, length(selNodes) ) ), file = 'ttt_bound.1D.
 
 ## first step
 
-setwd(mainDir)
-roiIntensity <- mapValListStat[[columnIndex]][ roiData[,1]+1  ,indexSurface]
-selNodesIdx <- which( roiIntensity < as.numeric( args[2] ) )
+#setwd(mainDir)
+#roiIntensity <- mapValListStat[[columnIndex]][ roiData[,1]+1  ,indexSurface]
+#selNodesIdx <- which( roiIntensity < as.numeric( args[2] ) )
 
 #selNodesIdx <- which( pRoi_01$intensity[,columnIndex] < as.numeric( args[2] ) )
+
 selStartNodes <- selNodes
 sel_roi_nodes <- roiData[selNodesIdx,1]
 rep_roi_nodes_start <- rep( sel_roi_nodes, length(selStartNodes)  )
@@ -99,7 +103,7 @@ write.table( cbind( startNodes, rep_roi_nodes_start ), file='ttt_datasetStart.1D
 
 print('compute distance from starting nodes to positive roi nodes...')
 
-instr <- sprintf( 'SurfDist -i_1D surfaces_folder/%s_sm.1D.coord surfaces_folder/%s_or.1D.topo -input ttt_datasetStart.1D > ttt_exampleStart.1D', args[3], args[3] )
+instr <- sprintf( 'SurfDist -i_1D surfaces_folder/boundary0%s_sm.1D.coord surfaces_folder/boundary0%s_or.1D.topo -input ttt_datasetStart.1D > ttt_exampleStart.1D', args[3], args[3] )
 system.time( system( instr ) )
 
 print('compute smallest distance from each node and the start line...')
@@ -111,7 +115,7 @@ mapOutStart <- array( 0, c(length( uniqueRoiPoints),2) )
 for (k in 1:length( uniqueRoiPoints) ) {
   indexSel <- which( fromStart[,2]==uniqueRoiPoints[k] )
   selDF <- fromStart[indexSel,]
-  indexMin <- which( selDF[,3]==min( selDF[,3] ) )[1]
+  indexMin <- which( selDF[,3]==max( selDF[,3] ) )[1]
   mapOutStart[k,] <- as.numeric( selDF[indexMin,c(2,3)] )
 }
 
@@ -131,8 +135,7 @@ write.table( mat01, file = 'ttt_boundDist01.dset', row.names = FALSE, col.names 
 setwd(mainDir)
 roiIntensity <- mapValListStat[[columnIndex]][ roiData[,1]+1  ,indexSurface]
 selNodesIdx <- which( roiIntensity > as.numeric( args[2] ) )
-
-#selNodesIdx <- which( pRoi_01$intensity[,columnIndex] > 0.1 )
+#selNodesIdx <- selNodesIdx[ seq(1,length(selNodesIdx),by=15) ] #downsample
 selStartNodes <- selNodes
 sel_roi_nodes <- roiData[selNodesIdx,1]
 rep_roi_nodes_start <- rep( sel_roi_nodes, length(selStartNodes)  )
@@ -141,7 +144,7 @@ write.table( cbind( startNodes, rep_roi_nodes_start ), file='ttt_datasetStart.1D
 
 print('compute distance from starting nodes to negative roi nodes...')
 
-instr <- sprintf( 'SurfDist -i_1D surfaces_folder/%s_sm.1D.coord surfaces_folder/%s_or.1D.topo -input ttt_datasetStart.1D > ttt_exampleStart.1D', args[3], args[3] )
+instr <- sprintf( 'SurfDist -i_1D surfaces_folder/boundary0%s_sm.1D.coord surfaces_folder/boundary0%s_or.1D.topo -input ttt_datasetStart.1D > ttt_exampleStart.1D', args[3], args[3] )
 system.time( system( instr ) )
 
 print('compute smallest distance from each node and the start line...')
@@ -166,11 +169,10 @@ setwd(mainDir)
 firstSet <- read.table( 'ttt_boundDist01.dset' ) 
 selFirstSet <- firstSet[ firstSet[,4] < 1, 1 ]
 
-
 roiIntensity <- mapValListStat[[columnIndex]][ roiData[,1]+1  ,indexSurface]
-selNodesIdx <- which( abs(roiIntensity) < as.numeric( args[2] ) )
+selNodesIdx <- which( roiIntensity < as.numeric( args[2] ) )
+#selNodesIdx <- selNodesIdx[ seq(1,length(selNodesIdx),by=15) ] #downsample
 
-#selNodesIdx <- which( abs(pRoi_01$intensity[,columnIndex]) < 0.1 )
 selStartNodes <- selFirstSet
 sel_roi_nodes <- roiData[selNodesIdx,1]
 rep_roi_nodes_start <- rep( sel_roi_nodes, length(selStartNodes)  )
@@ -179,7 +181,7 @@ write.table( cbind( startNodes, rep_roi_nodes_start ), file='ttt_datasetStart.1D
 
 print('compute distance from starting nodes in the boundary - step 01...')
 
-instr <- sprintf( 'SurfDist -i_1D surfaces_folder/%s_sm.1D.coord surfaces_folder/%s_or.1D.topo -input ttt_datasetStart.1D > ttt_exampleStart.1D', args[3], args[3] )
+instr <- sprintf( 'SurfDist -i_1D surfaces_folder/boundary0%s_sm.1D.coord surfaces_folder/boundary0%s_or.1D.topo -input ttt_datasetStart.1D > ttt_exampleStart.1D', args[3], args[3] )
 system.time( system( instr ) )
 
 print('compute smallest distance from each node and the start line...')
@@ -207,9 +209,9 @@ firstSet <- read.table( 'ttt_boundDist02.dset' )
 selFirstSet <- firstSet[ firstSet[,4] < 1, 1 ]
 
 roiIntensity <- mapValListStat[[columnIndex]][ roiData[,1]+1  ,indexSurface]
-selNodesIdx <- which( abs(roiIntensity) < as.numeric( args[2] ) )
+selNodesIdx <- which( roiIntensity < as.numeric( args[2] ) )
+#selNodesIdx <- selNodesIdx[ seq(1,length(selNodesIdx),by=15) ] #downsample
 
-#selNodesIdx <- which( abs(pRoi_01$intensity[,columnIndex]) < 0.1 )
 selStartNodes <- selFirstSet
 sel_roi_nodes <- roiData[selNodesIdx,1]
 rep_roi_nodes_start <- rep( sel_roi_nodes, length(selStartNodes)  )
@@ -218,7 +220,7 @@ write.table( cbind( startNodes, rep_roi_nodes_start ), file='ttt_datasetStart.1D
 
 print('compute distance from starting nodes in the boundary - step 02...')
 
-instr <- sprintf( 'SurfDist -i_1D surfaces_folder/%s_sm.1D.coord surfaces_folder/%s_or.1D.topo -input ttt_datasetStart.1D > ttt_exampleStart.1D', args[3], args[3] )
+instr <- sprintf( 'SurfDist -i_1D surfaces_folder/boundary0%s_sm.1D.coord surfaces_folder/boundary0%s_or.1D.topo -input ttt_datasetStart.1D > ttt_exampleStart.1D', args[3], args[3] )
 system.time( system( instr ) )
 
 print('compute smallest distance from each node (downsampled) and the start line...')
@@ -277,8 +279,8 @@ cMedian <- tapply( outSetMiddle02Filt[,4], list(cBin), median )
 dcMedian <- diff( cMedian )
 xVar <- cMedian[ seq( 1, length(dcMedian), 1 ) ]
 ssp <- smooth.spline( xVar, dcMedian, spar=1 )
-#plot( dcMedian~xVar )
-#lines( ssp )
+plot( dcMedian~xVar )
+lines( ssp )
 storeConst <- min( ssp$y )
 
 corrDist <- round( ifelse( outSetMiddle02Filt[,4] > 0, outSetMiddle02Filt[,4]-storeConst/2, outSetMiddle02Filt[,4]+storeConst/2 ), 2 )
@@ -288,7 +290,7 @@ cMedian <- tapply( corrDist, list(cBin), median )
 dcMedian <- diff( cMedian )
 xVar <- cMedian[ seq( 1, length(dcMedian), 1 ) ]
 ssp <- smooth.spline( xVar, dcMedian, spar=1 )
-#plot( dcMedian~xVar )
+plot( dcMedian~xVar )
 #lines( ssp )
 
 
