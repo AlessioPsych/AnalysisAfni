@@ -13,11 +13,11 @@ echo 'MPRAGE, input anatomy'
 echo 'SEGMENTATIONFILE, can be cortical depth file'
 echo 'BOUNDARIESFILE, boundaries file from volumetric layering'
 echo 'NONLINEARFLAG, non linear registration flag (0,1)'
-echo 'example call: surfacesHemisphere.sh anatCopy.nii.gz volumetricData_layering_depth.nii.gz boundariesFiles.nii.gz 1'
+echo 'example call: surfacesHemisphere.sh anatCopy.nii.gz volumetricData_layering_depth.nii.gz volumetricData_layering_boundaries.nii.gz 1'
 exit 1
 fi
 
-hemisphereSeparation.sh $MPRAGE $SEGMENTATIONFILE $AFNI_INSTALLDIR/TT_icbm452+tlrc $NONLINEARFLAG
+hemisphereSeparation.sh $MPRAGE $SEGMENTATIONFILE $AFNI_ATLASDIR_TOOLBOX/TT_icbm452+tlrc $NONLINEARFLAG
 
 3dTcat -prefix _del_boundariesSel.nii.gz $BOUNDARIESFILE[1,3,6] 
 

@@ -17,7 +17,7 @@ echo 'example call: hemisphereSeparation.sh anatCopy.nii.gz volumetricData_layer
 exit 1
 fi
 
-hemisphereSeparation.sh $MPRAGE $SEGMENTATIONFILE $AFNI_INSTALLDIR/TT_icbm452+tlrc 1
+hemisphereSeparation.sh $MPRAGE $SEGMENTATIONFILE $AFNI_ATLASDIR_TOOLBOX/TT_icbm452+tlrc 1
 
 3dTcat -prefix _del_boundariesSel.nii.gz $BOUNDARIESFILE[1,3,6] 
 
