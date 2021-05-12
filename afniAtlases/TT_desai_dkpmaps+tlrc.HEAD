@@ -1,0 +1,746 @@
+
+type = string-attribute
+name = HISTORY_NOTE
+count = 109894
+'[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:34 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:34 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:34 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:34 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:37:51 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:59:23 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:59:26 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:59:28 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:59:28 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:34 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:34 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:33 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:33 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:33 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:33 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:36:37 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:58:09 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:58:12 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:58:13 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:58:13 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:33 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:33 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:33 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:33 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:33 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:33 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:35:24 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:57:01 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:57:04 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:57:05 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:57:05 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:33 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:33 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:32 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:32 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:32 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:32 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:34:13 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:55:53 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:55:56 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:55:58 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:55:58 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:32 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:32 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:32 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:32 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:32 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:32 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:32:59 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:54:46 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:54:49 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:54:50 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:54:50 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:32 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:32 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:31 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:31 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:31 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:31 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:31:45 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:53:36 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:53:38 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:53:40 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:53:40 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:31 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:31 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:31 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:31 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:31 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:31 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:30:34 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:52:25 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:52:28 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:52:29 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:52:29 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:31 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:31 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:30 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:30 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:30 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:30 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:29:21 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:51:15 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:51:18 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:51:20 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:51:20 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:30 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:30 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:30 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:30 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:30 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:30 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:28:11 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:50:05 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:50:08 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:50:10 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:50:10 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:30 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:30 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:29 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:29 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:29 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:29 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:26:59 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:48:57 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:49:00 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:49:02 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:49:02 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:29 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:29 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:29 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:29 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:29 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:29 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:25:45 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:47:43 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:47:46 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:47:47 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:47:47 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:29 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:29 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:28 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:28 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:28 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:28 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:24:35 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:46:36 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:46:38 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:46:40 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:46:40 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:28 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:28 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:28 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:28 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:28 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:28 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:23:21 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:45:27 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:45:30 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:45:31 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:45:32 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:28 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:28 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:27 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:27 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:27 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:27 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:22:04 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:44:17 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:44:20 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:44:21 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:44:21 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:27 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:27 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:27 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:27 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:27 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:27 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:20:52 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:42:46 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:42:48 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:42:50 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:42:50 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:27 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:27 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:26 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:26 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:26 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:26 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:19:39 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:41:38 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:41:41 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:41:43 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:41:43 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:26 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:26 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:26 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:26 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:26 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:26 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:18:25 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:40:30 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:40:33 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:40:34 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:40:34 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:26 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:26 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:25 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:25 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:25 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:25 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:17:11 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:39:20 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:39:23 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:39:24 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:39:24 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:25 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:25 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:24 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:24 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:24 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:24 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:16:00 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:38:11 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:38:14 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:38:15 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:38:16 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:24 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:24 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:24 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:24 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:24 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:24 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:14:42 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:37:02 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:37:05 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:37:06 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:37:07 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:24 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:24 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:23 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:23 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:23 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:23 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:13:30 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:35:53 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:35:55 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:35:57 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:35:57 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:23 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:23 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:23 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:23 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:23 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:23 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:12:15 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:34:42 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:34:45 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:34:46 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:34:46 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:23 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:23 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:22 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:22 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:22 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:22 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:11:04 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:33:33 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:33:35 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:33:37 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:33:37 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:22 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:22 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:22 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:22 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:22 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:22 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:09:50 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:32:23 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:32:25 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:32:27 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:32:27 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:22 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:22 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:21 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:21 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:21 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:21 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:08:36 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:31:15 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:31:18 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:31:20 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:31:20 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:21 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:21 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:21 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:21 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:21 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:21 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:07:23 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:29:58 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:30:00 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:30:02 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:30:02 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:21 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:21 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:20 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:20 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:20 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:20 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:06:13 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:28:47 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:28:50 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:28:52 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:28:52 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:20 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:20 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:20 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:20 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:20 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:20 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:05:00 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:27:39 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:27:42 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:27:44 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:27:44 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:20 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:20 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:19 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:19 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:19 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:19 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:03:46 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:26:21 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:26:24 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:26:25 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:26:25 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:19 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:19 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:19 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:19 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:19 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:19 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:02:31 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:25:09 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:25:12 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:25:14 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:25:14 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:19 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:19 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:18 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:18 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:18 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:18 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:01:20 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:23:51 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:23:54 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:23:56 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:23:56 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:18 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:18 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:18 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:18 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:18 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:18 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 16:00:07 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:22:43 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:22:45 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:22:47 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:22:47 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:18 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:18 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:17 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:17 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:17 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:17 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:58:54 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:21:35 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:21:37 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:21:39 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:21:39 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:17 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:17 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:17 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:17 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:17 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:17 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:57:40 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:20:28 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:20:30 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:20:32 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:20:32 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:17 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:17 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:16 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:16 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:16 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:16 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:56:23 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:19:20 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:19:23 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:19:24 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:19:24 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:16 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:16 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:16 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:16 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:16 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:16 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:55:08 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:18:08 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:18:11 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:18:13 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:18:13 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:16 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:16 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:15 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:15 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:15 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:15 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:53:56 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:16:54 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:16:57 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:16:59 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:16:59 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:15 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:15 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:15 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:15 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:15 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:15 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:52:42 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:15:45 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:15:48 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:15:49 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:15:49 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:15 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:15 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:14 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:14 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:14 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:14 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:51:28 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:14:35 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:14:38 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:14:40 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:14:40 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:14 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:14 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:14 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:14 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:14 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:14 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:50:16 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:13:25 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:13:28 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:13:29 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:13:29 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:14 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:14 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:13 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:13 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:13 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:13 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:49:03 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:12:15 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:12:17 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:12:19 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:12:19 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:13 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:13 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:12 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:12 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:12 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:12 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:47:50 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:11:04 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:11:07 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:11:09 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:11:09 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:12 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:12 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:12 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:12 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:12 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:12 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:46:39 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:09:57 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:10:00 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:10:02 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:10:02 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:12 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:12 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:11 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:11 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:11 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:11 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:45:29 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:08:48 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:08:51 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:08:53 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:08:53 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:11 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:11 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:11 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:11 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:11 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:11 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:44:18 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:07:40 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:07:42 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:07:44 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:07:44 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:11 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:11 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:10 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:10 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:10 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:10 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:43:00 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:06:32 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:06:34 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:06:36 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:06:36 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:10 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:10 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:10 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:10 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:10 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:10 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:41:48 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:05:16 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:05:19 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:05:20 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:05:20 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:10 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:10 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:09 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:09 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:09 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:09 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:40:37 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:04:05 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:04:07 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:04:09 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:04:09 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:09 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:09 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:09 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:09 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:09 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:09 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:39:23 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:02:55 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:02:58 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:02:59 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:02:59 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:09 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:09 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:08 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:08 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:08 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:08 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:38:12 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:01:44 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:01:47 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:01:48 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:01:48 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:08 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:08 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:08 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:08 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:08 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:08 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:37:00 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:00:31 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:00:34 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:00:35 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 23:00:35 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:08 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:08 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:07 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:07 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:07 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:07 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:35:45 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:59:21 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:59:24 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:59:26 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:59:26 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:07 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:07 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:07 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:07 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:07 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:07 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:34:29 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:58:10 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:58:13 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:58:14 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:58:14 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:07 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:07 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:06 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:06 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:06 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:06 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:33:18 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:56:59 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:57:01 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:57:03 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:57:03 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:06 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:06 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:06 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:06 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:06 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:06 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:32:04 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:55:42 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:55:44 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:55:46 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:55:46 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:06 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:06 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:05 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:05 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:05 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:05 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:30:50 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:54:36 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:54:39 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:54:40 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:54:41 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:05 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:05 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:05 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:05 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:05 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:05 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:29:36 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:53:26 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:53:29 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:53:30 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:53:30 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:05 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:05 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:04 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:04 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:04 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:04 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:28:23 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:52:14 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:52:16 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:52:18 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:52:18 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:04 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:04 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:04 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:04 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:04 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:04 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 15:27:09 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:51:02 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:51:05 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:51:07 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:51:07 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:04 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:04 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:03 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:03 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:03 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:03 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 11:53:37 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:49:52 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:49:55 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:49:56 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:49:57 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:03 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:03 2010] [rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:03 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:03 2010] === History of inputs to 3dcalc ===\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:03 2010] === Input a:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:03 2010] [rhdesai@moe.neuro.mcw.edu: Wed Jul 28 11:12:17 2010] 3dcalc -a aparc+aseg.nii.gz -expr a -prefix aparc+aseg\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:48:41 2010] 3dZeropad -I 40 -S 40 -A 40 -P 40 -L 40 -R 40 -mm -prefix ./__ats_tmp__ipad aparc+aseg+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:48:44 2010] 3dWarp -matparent ./brain_TT_N27+tlrc -prefix __ats_tmp__warp_tmp -NN __ats_tmp__ipad+orig\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:48:46 2010] 3dresample -master brain_TT_N27+tlrc -dxyz 1 1 1 -prefix aparc+aseg_TT_N27 -inset __ats_tmp__warp_tmp+orig -rmode NN\n[rhdesai@moe.neuro.mcw.edu: Thu Aug  5 22:48:46 2010] Dataset created via: @auto_tlrc -no_ss -rmode NN -apar brain_TT_N27+tlrc -input aparc+aseg+orig -suffix _TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:03 2010] === Input b:\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:03 2010] [dglen@gollum.local: Wed Aug  1 13:46:01 2007] 3dcopy /Users/dglen/spm5/toolbox/Anatomy/colin27T1_seg.hdr ./MNIa_N27+tlrc\n[dglen@gollum.local: Wed Aug  1 13:46:01 2007] 3drefit -sublabel 0 colin27T1_seg MNIa_N27+tlrc\n[dglen@gollum.local: Wed Aug  1 13:46:02 2007] 3dcopy ./MNIa_N27+tlrc MNI_N27\n[dglen@gollum.local: Wed Aug  1 13:46:02 2007] 3drefit -dxorigin 0.000000 -dyorigin -4.000000 -dzorigin -5.000000 MNI_N27+tlrc\n[dglen@gollum.local: Wed Aug  1 13:46:02 2007] @Shift_Volume -MNI_Anat_to_MNI -dset MNIa_N27+tlrc -prefix MNI_N27\n[dglen@gollum.local: Wed Aug  1 13:46:03 2007] adwarp.c -resam Cu -force -apar /Users/dglen/afni/src/ZILLES_N27_ATLASES/N27/TT_N27+tlrc.HEAD -dpar MNI_N27+tlrc -prefix TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:02 2010] 3dcalc -a /usr/local/share/afni/TT_N27+tlrc -expr 0 -prefix ctx-lh-bankssts\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:03 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:03 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/1225/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:03 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:03 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/1378/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:04 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:04 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/137/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:04 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:04 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/1399/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:05 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:05 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/1708/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:05 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:05 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/1798/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:06 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:06 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/1808/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:06 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:06 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/1835/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:07 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:07 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/1875/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:07 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:07 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/1991/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:08 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:08 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2177/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:08 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:08 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2200/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:09 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:09 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2219/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:09 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:09 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2233/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:10 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:10 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2253/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:10 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:10 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2289/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:11 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:11 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2292/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:11 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:11 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2295/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:12 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:12 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2302/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:12 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:12 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2310/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:13 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:13 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2339/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:14 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:14 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2347/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:14 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:14 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2370/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:15 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:15 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2388/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:15 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:15 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2396/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:16 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:16 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2426/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:16 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:16 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2516/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:17 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:17 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/2690/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:17 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:17 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3078/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:18 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:18 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3283/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:18 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:18 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3314/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:19 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:19 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3319/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:19 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:19 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3327/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:20 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:20 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3340/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:20 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:20 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3341/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:21 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:21 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3343/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:21 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:21 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3354/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:22 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:22 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3361/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:22 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:22 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3363/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:23 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:23 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3364/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:23 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:23 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3369/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:24 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:24 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3379/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:24 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:24 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3382/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:25 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:25 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3386/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:26 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:26 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3398/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:26 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:26 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3418/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:27 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:27 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3494/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:27 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:27 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3519/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:28 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:28 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3602/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:28 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:28 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3629/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:29 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:29 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3649/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:29 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:29 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3721/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:30 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:30 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3800/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:30 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:30 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3810/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:31 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:31 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3818/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:31 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:31 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3959/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:32 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:32 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/3995/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:32 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:32 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/4120/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:33 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:33 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/4170/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:33 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:33 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/481/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:34 2010] ===================================\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:34 2010] 3dcalc -a /home/rhdesai/Prob_ML_Atlas/720/mri/aparc+aseg_TT_N27+tlrc -b ctx-lh-bankssts+tlrc -expr 'equals(a,1001)+b' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:34 2010] 3dcalc -a ctx-lh-bankssts+tlrc -expr '100*a/61' -prefix temp\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:22:35 2010] 3dcopy ctx-lh-bankssts+tlrc desikan_killiany.desai_prob.at_TT_N27\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:23:05 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-caudalanteriorcingulate+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:23:35 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-caudalmiddlefrontal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:24:06 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-corpuscallosum+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:25:09 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-cuneus+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:26:38 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-entorhinal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:27:15 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-fusiform+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:27:46 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-inferiorparietal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:28:18 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-inferiortemporal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:28:50 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-isthmuscingulate+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:29:22 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-lateraloccipital+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:29:54 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-lateralorbitofrontal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:30:26 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-lingual+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:30:59 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-medialorbitofrontal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:31:33 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-middletemporal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:32:16 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-parahippocampal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:32:49 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-paracentral+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:33:22 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-parsopercularis+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:33:55 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-parsorbitalis+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:34:28 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-parstriangularis+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:35:02 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-pericalcarine+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:35:35 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-postcentral+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:36:09 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-posteriorcingulate+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:36:43 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-precentral+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:37:17 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-precuneus+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:37:51 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-rostralanteriorcingulate+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:38:26 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-rostralmiddlefrontal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:39:01 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-superiorfrontal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:39:36 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-superiorparietal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:40:12 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-superiortemporal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:40:47 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-supramarginal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:41:23 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-frontalpole+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:41:59 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-temporalpole+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:42:34 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-transversetemporal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:43:11 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-lh-insula+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:43:47 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-bankssts+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:44:23 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-caudalanteriorcingulate+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:45:00 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-caudalmiddlefrontal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:45:36 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-corpuscallosum+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:46:13 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-cuneus+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:46:50 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-entorhinal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:47:27 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-fusiform+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:48:04 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-inferiorparietal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:48:42 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-inferiortemporal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:49:19 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-isthmuscingulate+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:49:57 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-lateraloccipital+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:50:36 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-lateralorbitofrontal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:51:18 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-lingual+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:51:56 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-medialorbitofrontal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:52:35 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-middletemporal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:53:15 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-parahippocampal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:53:55 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-paracentral+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:54:33 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-parsopercularis+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:55:12 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-parsorbitalis+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:55:51 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-parstriangularis+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:56:30 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-pericalcarine+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:57:10 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-postcentral+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:57:49 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-posteriorcingulate+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:58:30 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-precentral+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:59:10 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-precuneus+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 09:59:50 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-rostralanteriorcingulate+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 10:00:30 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-rostralmiddlefrontal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 10:01:12 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-superiorfrontal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 10:01:53 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-superiorparietal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 10:02:34 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-superiortemporal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 10:03:15 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-supramarginal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 10:03:57 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-frontalpole+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 10:04:38 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-temporalpole+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 10:05:19 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-transversetemporal+tlrc\n[rhdesai@moe.neuro.mcw.edu: Fri Aug  6 10:06:02 2010] 3dbucket -glueto desikan_killiany.desai_prob.at_TT_N27+tlrc ctx-rh-insula+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:18 2011] 3drefit -sublabel 0 ctx-lh-bankssts desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:19 2011] 3drefit -sublabel 1 ctx-lh-caudalanteriorcingulate desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:19 2011] 3drefit -sublabel 2 ctx-lh-caudalmiddlefrontal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:19 2011] 3drefit -sublabel 3 ctx-lh-corpuscallosum desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:19 2011] 3drefit -sublabel 4 ctx-lh-cuneus desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:19 2011] 3drefit -sublabel 5 ctx-lh-entorhinal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:19 2011] 3drefit -sublabel 6 ctx-lh-fusiform desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:19 2011] 3drefit -sublabel 7 ctx-lh-inferiorparietal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:19 2011] 3drefit -sublabel 8 ctx-lh-inferiortemporal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:19 2011] 3drefit -sublabel 9 ctx-lh-isthmuscingulate desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:19 2011] 3drefit -sublabel 10 ctx-lh-lateraloccipital desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:20 2011] 3drefit -sublabel 11 ctx-lh-lateralorbitofrontal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:20 2011] 3drefit -sublabel 12 ctx-lh-lingual desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:20 2011] 3drefit -sublabel 13 ctx-lh-medialorbitofrontal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:20 2011] 3drefit -sublabel 14 ctx-lh-middletemporal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:20 2011] 3drefit -sublabel 15 ctx-lh-parahippocampal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:20 2011] 3drefit -sublabel 16 ctx-lh-paracentral desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:20 2011] 3drefit -sublabel 17 ctx-lh-parsopercularis desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:20 2011] 3drefit -sublabel 18 ctx-lh-parsorbitalis desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:20 2011] 3drefit -sublabel 19 ctx-lh-parstriangularis desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:21 2011] 3drefit -sublabel 20 ctx-lh-pericalcarine desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:21 2011] 3drefit -sublabel 21 ctx-lh-postcentral desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:21 2011] 3drefit -sublabel 22 ctx-lh-posteriorcingulate desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:21 2011] 3drefit -sublabel 23 ctx-lh-precentral desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:21 2011] 3drefit -sublabel 24 ctx-lh-precuneus desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:21 2011] 3drefit -sublabel 25 ctx-lh-rostralanteriorcingulate desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:21 2011] 3drefit -sublabel 26 ctx-lh-rostralmiddlefrontal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:21 2011] 3drefit -sublabel 27 ctx-lh-superiorfrontal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:21 2011] 3drefit -sublabel 28 ctx-lh-superiorparietal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:22 2011] 3drefit -sublabel 29 ctx-lh-superiortemporal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:22 2011] 3drefit -sublabel 30 ctx-lh-supramarginal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:22 2011] 3drefit -sublabel 31 ctx-lh-frontalpole desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:22 2011] 3drefit -sublabel 32 ctx-lh-temporalpole desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:22 2011] 3drefit -sublabel 33 ctx-lh-transversetemporal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:22 2011] 3drefit -sublabel 34 ctx-lh-insula desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:22 2011] 3drefit -sublabel 35 ctx-rh-bankssts desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:22 2011] 3drefit -sublabel 36 ctx-rh-caudalanteriorcingulate desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:22 2011] 3drefit -sublabel 37 ctx-rh-caudalmiddlefrontal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:22 2011] 3drefit -sublabel 38 ctx-rh-corpuscallosum desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:23 2011] 3drefit -sublabel 39 ctx-rh-cuneus desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:23 2011] 3drefit -sublabel 40 ctx-rh-entorhinal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:23 2011] 3drefit -sublabel 41 ctx-rh-fusiform desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:23 2011] 3drefit -sublabel 42 ctx-rh-inferiorparietal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:23 2011] 3drefit -sublabel 43 ctx-rh-inferiortemporal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:23 2011] 3drefit -sublabel 44 ctx-rh-isthmuscingulate desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:23 2011] 3drefit -sublabel 45 ctx-rh-lateraloccipital desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:23 2011] 3drefit -sublabel 46 ctx-rh-lateralorbitofrontal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:23 2011] 3drefit -sublabel 47 ctx-rh-lingual desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:23 2011] 3drefit -sublabel 48 ctx-rh-medialorbitofrontal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:24 2011] 3drefit -sublabel 49 ctx-rh-middletemporal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:24 2011] 3drefit -sublabel 50 ctx-rh-parahippocampal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:24 2011] 3drefit -sublabel 51 ctx-rh-paracentral desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:24 2011] 3drefit -sublabel 52 ctx-rh-parsopercularis desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:24 2011] 3drefit -sublabel 53 ctx-rh-parsorbitalis desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:24 2011] 3drefit -sublabel 54 ctx-rh-parstriangularis desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:24 2011] 3drefit -sublabel 55 ctx-rh-pericalcarine desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:24 2011] 3drefit -sublabel 56 ctx-rh-postcentral desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:24 2011] 3drefit -sublabel 57 ctx-rh-posteriorcingulate desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:25 2011] 3drefit -sublabel 58 ctx-rh-precentral desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:25 2011] 3drefit -sublabel 59 ctx-rh-precuneus desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:25 2011] 3drefit -sublabel 60 ctx-rh-rostralanteriorcingulate desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:25 2011] 3drefit -sublabel 61 ctx-rh-rostralmiddlefrontal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:25 2011] 3drefit -sublabel 62 ctx-rh-superiorfrontal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:25 2011] 3drefit -sublabel 63 ctx-rh-superiorparietal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:25 2011] 3drefit -sublabel 64 ctx-rh-superiortemporal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:25 2011] 3drefit -sublabel 65 ctx-rh-supramarginal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:25 2011] 3drefit -sublabel 66 ctx-rh-frontalpole desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:26 2011] 3drefit -sublabel 67 ctx-rh-temporalpole desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:26 2011] 3drefit -sublabel 68 ctx-rh-transversetemporal desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:26 2011] 3drefit -sublabel 69 ctx-rh-insula desikan_killiany.desai_prob.at_TT_N27+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:32 2011] 3dcalc -a desikan_killiany.desai_prob.at_TT_N27+tlrc -prefix dkpmap -expr a/100 -datum byte\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:56 2011] 3drefit -atrstring ATLAS_LABEL_TABLE file:dkpmap.niml dkpmap+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:57 2011] 3drefit -cmap CONT_CMAP dkpmap+tlrc\n[dglen@gollum.nimh.nih.gov: Mon May 16 12:11:57 2011] 3drefit -atrint ATLAS_PROB_MAP 1 dkpmap+tlrc\n[dglen@gollum.nimh.nih.gov: Fri May 11 13:23:06 2012] 3drefit -space TT_N27 /Volumes/elrond/pub/dist/atlases/current/TT_N27.HEAD /Volumes/elrond/pub/dist/atlases/current/TT_desai_dd_mpm+tlrc.HEAD /Volumes/elrond/pub/dist/atlases/current/TT_desai_ddpmaps+tlrc.HEAD /Volumes/elrond/pub/dist/atlases/current/TT_desai_dk_mpm+tlrc.HEAD /Volumes/elrond/pub/dist/atlases/current/TT_desai_dkpmaps+tlrc.HEAD /Volumes/elrond/pub/dist/atlases/current/TT_desai_fspmaps+tlrc.HEAD~
+
+type = string-attribute
+name = TYPESTRING
+count = 15
+'3DIM_HEAD_ANAT~
+
+type = string-attribute
+name = IDCODE_STRING
+count = 27
+'AFN_mwAYiQzdqfLkAjJyzkdw9g~
+
+type = string-attribute
+name = IDCODE_DATE
+count = 25
+'Mon May 16 12:11:32 2011~
+
+type = integer-attribute
+name = SCENE_DATA
+count = 8
+ 2 2 0 -999 -999
+ -999 -999 -999
+
+type = string-attribute
+name = LABEL_1
+count = 5
+'zyxt~
+
+type = string-attribute
+name = LABEL_2
+count = 5
+'zyxt~
+
+type = string-attribute
+name = DATASET_NAME
+count = 5
+'zyxt~
+
+type = integer-attribute
+name = ORIENT_SPECIFIC
+count = 3
+ 0 3 4
+
+type  = float-attribute
+name  = ORIGIN
+count = 3
+            -80            -80            -65
+
+type  = float-attribute
+name  = DELTA
+count = 3
+              1              1              1
+
+type  = float-attribute
+name  = IJK_TO_DICOM
+count = 12
+              1              0              0            -80              0
+              1              0            -80              0              0
+              1            -65
+
+type  = float-attribute
+name  = IJK_TO_DICOM_REAL
+count = 12
+              1              0              0            -80              0
+              1              0            -80              0              0
+              1            -65
+
+type  = float-attribute
+name  = BRICK_STATS
+count = 140
+              0      0.7540984              0      0.9180328              0
+       0.852459              0      0.2131148              0      0.6557377
+              0      0.7704918              0      0.8196722              0
+      0.8852459              0      0.8032787              0      0.9836066
+              0      0.8688525              0      0.9344262              0
+      0.7704918              0      0.9016393              0      0.9180328
+              0      0.8852459              0      0.8688525              0
+      0.7540984              0       0.852459              0      0.7704918
+              0      0.5901639              0       0.852459              0
+      0.9508197              0      0.9180328              0      0.9344262
+              0      0.9180328              0      0.8688525              0
+      0.9344262              0      0.7704918              0      0.8852459
+              0      0.9016393              0      0.7540984              0
+      0.6065574              0      0.6885246              0      0.9672132
+              0      0.7704918              0      0.8852459              0
+      0.7213115              0      0.2131148              0      0.6557377
+              0      0.7540984              0      0.8688525              0
+      0.9016393              0      0.7868851              0      0.9508197
+              0       0.852459              0      0.9016393              0
+      0.8360656              0      0.9016393              0      0.9344262
+              0      0.9016393              0      0.8852459              0
+      0.7377049              0      0.8032787              0      0.8688525
+              0      0.6065574              0      0.9016393              0
+      0.9836066              0      0.8852459              0      0.9344262
+              0      0.9344262              0      0.8852459              0
+      0.9672132              0      0.7540984              0      0.8852459
+              0       0.852459              0      0.7377049              0
+      0.6557377              0      0.7704918              0      0.9672132
+
+type = integer-attribute
+name = DATASET_RANK
+count = 8
+ 3 70 0 0 0
+ 0 0 0
+
+type = integer-attribute
+name = DATASET_DIMENSIONS
+count = 5
+ 161 191 151 0 0
+
+type = integer-attribute
+name = BRICK_TYPES
+count = 70
+ 0 0 0 0 0
+ 0 0 0 0 0
+ 0 0 0 0 0
+ 0 0 0 0 0
+ 0 0 0 0 0
+ 0 0 0 0 0
+ 0 0 0 0 0
+ 0 0 0 0 0
+ 0 0 0 0 0
+ 0 0 0 0 0
+ 0 0 0 0 0
+ 0 0 0 0 0
+ 0 0 0 0 0
+ 0 0 0 0 0
+
+type  = float-attribute
+name  = BRICK_FLOAT_FACS
+count = 70
+    0.002957248    0.003600129    0.003342977   0.0008357441     0.00257152
+    0.003021536    0.003214401    0.003471553    0.003150112    0.003857281
+    0.003407265    0.003664416    0.003021536    0.003535841    0.003600129
+    0.003471553    0.003407265    0.002957248    0.003342977    0.003021536
+    0.002314368    0.003342977    0.003728705    0.003600129    0.003664416
+    0.003600129    0.003407265    0.003664416    0.003021536    0.003471553
+    0.003535841    0.002957248    0.002378656    0.002700096    0.003792993
+    0.003021536    0.003471553    0.002828673   0.0008357441     0.00257152
+    0.002957248    0.003407265    0.003535841    0.003085824    0.003728705
+    0.003342977    0.003535841    0.003278689    0.003535841    0.003664416
+    0.003535841    0.003471553    0.002892961    0.003150112    0.003407265
+    0.002378656    0.003535841    0.003857281    0.003471553    0.003664416
+    0.003664416    0.003471553    0.003792993    0.002957248    0.003471553
+    0.003342977    0.002892961     0.00257152    0.003021536    0.003792993
+
+type = string-attribute
+name = BRICK_LABS
+count = 1548
+'ctx-lh-bankssts~ctx-lh-caudalanteriorcingulate~ctx-lh-caudalmiddlefrontal~ctx-lh-corpuscallosum~ctx-lh-cuneus~ctx-lh-entorhinal~ctx-lh-fusiform~ctx-lh-inferiorparietal~ctx-lh-inferiortemporal~ctx-lh-isthmuscingulate~ctx-lh-lateraloccipital~ctx-lh-lateralorbitofrontal~ctx-lh-lingual~ctx-lh-medialorbitofrontal~ctx-lh-middletemporal~ctx-lh-parahippocampal~ctx-lh-paracentral~ctx-lh-parsopercularis~ctx-lh-parsorbitalis~ctx-lh-parstriangularis~ctx-lh-pericalcarine~ctx-lh-postcentral~ctx-lh-posteriorcingulate~ctx-lh-precentral~ctx-lh-precuneus~ctx-lh-rostralanteriorcingulate~ctx-lh-rostralmiddlefrontal~ctx-lh-superiorfrontal~ctx-lh-superiorparietal~ctx-lh-superiortemporal~ctx-lh-supramarginal~ctx-lh-frontalpole~ctx-lh-temporalpole~ctx-lh-transversetemporal~ctx-lh-insula~ctx-rh-bankssts~ctx-rh-caudalanteriorcingulate~ctx-rh-caudalmiddlefrontal~ctx-rh-corpuscallosum~ctx-rh-cuneus~ctx-rh-entorhinal~ctx-rh-fusiform~ctx-rh-inferiorparietal~ctx-rh-inferiortemporal~ctx-rh-isthmuscingulate~ctx-rh-lateraloccipital~ctx-rh-lateralorbitofrontal~ctx-rh-lingual~ctx-rh-medialorbitofrontal~ctx-rh-middletemporal~ctx-rh-parahippocampal~ctx-rh-paracentral~ctx-rh-parsopercularis~ctx-rh-parsorbitalis~ctx-rh-parstriangularis~ctx-rh-pericalcarine~ctx-rh-postcentral~ctx-rh-posteriorcingulate~ctx-rh-precentral~ctx-rh-precuneus~ctx-rh-rostralanteriorcingulate~ctx-rh-rostralmiddlefrontal~ctx-rh-superiorfrontal~ctx-rh-superiorparietal~ctx-rh-superiortemporal~ctx-rh-supramarginal~ctx-rh-frontalpole~ctx-rh-temporalpole~ctx-rh-transversetemporal~ctx-rh-insula~
+
+type = string-attribute
+name = BRICK_KEYWORDS
+count = 70
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+type = string-attribute
+name = TEMPLATE_SPACE
+count = 7
+'TT_N27~
+
+type = integer-attribute
+name = INT_CMAP
+count = 1
+ 0
+
+type = string-attribute
+name = BYTEORDER_STRING
+count = 10
+'LSB_FIRST~
+
+type = string-attribute
+name = ATLAS_LABEL_TABLE
+count = 11466
+'<atlas_point_list
+ ni_form="ni_group" >
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-bankssts
+VAL="0"
+OKEY="0"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-bankssts />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-caudalanteriorcingulate
+VAL="1"
+OKEY="1"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-caudalanteriorcingulate />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-caudalmiddlefrontal
+VAL="2"
+OKEY="2"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-caudalmiddlefrontal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-corpuscallosum
+VAL="3"
+OKEY="3"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-corpuscallosum />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-cuneus
+VAL="4"
+OKEY="4"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-cuneus />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-entorhinal
+VAL="5"
+OKEY="5"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-entorhinal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-fusiform
+VAL="6"
+OKEY="6"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-fusiform />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-inferiorparietal
+VAL="7"
+OKEY="7"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-inferiorparietal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-inferiortemporal
+VAL="8"
+OKEY="8"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-inferiortemporal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-isthmuscingulate
+VAL="9"
+OKEY="9"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-isthmuscingulate />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-lateraloccipital
+VAL="10"
+OKEY="10"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-lateraloccipital />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-lateralorbitofrontal
+VAL="11"
+OKEY="11"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-lateralorbitofrontal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-lingual
+VAL="12"
+OKEY="12"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-lingual />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-medialorbitofrontal
+VAL="13"
+OKEY="13"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-medialorbitofrontal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-middletemporal
+VAL="14"
+OKEY="14"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-middletemporal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-parahippocampal
+VAL="15"
+OKEY="15"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-parahippocampal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-paracentral
+VAL="16"
+OKEY="16"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-paracentral />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-parsopercularis
+VAL="17"
+OKEY="17"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-parsopercularis />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-parsorbitalis
+VAL="18"
+OKEY="18"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-parsorbitalis />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-parstriangularis
+VAL="19"
+OKEY="19"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-parstriangularis />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-pericalcarine
+VAL="20"
+OKEY="20"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-pericalcarine />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-postcentral
+VAL="21"
+OKEY="21"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-postcentral />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-posteriorcingulate
+VAL="22"
+OKEY="22"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-posteriorcingulate />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-precentral
+VAL="23"
+OKEY="23"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-precentral />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-precuneus
+VAL="24"
+OKEY="24"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-precuneus />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-rostralanteriorcingulate
+VAL="25"
+OKEY="25"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-rostralanteriorcingulate />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-rostralmiddlefrontal
+VAL="26"
+OKEY="26"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-rostralmiddlefrontal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-superiorfrontal
+VAL="27"
+OKEY="27"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-superiorfrontal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-superiorparietal
+VAL="28"
+OKEY="28"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-superiorparietal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-superiortemporal
+VAL="29"
+OKEY="29"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-superiortemporal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-supramarginal
+VAL="30"
+OKEY="30"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-supramarginal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-frontalpole
+VAL="31"
+OKEY="31"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-frontalpole />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-temporalpole
+VAL="32"
+OKEY="32"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-temporalpole />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-transversetemporal
+VAL="33"
+OKEY="33"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-transversetemporal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-lh-insula
+VAL="34"
+OKEY="34"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-lh-insula />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-bankssts
+VAL="35"
+OKEY="35"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-bankssts />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-caudalanteriorcingulate
+VAL="36"
+OKEY="36"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-caudalanteriorcingulate />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-caudalmiddlefrontal
+VAL="37"
+OKEY="37"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-caudalmiddlefrontal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-corpuscallosum
+VAL="38"
+OKEY="38"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-corpuscallosum />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-cuneus
+VAL="39"
+OKEY="39"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-cuneus />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-entorhinal
+VAL="40"
+OKEY="40"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-entorhinal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-fusiform
+VAL="41"
+OKEY="41"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-fusiform />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-inferiorparietal
+VAL="42"
+OKEY="42"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-inferiorparietal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-inferiortemporal
+VAL="43"
+OKEY="43"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-inferiortemporal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-isthmuscingulate
+VAL="44"
+OKEY="44"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-isthmuscingulate />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-lateraloccipital
+VAL="45"
+OKEY="45"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-lateraloccipital />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-lateralorbitofrontal
+VAL="46"
+OKEY="46"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-lateralorbitofrontal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-lingual
+VAL="47"
+OKEY="47"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-lingual />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-medialorbitofrontal
+VAL="48"
+OKEY="48"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-medialorbitofrontal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-middletemporal
+VAL="49"
+OKEY="49"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-middletemporal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-parahippocampal
+VAL="50"
+OKEY="50"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-parahippocampal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-paracentral
+VAL="51"
+OKEY="51"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-paracentral />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-parsopercularis
+VAL="52"
+OKEY="52"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-parsopercularis />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-parsorbitalis
+VAL="53"
+OKEY="53"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-parsorbitalis />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-parstriangularis
+VAL="54"
+OKEY="54"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-parstriangularis />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-pericalcarine
+VAL="55"
+OKEY="55"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-pericalcarine />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-postcentral
+VAL="56"
+OKEY="56"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-postcentral />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-posteriorcingulate
+VAL="57"
+OKEY="57"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-posteriorcingulate />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-precentral
+VAL="58"
+OKEY="58"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-precentral />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-precuneus
+VAL="59"
+OKEY="59"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-precuneus />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-rostralanteriorcingulate
+VAL="60"
+OKEY="60"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-rostralanteriorcingulate />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-rostralmiddlefrontal
+VAL="61"
+OKEY="61"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-rostralmiddlefrontal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-superiorfrontal
+VAL="62"
+OKEY="62"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-superiorfrontal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-superiorparietal
+VAL="63"
+OKEY="63"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-superiorparietal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-superiortemporal
+VAL="64"
+OKEY="64"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-superiortemporal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-supramarginal
+VAL="65"
+OKEY="65"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-supramarginal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-frontalpole
+VAL="66"
+OKEY="66"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-frontalpole />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-temporalpole
+VAL="67"
+OKEY="67"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-temporalpole />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-transversetemporal
+VAL="68"
+OKEY="68"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-transversetemporal />
+<ATLAS_POINT
+data_type="atlas_point"
+STRUCT=ctx-rh-insula
+VAL="69"
+OKEY="69"
+GYoAR="0"
+COG=" 0.000000 0.000000 0.000000"
+SB_LABEL=ctx-rh-insula />
+</atlas_point_list>~
+
+type = integer-attribute
+name = ATLAS_PROB_MAP
+count = 1
+ 1
