@@ -141,8 +141,9 @@ if ( kernelRadius != 0 ) {
   
   setwd( mainDir )
   out <- round( cbind( uniqueNodes[whichUniqueNodes], storeNodes01[whichUniqueNodes], storeNodes02[whichUniqueNodes] ), 2 )
-  outFileName <- strsplit( args[2], '[.]')[[1]][1]
-  outFileName <- sprintf( '%s_axis.dset', outFileName )
+  #outFileName <- strsplit( args[2], '[.]')[[1]][1]
+  outName <- args[8]
+  outFileName <- sprintf( '%s_axis.dset', outName )
   write.table( out, row.name=FALSE, col.names=FALSE , outFileName )
   
   setwd( mainDir )
