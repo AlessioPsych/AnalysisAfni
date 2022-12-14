@@ -3,6 +3,7 @@
 export AFNI_TOOLBOXDIR=/data1/projects/myelin/analysisAfni # change to your folder
 
 PATH=$PATH:/data1/projects/myelin/analysisAfni # change to your folder
+PATH=$PATH:$AFNI_TOOLBOXDIR/anatomySegmentation_Freesurfer_Suma
 PATH=$PATH:$AFNI_TOOLBOXDIR/surfaces
 PATH=$PATH:$AFNI_TOOLBOXDIR/coregistration
 PATH=$PATH:$AFNI_TOOLBOXDIR/motionCorrectAnatomies

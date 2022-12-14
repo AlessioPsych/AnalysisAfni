@@ -27,4 +27,4 @@ FILEANATOMY=$2
 NCORES=$3
 RUNFLAG=$4
 
-Rscript runFreesurferSuma.R $DATADIR $FILEANATOMY $NCORES $RUNFLAG
+Rscript $AFNI_TOOLBOXDIR/anatomySegmentation_Freesurfer_Suma/runFreesurferSuma.R $DATADIR $FILEANATOMY $NCORES $RUNFLAG
