@@ -11,6 +11,7 @@ PATH=$PATH:$AFNI_TOOLBOXDIR/motCorr_topUp
 PATH=$PATH:$AFNI_TOOLBOXDIR/generalPurpose
 PATH=$PATH:$AFNI_TOOLBOXDIR/devel
 PATH=$PATH:$AFNI_TOOLBOXDIR/nighres_addon
+PATH=$PATH:$AFNI_TOOLBOXDIR/anatomySegmentation_Freesurfer_Suma
 
 export NIGHRES_TOOLBOXDIR=/home/fracasso/programs/nighres
 export AFNI_TOOLBOXDIRSURFACES=$AFNI_TOOLBOXDIR/surfaces
