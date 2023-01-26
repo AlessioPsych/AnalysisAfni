@@ -1,0 +1,10 @@
+#! /bin/bash
+
+#export FSLFIR=$HOME/Programs/fsl
+#export FSLOUTPUTTYPE
+#PATH=$PATH:/$FSLFIR/bin
+
+export FSLDIR=$HOME/Programs/fsl
+source $FSLDIR/etc/fslconf/fsl.sh
+#PATH=$PATH:/$FSLDIR/bin
+
