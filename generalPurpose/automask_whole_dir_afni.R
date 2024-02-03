@@ -19,8 +19,14 @@ for (k in 1:length(filesCpDir)) {
   #if (k >= 10) { instr <- sprintf('3dcalc -a _ttt_mask.nii -b %s -expr \u0027step(a)*b\u0027 -prefix %1.0f.nii.gz', filesCpDir[k], k) }
   print( instr )
   system( instr )
+
+  instr <- sprintf('rm %s', filesCpDir[k])
+  print( instr )
+  system( instr )
+  
+  	  
 }
 #system('rm _ttt*')
-system('rm *.nii')
+#system('rm *.nii')
 system('gunzip *.gz')
 setwd( mainDir )

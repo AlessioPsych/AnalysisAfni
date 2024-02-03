@@ -9,7 +9,6 @@ mainDir <- getwd()
 generalPurposeDir <- Sys.getenv( x='AFNI_TOOLBOXDIRGENERALPURPOSE' )
 afniInstallDir <- Sys.getenv( x='AFNI_INSTALLDIR' ) 
 
-
 #arrange input
 inputEpiDir <- args[1]
 epiFormat <- args[2]
