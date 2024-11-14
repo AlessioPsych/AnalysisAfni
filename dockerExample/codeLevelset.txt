@@ -1,0 +1,14 @@
+#!/bin/bash
+
+python -c 'import nighres; nighres.surface.probability_to_levelset(probability_image="whiteMatterMaskResample.nii", save_data=True, output_dir="whiteMatter", file_name="whiteMatterLevelset.nii")'
+
+python -c 'import nighres; nighres.surface.probability_to_levelset(probability_image="brainMaskResample.nii", save_data=True, output_dir="brain", file_name="brainLevelset.nii")'
+
+mv whiteMatter/whiteMatter* whiteMatterLevelset.nii
+mv brain/brain* brainLevelset.nii
+
+python -c 'import nighres; nighres.laminar.volumetric_layering(inner_levelset="whiteMatterLevelset.nii", outer_levelset="brainLevelset.nii", n_layers=7, topology_lut_dir=None, save_data=True, output_dir="volumetric", file_name="volumetricData.nii")'
+
+mv volumetric/volumetricData_layering-boundaries.nii volumetricBoundaries.nii
+mv volumetric/volumetricData_layering-depth.nii volumetricDepth.nii
+mv volumetric/volumetricData_layering-layers.nii volumetricLayers.nii

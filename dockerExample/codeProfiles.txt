@@ -1,0 +1,5 @@
+#!/bin/bash
+
+python -c 'import nighres; nighres.laminar.profile_sampling(profile_surface_image="volumetricBoundaries.nii", intensity_image="inputData.nii", save_data=True, output_dir="profilesDir", file_name="profilesOut.nii")'
+
+mv profilesDir/profilesOut** profilesOut_profiles.nii.gz
