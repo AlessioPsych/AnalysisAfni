@@ -1,0 +1,5 @@
+[1] "/analyse/Project0226/tests/Daniela_pilotData/suma_MNI152_2009_princetonAtlas"
+[1] "3dcalc -prefix conjunction_map -a tOutcome_linear_17.nii.gz -b tOutcome_linear_20.nii.gz -c tOutcome_linear_23.nii.gz -d tOutcome_linear_26.nii.gz -expr ' a+b-c-d  ' -prefix tOutcome_linear_conjunction_notStep.nii.gz"
+[1] "3dcalc -prefix conjunction_map -a tOutcome_nonlinear_17.nii.gz -b tOutcome_nonlinear_20.nii.gz -c tOutcome_nonlinear_23.nii.gz -d tOutcome_nonlinear_26.nii.gz -expr ' a+b-c-d  ' -prefix tOutcome_nonlinear_conjunction_notStep.nii.gz"
+[1] "3dcalc -prefix conjunction_map -a tOutcome_REML_linear_17.nii.gz -b tOutcome_REML_linear_20.nii.gz -c tOutcome_REML_linear_23.nii.gz -d tOutcome_REML_linear_26.nii.gz -expr ' a+b-c-d  ' -prefix tOutcome_REML_linear_conjunction_notStep.nii.gz"
+[1] "3dcalc -prefix conjunction_map -a tOutcome_REML_nonlinear_17.nii.gz -b tOutcome_REML_nonlinear_20.nii.gz -c tOutcome_REML_nonlinear_23.nii.gz -d tOutcome_REML_nonlinear_26.nii.gz -expr ' a+b-c-d  ' -prefix tOutcome_REML_nonlinear_conjunction_notStep.nii.gz"

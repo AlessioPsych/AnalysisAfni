@@ -1,0 +1,7 @@
+cd /analyse/Project0226/tests/Daniela_pilotData/DanielaProject31102023_LucasEdward
+Rscript processingAnatomy.R
+
+cd /analyse/Project0226/tests/Daniela_pilotData/DanielaProject31102023_Theo
+Rscript processingAnatomy.R
+
+

@@ -1,0 +1,170 @@
+anatCopy_Daniela.nii_at.Xat.1D
+brain.nii
+Copying NIFTI volume to ./MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA
+Center distance of 36.235031 mm no auto_center needed 
+++ anat already stripped, re-using
+Center distance of 36.235031 mm
+Padding ...
+Resampling ...
+Clipping -0.000100 4042.000100 ...
+Registration (cubic final interpolation) ...
+RMS[0] = 59.8563 28.9698   ITER = 9/50
+59.8563
+
+Warping has converged.
+
+Applying brain mask
+Unpadding ...
+Changing view of transformed anatomy
+Setting parent with 3drefit -wset ./MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA+orig.HEAD __ats_tmp___upad15_MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA+tlrc
+Cleanup ...
+[1] "3dNwarpApply -master brain.nii -source anatCopy_Daniela.nii.gz -nwarp Qwarp_WARP_Daniela+tlrc MPRAGE_Daniela_Xat.1D -dxyz 1 -interp wsinc5 -short -prefix anat_Daniela_oneShot.nii.gz"
+anatCopy_Holly.nii_at.Xat.1D
+brain.nii
+Copying NIFTI volume to ./MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA
+Center distance of 23.997577 mm no auto_center needed 
+++ anat already stripped, re-using
+Center distance of 23.997577 mm
+Padding ...
+Resampling ...
+Clipping -0.000100 4037.000100 ...
+Registration (cubic final interpolation) ...
+RMS[0] = 56.4922 30.0832   ITER = 7/50
+56.4922
+
+Warping has converged.
+
+Applying brain mask
+Unpadding ...
+Changing view of transformed anatomy
+Setting parent with 3drefit -wset ./MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA+orig.HEAD __ats_tmp___upad15_MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA+tlrc
+Cleanup ...
+[1] "3dNwarpApply -master brain.nii -source anatCopy_Holly.nii.gz -nwarp Qwarp_WARP_Holly+tlrc MPRAGE_Holly_Xat.1D -dxyz 1 -interp wsinc5 -short -prefix anat_Holly_oneShot.nii.gz"
+anatCopy_Belinda.nii_at.Xat.1D
+brain.nii
+Copying NIFTI volume to ./MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA
+Center distance of 30.328140 mm no auto_center needed 
+++ anat already stripped, re-using
+Center distance of 30.328140 mm
+Padding ...
+Resampling ...
+Clipping -0.000100 4077.000100 ...
+Registration (cubic final interpolation) ...
+RMS[0] = 57.0885 30.9136   ITER = 9/50
+57.0885
+
+Warping has converged.
+
+Applying brain mask
+Unpadding ...
+Changing view of transformed anatomy
+Setting parent with 3drefit -wset ./MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA+orig.HEAD __ats_tmp___upad15_MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA+tlrc
+Cleanup ...
+[1] "3dNwarpApply -master brain.nii -source anatCopy_Belinda.nii.gz -nwarp Qwarp_WARP_Belinda+tlrc MPRAGE_Belinda_Xat.1D -dxyz 1 -interp wsinc5 -short -prefix anat_Belinda_oneShot.nii.gz"
+anatCopy_MTR13.nii_at.Xat.1D
+brain.nii
+Copying NIFTI volume to ./MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA
+Center distance of 31.324730 mm no auto_center needed 
+++ anat already stripped, re-using
+Center distance of 31.324730 mm
+Padding ...
+Resampling ...
+Clipping -0.000100 3904.000100 ...
+Registration (cubic final interpolation) ...
+RMS[0] = 55.909 30.7898   ITER = 19/50
+55.909
+
+Warping has converged.
+
+Applying brain mask
+Unpadding ...
+Changing view of transformed anatomy
+Setting parent with 3drefit -wset ./MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA+orig.HEAD __ats_tmp___upad15_MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA+tlrc
+Cleanup ...
+[1] "3dNwarpApply -master brain.nii -source anatCopy_MTR13.nii.gz -nwarp Qwarp_WARP_MTR13+tlrc MPRAGE_MTR13_Xat.1D -dxyz 1 -interp wsinc5 -short -prefix anat_MTR13_oneShot.nii.gz"
+anatCopy_NWS30.nii_at.Xat.1D
+brain.nii
+Copying NIFTI volume to ./MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA
+
+Performing center alignment with @Align_Centers
+
+++ anat already stripped, re-using
+Center distance of 0.000008 mm
+Padding ...
+Resampling ...
+Clipping -0.000100 4045.000100 ...
+Registration (cubic final interpolation) ...
+RMS[0] = 46.5652 33.3948   ITER = 12/50
+46.5652
+
+Warping has converged.
+
+Applying brain mask
+Unpadding ...
+Changing view of transformed anatomy
+Setting parent with 3drefit -wset ./MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA+orig.HEAD __ats_tmp___upad15_pre.MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA+tlrc
+Cleanup ...
+[1] "3dNwarpApply -master brain.nii -source anatCopy_NWS30.nii.gz -nwarp Qwarp_WARP_NWS30+tlrc MPRAGE_NWS30_Xat.1D -dxyz 1 -interp wsinc5 -short -prefix anat_NWS30_oneShot.nii.gz"
+anatCopy_Rosie.nii_at.Xat.1D
+brain.nii
+Copying NIFTI volume to ./MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA
+Center distance of 29.829494 mm no auto_center needed 
+++ anat already stripped, re-using
+Center distance of 29.829494 mm
+Padding ...
+Resampling ...
+Clipping -0.000100 3980.000100 ...
+Registration (cubic final interpolation) ...
+RMS[0] = 55.0717 28.8697   ITER = 8/50
+55.0717
+
+Warping has converged.
+
+Applying brain mask
+Unpadding ...
+Changing view of transformed anatomy
+Setting parent with 3drefit -wset ./MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA+orig.HEAD __ats_tmp___upad15_MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA+tlrc
+Cleanup ...
+[1] "3dNwarpApply -master brain.nii -source anatCopy_Rosie.nii.gz -nwarp Qwarp_WARP_Rosie+tlrc MPRAGE_Rosie_Xat.1D -dxyz 1 -interp wsinc5 -short -prefix anat_Rosie_oneShot.nii.gz"
+anatCopy_LucasEdward.nii_at.Xat.1D
+brain.nii
+Copying NIFTI volume to ./MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA
+Center distance of 31.305346 mm no auto_center needed 
+++ anat already stripped, re-using
+Center distance of 31.305346 mm
+Padding ...
+Resampling ...
+Clipping -0.000100 3766.000100 ...
+Registration (cubic final interpolation) ...
+RMS[0] = 54.3819 29.8811   ITER = 10/50
+54.3819
+
+Warping has converged.
+
+Applying brain mask
+Unpadding ...
+Changing view of transformed anatomy
+Setting parent with 3drefit -wset ./MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA+orig.HEAD __ats_tmp___upad15_MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA+tlrc
+Cleanup ...
+[1] "3dNwarpApply -master brain.nii -source anatCopy_LucasEdward.nii.gz -nwarp Qwarp_WARP_LucasEdward+tlrc MPRAGE_LucasEdward_Xat.1D -dxyz 1 -interp wsinc5 -short -prefix anat_LucasEdward_oneShot.nii.gz"
+anatCopy_Theo.nii_at.Xat.1D
+brain.nii
+Copying NIFTI volume to ./MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA
+Center distance of 39.869866 mm no auto_center needed 
+++ anat already stripped, re-using
+Center distance of 39.869866 mm
+Padding ...
+Resampling ...
+Clipping -0.000100 3880.000100 ...
+Registration (cubic final interpolation) ...
+RMS[0] = 58.4948 33.0719   ITER = 19/50
+58.4948
+
+Warping has converged.
+
+Applying brain mask
+Unpadding ...
+Changing view of transformed anatomy
+Setting parent with 3drefit -wset ./MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA+orig.HEAD __ats_tmp___upad15_MPRAGE_AFN_OYmeqfZ3JqF7n9LNC7gDAA+tlrc
+Cleanup ...
+[1] "3dNwarpApply -master brain.nii -source anatCopy_Theo.nii.gz -nwarp Qwarp_WARP_Theo+tlrc MPRAGE_Theo_Xat.1D -dxyz 1 -interp wsinc5 -short -prefix anat_Theo_oneShot.nii.gz"
