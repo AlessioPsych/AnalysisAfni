@@ -1,0 +1,9 @@
+analysis_Kastner_classic.R #runs the modelling analysis for phase encoded design (5 and 10 cycles); modelling kinematics (5, 10, both conditions);
+
+analysis_Kastner_classic_pRF.R #runs the prf analysis on participants that took part in the Kastner Classic experiment
+
+processRois_Kastner_classic.R #brings the rois defined on the anatomy_KastnerClassic folder into the Kastner_Classic and Kastner_Classic_pRF folders (epi_space)
+
+extractData_rois_Kastner_classic.R #reads and stores the data from pRF and Kastner classic (phase and modelling) per roi, per participants, on the epi space; also brings the prf results into 		kastner classic folder to allow voxel by voxel comparison
+
+analysis_rois_Kastner_classic_04102021.R # current code to perform data analysis and plotting
