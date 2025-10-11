@@ -1,0 +1,124 @@
+#!/bin/bash
+
+# to run, remember to change the participant folder in lines 11 and 12 to either and the maindir based on your system 
+#122017
+#122017_resample/ 
+#or
+#152017 
+#152017_resample/
+
+maindir="/media/alessiofracasso/DATADRIVE1/AHEAD_exvivo/"
+targetdir="122017"
+outputdir="122017_delMe"
+
+echo "$maindir"
+echo "$targetdir"
+
+cd "$maindir"
+echo "Current folder: $PWD"
+
+cd "$targetdir"
+echo "Current folder: $PWD"
+
+cruiseLeft=$(ls *cruise-left-cortex*)
+echo "cruise left file: $cruiseLeft"
+
+cruiseRight=$(ls *cruise-right-cortex*)
+echo "cruise left file: $cruiseRight"
+
+Biel=$(ls *Bieloschowsky-interpolated*)
+echo "Bieloschowsky-interpolated file: $Biel"
+
+qR1=$(ls *quantitative-R1*)
+echo "quantitative R1 file: $qR1"
+
+qR2=$(ls *quantitative-R2*)
+echo "quantitative R2 file: $qR2"
+
+PD=$(ls *proton-density*)
+echo "proton-density file: $PD"
+
+outputResX="1"
+outputResY="1"
+outputResZ="1"
+
+#create output folder
+if [ -d $maindir/$outputdir ]; then
+	echo "removing folder $maindir/$outputdir" 
+	rm -R $maindir/$outputdir
+fi
+mkdir $maindir/$outputdir
+
+#New name
+newname="cruiseLeft_resampled.nii.gz"
+echo "$newname"
+if [ -f $newname ]; then
+	echo "removing file $newname" 
+	rm $newname
+fi
+echo "resample: $cruiseLeft"
+3dresample -rmode NN -input $cruiseLeft -dxyz $outputResX $outputResY $outputResZ -master $qR1 -prefix $newname
+mv $newname $maindir/$outputdir/$newname
+
+#New name
+newname="cruiseRight_resampled.nii.gz"
+echo "$newname"
+if [ -f $newname ]; then
+	echo "removing file $newname" 
+	rm $newname
+fi
+echo "resample: $cruiseRight"
+3dresample -rmode NN -input $cruiseRight -dxyz $outputResX $outputResY $outputResZ -master $qR1 -prefix $newname
+mv $newname $maindir/$outputdir/$newname
+
+#New name
+newname="qR1_resampled.nii.gz"
+echo "$newname"
+if [ -f $newname ]; then
+	echo "removing file $newname" 
+	rm $newname
+fi
+echo "resample: $qR1"
+3dresample -rmode Linear -input $qR1 -dxyz $outputResX $outputResY $outputResZ -master $qR1 -prefix $newname
+mv $newname $maindir/$outputdir/$newname
+
+#New name
+newname="qR2_resampled.nii.gz"
+echo "$newname"
+if [ -f $newname ]; then
+	echo "removing file $newname" 
+	rm $newname
+fi
+echo "resample: $qR2"
+3dresample -rmode Linear -input $qR2 -dxyz $outputResX $outputResY $outputResZ -master $qR1 -prefix $newname
+mv $newname $maindir/$outputdir/$newname
+
+#New name
+newname="Bieloschowsky_resampled.nii.gz"
+echo "$newname"
+if [ -f $newname ]; then
+	echo "removing file $newname" 
+	rm $newname
+fi
+echo "resample: $Biel"
+3dresample -rmode Linear -input $Biel -dxyz $outputResX $outputResY $outputResZ -master $qR1 -prefix $newname
+mv $newname $maindir/$outputdir/$newname
+
+#New name
+newname="PD_resampled.nii.gz"
+echo "$newname"
+if [ -f $newname ]; then
+	echo "removing file $newname" 
+	rm $newname
+fi
+echo "resample: $PD"
+3dresample -rmode Linear -input $PD -dxyz $outputResX $outputResY $outputResZ -master $qR1 -prefix $newname
+mv $newname $maindir/$outputdir/$newname
+
+cd $maindir/$outputdir
+
+3dcalc -a cruiseLeft_resampled.nii.gz -expr 'within(a,1.9,2.1)' -prefix cruiseLeft_whiteMatter.nii.gz
+3dcalc -a cruiseRight_resampled.nii.gz -expr 'within(a,1.9,2.1)' -prefix cruiseRight_whiteMatter.nii.gz
+3dcalc -a cruiseLeft_resampled.nii.gz -expr 'step(a)' -prefix cruiseLeft_brainMask.nii.gz
+3dcalc -a cruiseRight_resampled.nii.gz -expr 'step(a)' -prefix cruiseRight_brainMask.nii.gz
+
