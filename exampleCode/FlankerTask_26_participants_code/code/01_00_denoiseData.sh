@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Instructions to run:
-# sudo docker run -v /media/alessiofracasso/DATADRIVE1/Flanker:/mrtrixDataFolder --rm -it mrtrix3/mrtrix3
+# sudo docker run -v /home/fracasso/Data/openNeuro/ds000102:/mrtrixDataFolder --rm -it alessiodock/mrtrix3_addon:01
 # cd /mrtrixDataFolder
 # sh 01_00_denoiseData.sh
 

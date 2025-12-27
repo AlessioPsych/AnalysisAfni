@@ -1,6 +1,6 @@
 #!/bin/tcsh -xef
 
-set main_folder = '/media/alessiofracasso/DATADRIVE1/Flanker'
+set main_folder = '/home/fracasso/Data/openNeuro/ds000102'
 set code_folder = $main_folder/code
 set input_folder = $main_folder/derivatives/mrtrix3
 set output_folder = $main_folder/derivatives/processing_afni_MNI_denoised
@@ -23,9 +23,9 @@ endif
 mkdir $output_folder
 
 # creates subjList.txt file
-if (! -f subjList.txt) then
-    ls | grep ^sub- > subjList.txt
-endif
+#if (! -f subjList.txt) then
+#    ls | grep ^sub- > subjList.txt
+#endif
 
 # runs code across participants
 foreach i (`cat subjList.txt`)

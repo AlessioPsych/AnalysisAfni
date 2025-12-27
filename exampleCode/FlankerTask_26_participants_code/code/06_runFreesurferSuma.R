@@ -1,5 +1,5 @@
 rm( list=ls() )
-mainDir <- '/media/alessiofracasso/DATADRIVE1/Flanker'
+mainDir <- '/home/fracasso/Data/openNeuro/ds000102'
 setwd( mainDir )
 outputDir <- 'Freesurfer_output'
 
@@ -12,16 +12,16 @@ print( 'clean up and create main output folder in derivatives...' )
 dirToCheck <- sprintf('%s/derivatives/%s', mainDir, outputDir)
 flagDir <- dir.exists( dirToCheck  )
 if ( flagDir==TRUE ) { 
-  #system( sprintf('rm -R %s', dirToCheck ) )
-  #dir.create( dirToCheck )
+  system( sprintf('rm -R %s', dirToCheck ) )
+  dir.create( dirToCheck )
 }
 if ( flagDir==FALSE ) { dir.create( dirToCheck ) }
 
-nCores <- 6
+nCores <- 10
 runFlag <- 1
 
 ##### run freesurfer and suma ####
-for ( i in  7:length( partDirs ) ) { # i <- 1 length( partDirs )
+for ( i in  1:length( partDirs ) ) { # i <- 1 length( partDirs )
   setwd( mainDir )
   setwd( partDirs[ i ] )
   setwd( 'anat' )

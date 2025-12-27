@@ -1,10 +1,9 @@
-maindir="/home/fracasso/Data/openNeuro/ds000102"
+maindir="/home/fracasso/Data/openNeuro/ds000102/derivatives/mrtrix3"
 
 echo "$maindir"
 
 cd "$maindir"
 echo "Current folder: $PWD"
-
 
 #Check whether the file subjList.txt exists; if not, create it
 if [ -f subjList.txt ]; then

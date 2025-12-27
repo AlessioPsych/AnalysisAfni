@@ -5,7 +5,6 @@ echo "$maindir"
 cd "$maindir"
 echo "Current folder: $PWD"
 
-
 #Check whether the file subjList.txt exists; if not, create it
 if [ -f subjList.txt ]; then
 	rm subjList.txt

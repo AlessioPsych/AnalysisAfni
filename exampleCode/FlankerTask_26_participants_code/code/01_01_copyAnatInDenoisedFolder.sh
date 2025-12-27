@@ -3,7 +3,7 @@
 # Instructions to run:
 # sh 01_01_copyAnatInDenoisedFolder.sh
 
-maindir="/media/alessiofracasso/DATADRIVE1/Flanker"
+maindir="/home/fracasso/Data/openNeuro/ds000102"
 targetdir="derivatives/mrtrix3"
 
 echo "$maindir"

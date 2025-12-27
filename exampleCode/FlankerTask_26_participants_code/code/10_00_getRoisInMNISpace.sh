@@ -4,7 +4,7 @@
 # cd /media/alessiofracasso/DATADRIVE1/Flanker/code
 # sh 10_00_getRoisInMNISpace.sh
 
-maindir="/media/alessiofracasso/DATADRIVE1/Flanker"
+maindir="/home/fracasso/Data/openNeuro/ds000102"
 codedir="/code"
 Freesurferdir="derivatives/Freesurfer_output"
 inputAfniDenoisedOrigDir="derivatives/processing_afni_denoised"
