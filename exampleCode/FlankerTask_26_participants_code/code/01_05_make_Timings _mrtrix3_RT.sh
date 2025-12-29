@@ -17,13 +17,13 @@ fi
 for subj in `cat subjList.txt`; do
 	cd $subj/func
 
+	#cat ${subj}_task-flanker_run-1_events.tsv | awk '{if ($5=="correct") {print $1, $2, 1}}' > RT_run1.txt
+
+	#cat ${subj}_task-flanker_run-2_events.tsv | awk '{if ($5=="correct") {print $1, $2, 1}}' > RT_run2.txt
+	
 	cat ${subj}_task-flanker_run-1_events.tsv | awk '{if ($5=="correct") {print $1, $4, 1}}' > RT_run1.txt
 
 	cat ${subj}_task-flanker_run-2_events.tsv | awk '{if ($5=="correct") {print $1, $4, 1}}' > RT_run2.txt
-	
-	#cat ${subj}_task-flanker_run-1_events.tsv | awk '{if ($5=="correct") {print $1, $4, 1}}' > RT_run1.txt
-
-	#cat ${subj}_task-flanker_run-2_events.tsv | awk '{if ($5=="correct") {print $1, $4, 1}}' > RT_run2.txt
 	
 #Now convert to AFNI format
 	timing_tool.py -fsl_timing_files RT*.txt -write_timing RT_all.1D

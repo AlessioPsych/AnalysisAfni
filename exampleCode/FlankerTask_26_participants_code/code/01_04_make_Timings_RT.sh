@@ -17,9 +17,9 @@ fi
 for subj in `cat subjList.txt`; do
 	cd $subj/func
 
-	cat ${subj}_task-flanker_run-1_events.tsv | awk '{if ($5=="correct") {print $1, $4, 1}}' > RT_run1.txt
+	cat ${subj}_task-flanker_run-1_events.tsv | awk '{if ($5=="correct") {print $1, $2, $4}}' > RT_run1.txt
 
-	cat ${subj}_task-flanker_run-2_events.tsv | awk '{if ($5=="correct") {print $1, $4, 1}}' > RT_run2.txt
+	cat ${subj}_task-flanker_run-2_events.tsv | awk '{if ($5=="correct") {print $1, $2, $4}}' > RT_run2.txt
 	
 	#cat ${subj}_task-flanker_run-1_events.tsv | awk '{if ($5=="correct") {print $1, $4, 1}}' > RT_run1.txt
 

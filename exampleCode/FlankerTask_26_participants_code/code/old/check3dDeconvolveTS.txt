@@ -1,0 +1,74 @@
+waver -GAM -TR 0.5 -peak 1 -input RT_all.1D > waver.1D
+
+          3dDeconvolve -nodata 2240 0.5 -concat '1D: 0 720 1440'        \
+                       -polort -1 -num_stimts 1                         \
+                       -stim_times 1 RT_all.1D 'BLOCK(2.5)'            \
+                       -x1D X.xmat.1D -x1D_stop
+
+          1dplot -sepscl sfile.1D waver.1D X.xmat.1D
+          
+          
+3dDeconvolve -polort -1 -nodata 300 3.0 -num_stimts 3     \
+               -stim_times 1 '1D: 10 30 50 70' 'BLOCK(5,1)' \
+               -x1D Ideal -x1D_stop
+               
+               
+3dDeconvolve -polort 2 -nodata 100 1.0 -num_stimts 2     \
+               -stim_times 1 '1D: 10 30 50 70' 'BLOCK(5,1)' \
+               -stim_times 2 '1D: 3 22 43 85' 'BLOCK(2,1)' \
+               -x1D Ideal -x1D_stop
+1dplot Ideal.xmat.1D               
+               
+3dDeconvolve -polort 2 -nodata 300 1.0 -num_stimts 3     \
+               -stim_times 1 congruent.1D 'BLOCK(1,1)' \
+               -stim_times 2 incongruent.1D 'BLOCK(1,1)' \
+               -stim_times_AM2 3 RT_all.1D 'dmBLOCK' \
+               -x1D Ideal -x1D_stop
+1dplot Ideal.xmat.1D               
+               
+3dDeconvolve -polort 2 -nodata 300 1.0 -num_stimts 3     \
+               -stim_times 1 congruent.1D 'BLOCK(1,1)' \
+               -stim_times 2 incongruent.1D 'BLOCK(1,1)' \
+               -stim_times_AM2 3 RT_all.1D 'dmBLOCK' \
+               -x1D Ideal -x1D_stop
+1dplot Ideal.xmat.1D               
+
+3dDeconvolve -polort 2 -nodata 300 1.0 -num_stimts 3     \
+               -stim_times 1 congruent.1D 'BLOCK(1,1)' \
+               -stim_times 2 incongruent.1D 'BLOCK(1,1)' \
+               -stim_times 3 RT_all.1D 'BLOCK(1,1)' \
+               -x1D Ideal -x1D_stop
+1dplot Ideal.xmat.1D               
+
+echo "10:3 30:0.4 50:15 70:0.1" > dat.1D
+3dDeconvolve -polort 2 -nodata 100 1.0 -num_stimts 2     \
+               -stim_times_AM1 dat.1D 'dmBLOCK' \
+               -stim_times 2 '1D: 3 22 43 85' 'BLOCK(5,1)' \
+               -x1D Ideal -x1D_stop
+1dplot Ideal.xmat.1D               
+
+
+echo '10:1 40:6 70:10 100:15 130:20 160:20 190:20 220:5 250:1 280:30' > q.1D
+3dDeconvolve -nodata 350 1 -polort -1 -num_stimts 1 \
+                 -stim_times_AM1 1 q.1D 'dmUBLOCK'       \
+                 -x1D stdout: | 1dplot -stdin -thick -thick            
+
+echo '10:1 40:6 70:10 100:15 130:20 160:20 190:20 220:5 250:1 280:30' > q.1D
+3dDeconvolve -nodata 350 1 -polort -1 -num_stimts 1 \
+                 -stim_times_AM1 1 q.1D 'dmUBLOCK'       \
+                 -x1D stdout: | 1dplot -stdin -thick -thick            
+              
+ Change 'dmBLOCK' to 'dmBLOCK(1)' and see how the matrix plot changes. 
+
+-stim_times_AM1 and -stim_times_AM2 now have 1 extra response model   
+ function available:                                                   
+   dmBLOCK (or dmBLOCK4 or dmBLOCK5)                                   
+ where 'dm' means 'duration modulated'.  If you use this response      
+ model, then the LAST married parameter in the timing file will        
+ be used to modulate the duration of the block stimulus.  Any          
+ earlier parameters will be used to modulate the amplitude,            
+ and should be separated from the duration parameter by a ':'          
+ character, as in '30*5,3:12' which means (for dmBLOCK):               
+   a block starting at 30 s, 
+               
+               
