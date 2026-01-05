@@ -4,16 +4,17 @@
 # cd /media/alessiofracasso/DATADRIVE1/Flanker/code
 # sh 09_00_getRoisInIndividualSpace.sh
 
-maindir="/media/alessiofracasso/DATADRIVE1/Flanker"
+maindir="/home/fracasso/Data/openNeuro/ds000102"
 codedir="/code"
 Freesurferdir="derivatives/Freesurfer_output"
 inputAfniDenoisedOrigDir="derivatives/processing_afni_denoised"
 inputAfniNoDenoisedOrigDir="derivatives/processing_afni_no_denoised"
 inputAfniDenoisedMNIDir="derivatives/processing_afni_MNI_denoised"
 inputAfniNoDenoisedMNIDir="derivatives/processing_afni_MNI_no_denoised"
-sumaMNIDir="derivatives/surfaceAtlases/suma_MNI152_2009_princetonAtlasl"
+sumaMNIDir="derivatives/surfaceAtlases/suma_MNI152_2009_princetonAtlas"
 glasserDir="derivatives/surfaceAtlases/MNI_Glasser_HCP_v1.0/MNI_Glasser_HCP_2019_v1.0"
 princetonDir="derivatives/surfaceAtlases/suma_MNI152_2009_princetonAtlas/probatlas_v4/ProbAtlas_v4/subj_surf_all"
+bensonRetinotopy='derivatives/surfaceAtlases/MNI_Glasser_HCP_v1.0/inHouse/participants_fit_Benson_jov/SUMA'
 
 echo "main folder:"
 echo "$maindir"
@@ -33,6 +34,8 @@ echo "Glasser 2016 atlas folder:"
 echo "$glasserDir"
 echo "Wang 2015 atlas folder:"
 echo "$princetonDir"
+echo "Benson Retinotopy"
+echo "$bensonRetinotopy"
 
 cd $maindir
 
@@ -46,6 +49,26 @@ while IFS= read -r dir; do
     cd "$maindir/$Freesurferdir/$dir/Freesurfer_result/SUMA" || { echo "Failed to enter $dir"; continue; }                
         
     echo "Current folder: $PWD"
+
+    # Benson Retinotopy
+    echo "Benson Retinotopy"
+    
+    # clean up
+    [ -f std.141.lh.999999.1D.dset ] && rm std.141.lh.999999.1D.dset
+    [ -f std.141.rh.999999.1D.dset ] && rm std.141.rh.999999.1D.dset
+    
+    echo "cp $maindir/$bensonRetinotopy/std.141.lh.999999.1D.dset $maindir/$Freesurferdir/$dir/Freesurfer_result/SUMA"
+    echo "cp $maindir/$bensonRetinotopy/std.141.rh.999999.1D.dset $maindir/$Freesurferdir/$dir/Freesurfer_result/SUMA"
+    cp $maindir/$bensonRetinotopy/std.141.lh.999999.1D.dset $maindir/$Freesurferdir/$dir/Freesurfer_result/SUMA
+    cp $maindir/$bensonRetinotopy/std.141.rh.999999.1D.dset $maindir/$Freesurferdir/$dir/Freesurfer_result/SUMA
+
+    # clean up
+    [ -f lh.Benson_Retinotopy.nii.gz ] && rm lh.Benson_Retinotopy.nii.gz
+    [ -f rh.Benson_Retinotopy.nii.gz ] && rm rh.Benson_Retinotopy.nii.gz
+
+    @surf_to_vol_spackle -spec std.141.Freesurfer_result_lh.spec -surfA std.141.lh.smoothwm.gii -surfB std.141.lh.pial.gii -surfset std.141.lh.999999.1D.dset -prefix lh.Benson_Retinotopy -maskset Freesurfer_result_SurfVol.nii -meanrad 0.7 -maxiters 1
+    
+    @surf_to_vol_spackle -spec std.141.Freesurfer_result_rh.spec -surfA std.141.rh.smoothwm.gii -surfB std.141.rh.pial.gii -surfset std.141.rh.999999.1D.dset -prefix rh.Benson_Retinotopy -maskset Freesurfer_result_SurfVol.nii -meanrad 0.7 -maxiters 1
 
     # Glasser Atlas
     echo "Glasser (2016) atlas...."

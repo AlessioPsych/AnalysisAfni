@@ -3,7 +3,7 @@ source('~/abin/AFNIio.R')
 
 debugFlag  <- 0
 if (debugFlag==1) {
-  mainFolder <- '/media/alessiofracasso/DATADRIVE1/Flanker'
+  mainFolder <- '/home/fracasso/Data/openNeuro/ds000102'
   inputFolder <- 'derivatives/processing_afni_denoised'
   outputFolder <- 'derivatives/resultsGlasser'
   outputFileName <- 'results_Glasser_ORIG_Denoised.RData'
@@ -158,7 +158,7 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
   
 }
 
-mainFolder <- '/media/alessiofracasso/DATADRIVE1/Flanker'
+mainFolder <- '/home/fracasso/Data/openNeuro/ds000102'
 inputFolder <- 'derivatives/processing_afni_denoised'
 outputFolder <- 'derivatives/resultsGlasser'
 outputFileName <- 'results_Glasser_ORIG_Denoised.RData'
@@ -167,32 +167,32 @@ roiFilenameRH_input <- 'rh.Glasser_HCP_epiResampled_'
 MNI_flag <- 0
 getResultsGlasser( mainFolder, inputFolder, outputFolder, outputFileName, roiFilenameLH_input, roiFilenameRH_input, MNI_flag )
 
-mainFolder <- '/media/alessiofracasso/DATADRIVE1/Flanker'
-inputFolder <- 'derivatives/processing_afni_MNI_denoised'
-outputFolder <- 'derivatives/resultsGlasser'
-outputFileName <- 'results_Glasser_MNI_Denoised.RData'
-roiFilenameLH_input <- 'lh.Glasser_HCP_MNI_epiResampled_' 
-roiFilenameRH_input <- 'rh.Glasser_HCP_MNI_epiResampled_'
-MNI_flag <- 1
-getResultsGlasser( mainFolder, inputFolder, outputFolder, outputFileName, roiFilenameLH_input, roiFilenameRH_input, MNI_flag )
+#mainFolder <- '/media/alessiofracasso/DATADRIVE1/Flanker'
+#inputFolder <- 'derivatives/processing_afni_MNI_denoised'
+#outputFolder <- 'derivatives/resultsGlasser'
+#outputFileName <- 'results_Glasser_MNI_Denoised.RData'
+#roiFilenameLH_input <- 'lh.Glasser_HCP_MNI_epiResampled_' 
+#roiFilenameRH_input <- 'rh.Glasser_HCP_MNI_epiResampled_'
+#MNI_flag <- 1
+#getResultsGlasser( mainFolder, inputFolder, outputFolder, outputFileName, roiFilenameLH_input, roiFilenameRH_input, MNI_flag )
 
-mainFolder <- '/media/alessiofracasso/DATADRIVE1/Flanker'
-inputFolder <- 'derivatives/processing_afni_no_denoised'
-outputFolder <- 'derivatives/resultsGlasser'
-outputFileName <- 'results_Glasser_ORIG_No_Denoised.RData'
-roiFilenameLH_input <- 'lh.Glasser_HCP_epiResampled_' 
-roiFilenameRH_input <- 'rh.Glasser_HCP_epiResampled_' 
-MNI_flag <- 0
-getResultsGlasser( mainFolder, inputFolder, outputFolder, outputFileName, roiFilenameLH_input, roiFilenameRH_input, MNI_flag )
+#mainFolder <- '/media/alessiofracasso/DATADRIVE1/Flanker'
+#inputFolder <- 'derivatives/processing_afni_no_denoised'
+#outputFolder <- 'derivatives/resultsGlasser'
+#outputFileName <- 'results_Glasser_ORIG_No_Denoised.RData'
+#roiFilenameLH_input <- 'lh.Glasser_HCP_epiResampled_' 
+#roiFilenameRH_input <- 'rh.Glasser_HCP_epiResampled_' 
+#MNI_flag <- 0
+#getResultsGlasser( mainFolder, inputFolder, outputFolder, outputFileName, roiFilenameLH_input, roiFilenameRH_input, MNI_flag )
 
-mainFolder <- '/media/alessiofracasso/DATADRIVE1/Flanker'
-inputFolder <- 'derivatives/processing_afni_MNI_no_denoised'
-outputFolder <- 'derivatives/resultsGlasser'
-outputFileName <- 'results_Glasser_MNI_No_Denoised.RData'
-roiFilenameLH_input <- 'lh.Glasser_HCP_MNI_epiResampled_' 
-roiFilenameRH_input <- 'rh.Glasser_HCP_MNI_epiResampled_' 
-MNI_flag <- 1
-getResultsGlasser( mainFolder, inputFolder, outputFolder, outputFileName, roiFilenameLH_input, roiFilenameRH_input, MNI_flag )
+#mainFolder <- '/media/alessiofracasso/DATADRIVE1/Flanker'
+#inputFolder <- 'derivatives/processing_afni_MNI_no_denoised'
+#outputFolder <- 'derivatives/resultsGlasser'
+#outputFileName <- 'results_Glasser_MNI_No_Denoised.RData'
+#roiFilenameLH_input <- 'lh.Glasser_HCP_MNI_epiResampled_' 
+#roiFilenameRH_input <- 'rh.Glasser_HCP_MNI_epiResampled_' 
+#MNI_flag <- 1
+#getResultsGlasser( mainFolder, inputFolder, outputFolder, outputFileName, roiFilenameLH_input, roiFilenameRH_input, MNI_flag )
 
 #fileToLoad <- sprintf('%s/%s/results_Glasser.RData', mainDir, outputDir)
 #load( file=fileToLoad )

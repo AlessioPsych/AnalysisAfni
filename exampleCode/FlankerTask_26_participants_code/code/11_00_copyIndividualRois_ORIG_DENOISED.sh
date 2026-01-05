@@ -4,7 +4,7 @@
 # cd /media/alessiofracasso/DATADRIVE1/Flanker/code
 # sh 11_00_copyIndividualRoisInOrigSpace.sh
 
-maindir="/media/alessiofracasso/DATADRIVE1/Flanker"
+maindir="/home/fracasso/Data/openNeuro/ds000102"
 codedir="/code"
 Freesurferdir="derivatives/Freesurfer_output"
 inputAfniDenoisedOrigDir="derivatives/processing_afni_denoised"
@@ -14,6 +14,7 @@ inputAfniNoDenoisedMNIDir="derivatives/processing_afni_MNI_no_denoised"
 sumaMNIDir="derivatives/surfaceAtlases/suma_MNI152_2009_princetonAtlas"
 glasserDir="derivatives/surfaceAtlases/MNI_Glasser_HCP_v1.0/MNI_Glasser_HCP_2019_v1.0"
 princetonDir="derivatives/surfaceAtlases/suma_MNI152_2009_princetonAtlas/probatlas_v4/ProbAtlas_v4/subj_surf_all"
+bensonRetinotopy='derivatives/surfaceAtlases/MNI_Glasser_HCP_v1.0/inHouse/participants_fit_Benson_jov/SUMA'
 
 echo "main folder:"
 echo "$maindir"
@@ -33,6 +34,8 @@ echo "Glasser 2016 atlas folder:"
 echo "$glasserDir"
 echo "Wang 2015 atlas folder:"
 echo "$princetonDir"
+echo "Benson Retinotopy folder:"
+echo "$bensonRetinotopy"
 
 cd $maindir
 
@@ -92,6 +95,22 @@ while IFS= read -r dir; do
     # copy aparc+aseg, ORIG space
     echo "cp $freeDirTemp/aparc.a2009s+aseg.nii.gz $afniDirTempDenoised_ORIG/aparc.a2009s+aseg_$dir.nii.gz"
     cp $freeDirTemp/aparc.a2009s+aseg.nii.gz $afniDirTempDenoised_ORIG/aparc.a2009s+aseg_$dir.nii.gz
+
+    # clean up Benson Retinotopy Left
+        echo "[ -f $afniDirTempDenoised_ORIG/lh.Benson_Retinotopy_$dir.nii.gz ] && rm $afniDirTempDenoised_ORIG/lh.Benson_Retinotopy_$dir.nii.gz"
+    [ -f $afniDirTempDenoised_ORIG/lh.Benson_Retinotopy_$dir.nii.gz ] && rm $afniDirTempDenoised_ORIG/lh.Benson_Retinotopy_$dir.nii.gz    
+    
+    # clean up Benson Retinotopy Right
+    echo "[ -f $afniDirTempDenoised_ORIG/rh.Benson_Retinotopy_$dir.nii.gz ] && rm $afniDirTempDenoised_ORIG/rh.Benson_Retinotopy_$dir.nii.gz"
+    [ -f $afniDirTempDenoised_ORIG/rh.Benson_Retinotopy_$dir.nii.gz ] && rm $afniDirTempDenoised_ORIG/rh.Benson_Retinotopy_$dir.nii.gz    
+    
+    # copy Benson retinotopy Left, ORIG space
+    echo "cp $freeDirTemp/lh.Benson_Retinotopy.nii.gz $afniDirTempDenoised_ORIG/lh.Benson_Retinotopy_$dir.nii.gz"
+    cp $freeDirTemp/lh.Benson_Retinotopy.nii.gz $afniDirTempDenoised_ORIG/lh.Benson_Retinotopy_$dir.nii.gz
+
+    # copy Benson retinotopy Right, ORIG space
+    echo "cp $freeDirTemp/rh.Benson_Retinotopy.nii.gz $afniDirTempDenoised_ORIG/rh.Benson_Retinotopy_$dir.nii.gz"
+    cp $freeDirTemp/rh.Benson_Retinotopy.nii.gz $afniDirTempDenoised_ORIG/rh.Benson_Retinotopy_$dir.nii.gz
     
     # clean up
         [ -f $afniDirTempDenoised_ORIG/lh.Glasser_HCP_epiResampled_$dir.nii.gz ] && rm $afniDirTempDenoised_ORIG/lh.Glasser_HCP_epiResampled_$dir.nii.gz
@@ -100,6 +119,9 @@ while IFS= read -r dir; do
     [ -f $afniDirTempDenoised_ORIG/rh.Wang_2015_epiResampled_$dir.nii.gz ] && rm $afniDirTempDenoised_ORIG/rh.Wang_2015_epiResampled_$dir.nii.gz
     [ -f $afniDirTempDenoised_ORIG/aparc+aseg_epiResampled_$dir.nii.gz ] && rm $afniDirTempDenoised_ORIG/aparc+aseg_epiResampled_$dir.nii.gz
     [ -f $afniDirTempDenoised_ORIG/aparc.a2009s+aseg_epiResampled_$dir.nii.gz ] && rm $afniDirTempDenoised_ORIG/aparc.a2009s+aseg_epiResampled_$dir.nii.gz
+    [ -f $afniDirTempDenoised_ORIG/lh.Benson_Retinotopy_epiResampled_$dir.nii.gz ] && rm $afniDirTempDenoised_ORIG/lh.Benson_Retinotopy_epiResampled_$dir.nii.gz
+    [ -f $afniDirTempDenoised_ORIG/rh.Benson_Retinotopy_epiResampled_$dir.nii.gz ] && rm $afniDirTempDenoised_ORIG/rh.Benson_Retinotopy_epiResampled_$dir.nii.gz
+    
 
     # resample rois
     3dresample -input $afniDirTempDenoised_ORIG/lh.Glasser_HCP_$dir.nii.gz -rmode NN -prefix $afniDirTempDenoised_ORIG/lh.Glasser_HCP_epiResampled_$dir.nii.gz  -master $afniDirTempDenoised_ORIG/stats.$dir+orig
@@ -108,6 +130,8 @@ while IFS= read -r dir; do
     3dresample -input $afniDirTempDenoised_ORIG/rh.Wang_2015_$dir.nii.gz -rmode NN -prefix $afniDirTempDenoised_ORIG/rh.Wang_2015_epiResampled_$dir.nii.gz  -master $afniDirTempDenoised_ORIG/stats.$dir+orig
     3dresample -input $afniDirTempDenoised_ORIG/aparc+aseg_$dir.nii.gz -rmode NN -prefix $afniDirTempDenoised_ORIG/aparc+aseg_epiResampled_$dir.nii.gz  -master $afniDirTempDenoised_ORIG/stats.$dir+orig
     3dresample -input $afniDirTempDenoised_ORIG/aparc.a2009s+aseg_$dir.nii.gz -rmode NN -prefix $afniDirTempDenoised_ORIG/aparc.a2009s+aseg_epiResampled_$dir.nii.gz  -master $afniDirTempDenoised_ORIG/stats.$dir+orig
+    3dresample -input $afniDirTempDenoised_ORIG/lh.Benson_Retinotopy_$dir.nii.gz -rmode Linear -prefix $afniDirTempDenoised_ORIG/lh.Benson_Retinotopy_epiResampled_$dir.nii.gz  -master $afniDirTempDenoised_ORIG/stats.$dir+orig
+    3dresample -input $afniDirTempDenoised_ORIG/rh.Benson_Retinotopy_$dir.nii.gz -rmode Linear -prefix $afniDirTempDenoised_ORIG/rh.Benson_Retinotopy_epiResampled_$dir.nii.gz  -master $afniDirTempDenoised_ORIG/stats.$dir+orig
 
     echo "............."
     echo "............."

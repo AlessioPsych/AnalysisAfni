@@ -274,7 +274,7 @@ dataSelected$macro_rois <- ifelse( dataSelected$roi_recoded==reorderedLevels[1] 
                                                      dataSelected$roi_recoded==reorderedLevels[24] |
                                                      dataSelected$roi_recoded==reorderedLevels[25], 'parietal-frontal', 'none' ) ) )
 table( dataSelected$macro_rois, dataSelected$roi_recoded )
-dataSelected_agg <- aggregate( medianValue ~ participantID * roi_recoded * coefficient * macro_rois, dataSelected, FUN=mean )
+dataSelected_agg <- aggregate( voxelValue ~ participantID * roi_recoded * coefficient * macro_rois, dataSelected, FUN=mean )
 
 x11( width=8.5, height=7 )
 par(mfrow=c(2,2))
@@ -394,11 +394,11 @@ dataPlot_cong$roi_recoded <- droplevels( dataPlot_cong$roi_recoded )
 dataPlot_incong <- subset( dataPlot, coefficient=='incongruent#0_Coef' )
 dataPlot_incong$roi_recoded <- droplevels( dataPlot_incong$roi_recoded )
 
-boxplot( dataPlot_cong$medianValue ~ dataPlot_cong$roi_recoded, 
+boxplot( dataPlot_cong$voxelValue ~ dataPlot_cong$roi_recoded, 
          outline=FALSE, frame=FALSE, las=1, col='lightblue',
          ylim=c(-0.4,1), xlim=c(0,8.5), at=seq(0.4,7.5,1), 
          axes=FALSE, boxwex=0.3, xlab='', ylab='' )
-boxplot( dataPlot_incong$medianValue ~ dataPlot_cong$roi_recoded, 
+boxplot( dataPlot_incong$voxelValue ~ dataPlot_cong$roi_recoded, 
          outline=FALSE, frame=FALSE, las=1, col='orange',
          ylim=c(-0.4,1), xlim=c(0,8.5), at=seq(0.7,7.7,1), 
          axes=FALSE, boxwex=0.3, add=TRUE )

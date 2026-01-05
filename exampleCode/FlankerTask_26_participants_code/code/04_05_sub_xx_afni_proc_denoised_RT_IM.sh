@@ -55,8 +55,8 @@ afni_proc.py -subj_id $subj                                      \
         -regress_censor_motion 0.3                               \
         -regress_motion_per_run                                  \
         -regress_opts_3dD                                        \
-            -jobs 4                                  \
-        -regress_reml_exec           \
+            -jobs 4 -GOFORIT 10                                 \
+        -regress_reml_exec  -regress_opts_reml -GOFORIT         \
         -regress_make_ideal_sum sum_ideal.1D                     \
         -regress_est_blur_epits                                  \
         -regress_est_blur_errts                                  \

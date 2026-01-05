@@ -3,12 +3,12 @@ source('~/abin/AFNIio.R')
 
 debugFlag  <- 0
 if (debugFlag==1) {
-  mainFolder <- '/home/fracasso/Data/openNeuro/ds000102'
+  mainFolder <- '/media/alessiofracasso/DATADRIVE1/Flanker'
   inputFolder <- 'derivatives/processing_afni_denoised'
-  outputFolder <- 'derivatives/resultsWang'
-  outputFileName <- 'results_Wang_ORIG_Denoised.RData'
-  roiFilenameLH_input <- 'lh.Wang_2015_epiResampled_' 
-  roiFilenameRH_input <- 'rh.Wang_2015_epiResampled_' 
+  outputFolder <- 'derivatives/resultsGlasser'
+  outputFileName <- 'results_Glasser_ORIG_Denoised.RData'
+  roiFilenameLH_input <- 'lh.Glasser_HCP_epiResampled_' 
+  roiFilenameRH_input <- 'rh.Glasser_HCP_epiResampled_' 
   MNI_flag <- 0
 }
 
@@ -33,7 +33,7 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
   #  roiFilenameRH <- 'rh.Glasser_HCP_epiResampled_' 
   
   #flagOutput <- 1
-  outputDataset <- data.frame( medianValue=double(), 
+  outputDataset <- data.frame( voxelValue=double(), 
                                side=factor(),
                                participantID=factor(),
                                roi=factor(),
@@ -41,17 +41,24 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
                                roiIdx=double())
   for ( i in  1:length( partDirs ) ) { # i <- 1; side <- 'lh' length( partDirs )
     for ( side in c('lh','rh') ) {
+
       setwd( mainDir )
       setwd( dataDir )
       setwd( partDirs[ i ] )
       print( getwd() )
       print( sprintf('side %s', side) )
-      
+
       partNameClean <- strsplit( partDirs[ i ], '.results' )[[1]][1]
+
+      if ( side=='lh') { roiFilenameTemp <- roiFilenameLH }
+      if ( side=='rh') { roiFilenameTemp <- roiFilenameRH }
+      roiFilenameLoop <- sprintf( '%s%s.nii.gz', roiFilenameTemp, partNameClean )
+      
       if (MNI_flag==0) { statFilenameLoop <- sprintf( '%s%s+orig', statFilename, partNameClean ) }
       if (MNI_flag==1) { statFilenameLoop <- sprintf( '%s%s+tlrc', statFilename, partNameClean ) }
       if (MNI_flag==0) { tsnrFilenameLoop <- sprintf( '%s%s+orig', tsnrFilename, partNameClean ) }
       if (MNI_flag==1) { tsnrFilenameLoop <- sprintf( '%s%s+tlrc', tsnrFilename, partNameClean ) }
+      if (MNI_flag==0) { retinoFilenameLoop <- sprintf( '%s.Benson_Retinotopy_epiResampled_%s.nii.gz', side, partNameClean ) }
       
       # delete concatenate stats and tsnr in a single volume, if it exists
       if ( file.exists( 'concatenatedDelMe.nii.gz' ) ) {
@@ -59,20 +66,28 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
         system( instr )
       }
       
-      # concatenate stats and tsnr in a single volume
-      instr <- sprintf( '3dTcat -prefix concatenatedDelMe.nii.gz %s %s', statFilenameLoop, tsnrFilenameLoop )
+      # concatenate stats, tsnr and retino in a single volume
+      instr <- sprintf( '3dTcat -prefix concatenatedDelMe.nii.gz %s %s %s', statFilenameLoop, tsnrFilenameLoop, retinoFilenameLoop )
       system( instr )
       
-      if ( side=='lh') { roiFilenameTemp <- roiFilenameLH }
-      if ( side=='rh') { roiFilenameTemp <- roiFilenameRH }
-      roiFilenameLoop <- sprintf( '%s%s.nii.gz', roiFilenameTemp, partNameClean )
+      #if ( side=='lh') { roiFilenameTemp <- roiFilenameLH }
+      #if ( side=='rh') { roiFilenameTemp <- roiFilenameRH }
+      #roiFilenameLoop <- sprintf( '%s%s.nii.gz', roiFilenameTemp, partNameClean )
       
       print( statFilenameLoop ) 
       print( roiFilenameLoop ) 
+      print( retinoFilenameLoop ) 
       
       statFile_names <- read.AFNI( statFilenameLoop )
       statNames <-  strsplit( statFile_names$NI_head$BRICK_LABS$dat, '~' )[[1]]
-      statNames[14] <- 'tsnr'
+      statNames[ length( statNames ) + 1 ] <- 'tsnr'
+      statNames[ length( statNames ) + 1 ] <- 'voxelIndx'
+      statNames[ length( statNames ) + 1 ] <- 'R2'
+      statNames[ length( statNames ) + 1 ] <- 'rfSize'
+      statNames[ length( statNames ) + 1 ] <- 'meanVol'
+      statNames[ length( statNames ) + 1 ] <- 'gain'
+      statNames[ length( statNames ) + 1 ] <- 'ecc'
+      statNames[ length( statNames ) + 1 ] <- 'ang'      
       
       statFile <- read.AFNI( 'concatenatedDelMe.nii.gz' ) #with tsnr concatenated
       statVolume <- statFile$brk
@@ -83,22 +98,37 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
         print( instr )
         system( instr )
       }
+
       
       roiFile <- read.AFNI( roiFilenameLoop )
-      roiVolume <- roiFile$brk[,,,2] # wang atlas is in the second volume
-      roiNames <-  c('V1v',	'V1d', 'V2v', 'V2d', 'V3v', 'V3d', 'hV4', 'VO1', 'VO2', 'PHC1', 'PHC2',	    
-      'MST', 'hMT', 'LO2', 'LO1', 'V3b', 'V3a', 'IPS0', 'IPS1', 'IPS2', 'IPS3', 'IPS4', 'IPS5', 'SPL1','FEF')	
+      roiVolume <- roiFile$brk
+      roiNames <-  c('V1','MST','V6','V2','V3','V4','V8','4','3b','FEF','PEF','55b','V3A','RSC','POS2','V7','IPS1','FFC','V3B','LO1','LO2','PIT','MT','A1','PSL','SFL',
+                     'PCV','STV','7Pm','7m','POS1','23d','v23ab','d23ab','31pv','5m','5mv','23c','5L','24dd','24dv','7AL','SCEF','6ma','7Am','7Pl','7PC','LIPv','VIP','MIP',
+                     '1','2','3a','6d','6mp','6v','p24pr','33pr','a24pr','p32pr','a24','d32','8BM','p32','10r','47m','8Av','8Ad','9m','8BL','9p','10d','8C','44','45','47l',
+                     'a47r','6r','IFJa','IFJp','IFSp','IFSa','p9-46v','46','a9-46v','9-46d','9a','10v','a10p','10pp','11l','13l','OFC','47s','LIPd','6a','i6-8','s6-8','43',
+                     'OP4','OP1','OP2-3','52','RI','PFcm','PoI2','TA2','FOP4','MI','Pir','AVI','AAIC','FOP1','FOP3','FOP2','PFt','AIP','EC','PreS','H','ProS','PeEc','STGa',
+                     'PBelt','A5','PHA1','PHA3','STSda','STSdp','STSvp','TGd','TE1a','TE1p','TE2a','TF','TE2p','PHT','PH','TPOJ1','TPOJ2','TPOJ3','DVT','PGp','IP2','IP1','IP0',
+                     'PFop','PF','PFm','PGi','PGs','V6A','VMV1','VMV3','PHA2','V4t','FST','V3CD','LO3','VMV2','31pd','31a','VVC','25','s32','pOFC','PoI1','Ig','FOP5','p10p','p47r',
+                     'TGv','MBelt','LBelt','A4','STSva','TE1m','PI','a32pr','p24')
       
       roiLabelsIdx00 <- sort( unique( array( roiVolume ) ) ) # sort because roi indexes MUST be in register with roi names
       roiLabelsIdx01 <- roiLabelsIdx00[ roiLabelsIdx00 != 0 ] # -1 to remove 0 (no ROI)
       nRois <- length( roiLabelsIdx01  )
       
-      dataPartSideTemp <- data.frame( medianValue=double(), 
-                                   side=factor(),
-                                   participantID=factor(),
-                                   roi=factor(),
-                                   coefficient=factor(),
-                                   roiIdx=double())
+      #dataPartSideTemp <- data.frame( array( 999, c( length(statNames)*length(roiNames), 1 ) ) )
+      #names( dataPartSideTemp ) <- c('medianValue')
+      #dataPartSideTemp$side <- side
+      #dataPartSideTemp$participantID <- partNameClean
+      #dataPartSideTemp$roi <- 'tempRoi'
+      #dataPartSideTemp$coefficient <- 'tempCoefficient'
+      #dataPartSideTemp$roiIdx <- 999
+      
+      dataPartSideTemp <- data.frame( voxelValue=double(),
+                                      side=factor(),
+                                      participantID=factor(),
+                                      roi=factor(),
+                                      coefficient=double(),
+                                      roiIdx=double() )
       
       #lineCounter <- 1
       for ( roiCounter in 1:nRois) { # roiCounter <- 1
@@ -115,12 +145,17 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
           
           print( computedMedian )
           
-          dataPartSideTempLoop <- data.frame( medianValue=computedMedian,
-                                              side=side,
-                                              participantID=partNameClean,
-                                              roi=roiNames[ roiCounter ],
-                                              coefficient=statNames[ coeffCounter ],
-                                              roiIdx=roiCounter )
+          #dataPartSideTemp$medianValue[ lineCounter ] <- computedMedian
+          #dataPartSideTemp$roi[ lineCounter ] <- roiNames[ roiCounter ]
+          #dataPartSideTemp$coefficient[ lineCounter ] <- statNames[ coeffCounter ]
+          #dataPartSideTemp$roiIdx[ lineCounter ] <- roiCounter
+          
+          dataPartSideTempLoop <- data.frame( voxelValue=roiValuesTemp_check,
+                                                side=side,
+                                                participantID=partNameClean,
+                                                roi=roiNames[ roiCounter ],
+                                                coefficient=statNames[ coeffCounter ],
+                                                roiIdx=roiCounter )
           
           dataPartSideTemp <- rbind( dataPartSideTemp, dataPartSideTempLoop )
           
@@ -142,39 +177,13 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
 
 mainFolder <- '/home/fracasso/Data/openNeuro/ds000102'
 inputFolder <- 'derivatives/processing_afni_denoised'
-outputFolder <- 'derivatives/resultsWang'
-outputFileName <- 'results_Wang_ORIG_Denoised.RData'
-roiFilenameLH_input <- 'lh.Wang_2015_epiResampled_' 
-roiFilenameRH_input <- 'rh.Wang_2015_epiResampled_' 
+outputFolder <- 'derivatives/resultsGlasser'
+outputFileName <- 'results_Glasser_ORIG_Denoised_singleVoxel.RData'
+roiFilenameLH_input <- 'lh.Glasser_HCP_epiResampled_' 
+roiFilenameRH_input <- 'rh.Glasser_HCP_epiResampled_' 
 MNI_flag <- 0
 getResultsGlasser( mainFolder, inputFolder, outputFolder, outputFileName, roiFilenameLH_input, roiFilenameRH_input, MNI_flag )
 
-#mainFolder <- '/media/alessiofracasso/DATADRIVE1/Flanker'
-#inputFolder <- 'derivatives/processing_afni_MNI_denoised'
-#outputFolder <- 'derivatives/resultsWang'
-#outputFileName <- 'results_Wang_MNI_Denoised.RData'
-#roiFilenameLH_input <- 'lh.Wang_2015_MNI_epiResampled_' 
-#roiFilenameRH_input <- 'rh.Wang_2015_MNI_epiResampled_' 
-#MNI_flag <- 1
-#getResultsGlasser( mainFolder, inputFolder, outputFolder, outputFileName, roiFilenameLH_input, roiFilenameRH_input, MNI_flag )
-
-#mainFolder <- '/media/alessiofracasso/DATADRIVE1/Flanker'
-#inputFolder <- 'derivatives/processing_afni_no_denoised'
-#outputFolder <- 'derivatives/resultsWang'
-#outputFileName <- 'results_Wang_ORIG_No_Denoised.RData'
-#roiFilenameLH_input <- 'lh.Wang_2015_epiResampled_' 
-#roiFilenameRH_input <- 'rh.Wang_2015_epiResampled_' 
-#MNI_flag <- 0
-#getResultsGlasser( mainFolder, inputFolder, outputFolder, outputFileName, roiFilenameLH_input, roiFilenameRH_input, MNI_flag )
-
-#mainFolder <- '/home/fracasso/Data/openNeuro/ds000102'
-#inputFolder <- 'derivatives/processing_afni_MNI_no_denoised'
-#outputFolder <- 'derivatives/resultsWang'
-#outputFileName <- 'results_Wang_MNI_No_Denoised.RData'
-#roiFilenameLH_input <- 'lh.Wang_2015_MNI_epiResampled_' 
-#roiFilenameRH_input <- 'rh.Wang_2015_MNI_epiResampled_' 
-#MNI_flag <- 1
-#getResultsGlasser( mainFolder, inputFolder, outputFolder, outputFileName, roiFilenameLH_input, roiFilenameRH_input, MNI_flag )
 
 #fileToLoad <- sprintf('%s/%s/results_Glasser.RData', mainDir, outputDir)
 #load( file=fileToLoad )
