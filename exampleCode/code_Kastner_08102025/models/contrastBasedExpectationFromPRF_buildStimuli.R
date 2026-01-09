@@ -177,9 +177,10 @@ if (visualizeStimFlag==1) {
   x11( width=3, height=3 )
   for ( counterImg in 1:26 ) { # counterImg <- 2
     image( x, y, stimStore[,,counterImg,3], zlim=c(0,1), las=1, col=gray( seq( 0,1,0.01 ) ) ); par(new=TRUE)
-    Sys.sleep( 0.001 )
+    Sys.sleep( 0.1 )
   }
 }
+graphics.off()
 
 #concatenate all 10 different directions in a single 3D (2D+time) matrix
 for ( k in 1:10 ) {
@@ -201,7 +202,7 @@ if (visualizeStimFlag==1) {
   for ( i in 1:260 ) {
   image( x, y, stimOut[,,i], zlim=c(0,1), las=1, col=gray( seq( 0,1,0.01 ) ) )
   par(new=TRUE)
-  Sys.sleep(0.01) 
+  Sys.sleep(0.1) 
   }
 }
 graphics.off()
