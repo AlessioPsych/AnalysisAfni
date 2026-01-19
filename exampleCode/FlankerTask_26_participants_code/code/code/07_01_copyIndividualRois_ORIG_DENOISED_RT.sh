@@ -7,7 +7,7 @@
 maindir="/home/fracasso/Data/openNeuro/ds000102"
 codedir="/code"
 Freesurferdir="derivatives/Freesurfer_output"
-inputAfniDenoisedOrigDir="derivatives/processing_afni_denoised"
+inputAfniDenoisedOrigDir="derivatives/processing_afni_denoised_RT"
 inputAfniNoDenoisedOrigDir="derivatives/processing_afni_no_denoised"
 inputAfniDenoisedMNIDir="derivatives/processing_afni_MNI_denoised"
 inputAfniNoDenoisedMNIDir="derivatives/processing_afni_MNI_no_denoised"
@@ -130,8 +130,8 @@ while IFS= read -r dir; do
     3dresample -input $afniDirTempDenoised_ORIG/rh.Wang_2015_$dir.nii.gz -rmode NN -prefix $afniDirTempDenoised_ORIG/rh.Wang_2015_epiResampled_$dir.nii.gz  -master $afniDirTempDenoised_ORIG/stats.$dir+orig
     3dresample -input $afniDirTempDenoised_ORIG/aparc+aseg_$dir.nii.gz -rmode NN -prefix $afniDirTempDenoised_ORIG/aparc+aseg_epiResampled_$dir.nii.gz  -master $afniDirTempDenoised_ORIG/stats.$dir+orig
     3dresample -input $afniDirTempDenoised_ORIG/aparc.a2009s+aseg_$dir.nii.gz -rmode NN -prefix $afniDirTempDenoised_ORIG/aparc.a2009s+aseg_epiResampled_$dir.nii.gz  -master $afniDirTempDenoised_ORIG/stats.$dir+orig
-    3dresample -input $afniDirTempDenoised_ORIG/lh.Benson_Retinotopy_$dir.nii.gz -rmode Linear -prefix $afniDirTempDenoised_ORIG/lh.Benson_Retinotopy_epiResampled_$dir.nii.gz  -master $afniDirTempDenoised_ORIG/stats.$dir+orig
-    3dresample -input $afniDirTempDenoised_ORIG/rh.Benson_Retinotopy_$dir.nii.gz -rmode Linear -prefix $afniDirTempDenoised_ORIG/rh.Benson_Retinotopy_epiResampled_$dir.nii.gz  -master $afniDirTempDenoised_ORIG/stats.$dir+orig
+    3dresample -input $afniDirTempDenoised_ORIG/lh.Benson_Retinotopy_$dir.nii.gz -rmode NN -prefix $afniDirTempDenoised_ORIG/lh.Benson_Retinotopy_epiResampled_$dir.nii.gz  -master $afniDirTempDenoised_ORIG/stats.$dir+orig
+    3dresample -input $afniDirTempDenoised_ORIG/rh.Benson_Retinotopy_$dir.nii.gz -rmode NN -prefix $afniDirTempDenoised_ORIG/rh.Benson_Retinotopy_epiResampled_$dir.nii.gz  -master $afniDirTempDenoised_ORIG/stats.$dir+orig
 
     echo "............."
     echo "............."

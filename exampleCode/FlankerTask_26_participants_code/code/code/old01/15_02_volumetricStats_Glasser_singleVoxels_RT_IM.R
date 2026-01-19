@@ -4,9 +4,9 @@ source('~/abin/AFNIio.R')
 debugFlag  <- 0
 if (debugFlag==1) {
   mainFolder <- '/media/alessiofracasso/DATADRIVE1/Flanker'
-  inputFolder <- 'derivatives/processing_afni_denoised'
+  inputFolder <- 'derivatives/processing_afni_denoised_RT_IM'
   outputFolder <- 'derivatives/resultsGlasser'
-  outputFileName <- 'results_Glasser_ORIG_Denoised.RData'
+  outputFileName <- 'results_Glasser_ORIG_Denoised_RT_IM.RData'
   roiFilenameLH_input <- 'lh.Glasser_HCP_epiResampled_' 
   roiFilenameRH_input <- 'rh.Glasser_HCP_epiResampled_' 
   MNI_flag <- 0
@@ -34,6 +34,7 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
   
   #flagOutput <- 1
   outputDataset <- data.frame( voxelValue=double(), 
+  			       voxelIdx=double(),
                                side=factor(),
                                participantID=factor(),
                                roi=factor(),
@@ -124,6 +125,7 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
       #dataPartSideTemp$roiIdx <- 999
       
       dataPartSideTemp <- data.frame( voxelValue=double(),
+      				      voxelIdx=double(),
                                       side=factor(),
                                       participantID=factor(),
                                       roi=factor(),
@@ -138,12 +140,18 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
           print( sprintf('side %s', side) )
           idxRoiTemp <- which( roiVolume == roiCounter )
           statVolumeTemp <- statVolume[,,,coeffCounter]
-          roiValuesTemp <- statVolumeTemp[ idxRoiTemp ]
+          roiValuesTemp_check <- statVolumeTemp[ idxRoiTemp ]
           
-          roiValuesTemp_check <- roiValuesTemp[ abs(roiValuesTemp) > 0.00001 ] # keep only values effectively larger (or smaller) than zero
+          #roiValuesTemp_check <- roiValuesTemp[ abs(roiValuesTemp) > 0.00001 ] # keep only values effectively larger (or smaller) than zero
+          if (length(roiValuesTemp_check)==0) { roiValuesTemp_check <- 0 }
+          
+          voxelIdx_roi <- seq( 1, length(roiValuesTemp_check) )
+          
           computedMedian <- round( median( roiValuesTemp_check ), 4 )
           
           print( computedMedian )
+          print( sprintf( 'length(roiValuesTemp_check): %d', length(roiValuesTemp_check) ) )
+          print( sprintf( 'length( voxelIdx_roi ): %d', length( voxelIdx_roi ) ) )
           
           #dataPartSideTemp$medianValue[ lineCounter ] <- computedMedian
           #dataPartSideTemp$roi[ lineCounter ] <- roiNames[ roiCounter ]
@@ -151,6 +159,7 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
           #dataPartSideTemp$roiIdx[ lineCounter ] <- roiCounter
           
           dataPartSideTempLoop <- data.frame( voxelValue=roiValuesTemp_check,
+          					voxelIdx=voxelIdx_roi,
                                                 side=side,
                                                 participantID=partNameClean,
                                                 roi=roiNames[ roiCounter ],
@@ -176,9 +185,9 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
 }
 
 mainFolder <- '/home/fracasso/Data/openNeuro/ds000102'
-inputFolder <- 'derivatives/processing_afni_denoised'
+inputFolder <- 'derivatives/processing_afni_denoised_RT_IM'
 outputFolder <- 'derivatives/resultsGlasser'
-outputFileName <- 'results_Glasser_ORIG_Denoised_singleVoxel.RData'
+outputFileName <- 'results_Glasser_ORIG_Denoised_singleVoxel_RT_IM.RData'
 roiFilenameLH_input <- 'lh.Glasser_HCP_epiResampled_' 
 roiFilenameRH_input <- 'rh.Glasser_HCP_epiResampled_' 
 MNI_flag <- 0

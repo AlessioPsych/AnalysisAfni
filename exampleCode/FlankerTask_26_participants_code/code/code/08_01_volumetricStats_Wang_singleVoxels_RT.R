@@ -4,9 +4,9 @@ source('~/abin/AFNIio.R')
 debugFlag  <- 0
 if (debugFlag==1) {
   mainFolder <- '/home/fracasso/Data/openNeuro/ds000102'
-  inputFolder <- 'derivatives/processing_afni_denoised'
+  inputFolder <- 'derivatives/processing_afni_denoised_RT'
   outputFolder <- 'derivatives/resultsWang'
-  outputFileName <- 'results_Wang_ORIG_Denoised.RData'
+  outputFileName <- 'results_Wang_ORIG_Denoised_RT.RData'
   roiFilenameLH_input <- 'lh.Wang_2015_epiResampled_' 
   roiFilenameRH_input <- 'rh.Wang_2015_epiResampled_' 
   MNI_flag <- 0
@@ -34,6 +34,7 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
   
   #flagOutput <- 1
   outputDataset <- data.frame( voxelValue=double(), 
+  			       voxelIdx=double(),
                                side=factor(),
                                participantID=factor(),
                                roi=factor(),
@@ -107,7 +108,8 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
       roiLabelsIdx01 <- roiLabelsIdx00[ roiLabelsIdx00 != 0 ] # -1 to remove 0 (no ROI)
       nRois <- length( roiLabelsIdx01  )
       
-      dataPartSideTemp <- data.frame( voxelValue=double(), 
+      dataPartSideTemp <- data.frame( voxelValue=double(),
+      				   voxelIdx=double(), 
                                    side=factor(),
                                    participantID=factor(),
                                    roi=factor(),
@@ -122,16 +124,24 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
           print( sprintf('side %s', side) )
           idxRoiTemp <- which( roiVolume == roiCounter )
           statVolumeTemp <- statVolume[,,,coeffCounter]
-          roiValuesTemp <- statVolumeTemp[ idxRoiTemp ]
+          roiValuesTemp_check <- statVolumeTemp[ idxRoiTemp ]
           
-          roiValuesTemp_check <- roiValuesTemp[ abs(roiValuesTemp) > 0.00001 ] # keep only values effectively larger (or smaller) than zero
-          if (length(roiValuesTemp_check)==0) { roiValuesTemp_check <- NA }
+          #roiValuesTemp_check <- roiValuesTemp[ abs(roiValuesTemp) > 0.00001 ] # keep only values effectively larger (or smaller) than zero
+          if ( length(roiValuesTemp_check)==0 & length(idxRoiTemp)==0 ) { 
+          	roiValuesTemp_check <- 0 
+          	idxRoiTemp <- 0
+          }
+          
+          voxelIdx_roi <- seq( 1, length(roiValuesTemp_check) )
           
           computedMedian <- round( median( roiValuesTemp_check ), 4 )
           
           print( computedMedian )
+          print( sprintf( 'length(roiValuesTemp_check): %d', length(roiValuesTemp_check) ) )
+          print( sprintf( 'length( voxelIdx_roi ): %d', length( voxelIdx_roi ) ) )
           
           dataPartSideTempLoop <- data.frame( voxelValue=roiValuesTemp_check,
+          				      voxelIdx=idxRoiTemp,	
                                               side=side,
                                               participantID=partNameClean,
                                               roi=roiNames[ roiCounter ],
@@ -157,9 +167,9 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
 }
 
 mainFolder <- '/home/fracasso/Data/openNeuro/ds000102'
-inputFolder <- 'derivatives/processing_afni_denoised'
+inputFolder <- 'derivatives/processing_afni_denoised_RT'
 outputFolder <- 'derivatives/resultsWang'
-outputFileName <- 'results_Wang_ORIG_Denoised_singleVoxel.RData'
+outputFileName <- 'results_Wang_ORIG_Denoised_singleVoxel_RT.RData'
 roiFilenameLH_input <- 'lh.Wang_2015_epiResampled_' 
 roiFilenameRH_input <- 'rh.Wang_2015_epiResampled_' 
 MNI_flag <- 0
