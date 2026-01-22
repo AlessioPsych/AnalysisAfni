@@ -1,18 +1,2 @@
+*+ WARNING: have IM timing without -local/global_times
 *+ WARNING: no -stim_label given for stim #1 ==> label = 'Stim#1'
-*+ WARNING: no -stim_label given for stim #2 ==> label = 'Stim#2'
-*+ WARNING: no -stim_label given for stim #3 ==> label = 'Stim#3'
-*+ WARNING: !! stimulus filename #1:'q_short.1D' same as #2:'q_short.1D'
-*+ WARNING: !! stimulus filename #1:'q_short.1D' same as #3:'q_short.1D'
-*+ WARNING: !! stimulus filename #2:'q_short.1D' same as #3:'q_short.1D'
-*+ WARNING: -------------------------------------------------
-*+ WARNING: Problems with the X matrix columns, listed below:
-*+ WARNING: !! * Columns 0 [Stim#1#0] and 2 [Stim#3#0] are (nearly?) collinear!
-*+ WARNING: -------------------------------------------------
-*+ WARNING: !! in Signal+Baseline matrix:
- * Largest singular value=1.67489
- * 1 singular value is less than cutoff=1.67489e-07
- * Implies strong collinearity in the matrix columns! 
-*+ WARNING: !! in Signal-only matrix:
- * Largest singular value=1.67489
- * 1 singular value is less than cutoff=1.67489e-07
- * Implies strong collinearity in the matrix columns! 

@@ -43,17 +43,23 @@ afni_proc.py -subj_id $subj                                      \
         -volreg_align_e2a                                        \
         -blur_size 3                                             \
         -regress_stim_times                                      \
-            $stim_dir/RT_correct.1D                               \
+            $stim_dir/congruent.1D                               \
+            $stim_dir/incongruent.1D                             \
+            $stim_dir/RT_all.1D                                  \
         -regress_stim_labels                                     \
-            RT_correct 			 \
+            congruent incongruent rt 				 \
         #-regress_stim_types times times AM2                      \
         #-regress_basis_multi 'BLOCK(1,1) BLOCK(1,1) dmBLOCK'     \
-        -regress_stim_types AM1                      \
-        -regress_basis_multi 'dmUBLOCK'     \
+        -regress_stim_types times times AM1                      \
+        -regress_basis_multi 'BLOCK(0.1,1) BLOCK(0.1,1) dmUBLOCK'     \
         -regress_censor_motion 0.3                               \
         -regress_motion_per_run                                  \
         -regress_opts_3dD                                        \
             -jobs 4 -GOFORIT 10                                  \
+            -gltsym 'SYM: incongruent -congruent' -glt_label 1   \
+        incongruent-congruent                                    \
+	-gltsym 'SYM: congruent -incongruent' -glt_label 2       \
+        congruent-incongruent                                    \
         -regress_reml_exec -regress_opts_reml -GOFORIT           \
         -regress_make_ideal_sum sum_ideal.1D                     \
         -regress_est_blur_epits                                  \

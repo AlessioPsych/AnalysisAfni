@@ -1,0 +1,12 @@
+#!/bin/bash
+
+docker run -v /media/alessiofracasso/DATADRIVE1/Flanker/derivatives/Freesurfer_output/sub-01/Freesurfer_result/SUMA:/testNighres --rm -it nighres
+
+cd /testNighres
+
+python3 -c 'import nighres; nighres.surface.probability_to_levelset(probability_image="lh.ribbon.nii.gz", save_data=True, output_dir="lh.ribbon.test", file_name="lh.ribbon.Levelset.nii")'
+
+chmod 777 -R lh.ribbon.test
+
+cp lh.ribbon.test/lh.ribbon.Levelset_p2l-surf.nii lh.ribbon.Levelset_p2l-surf.nii
+
