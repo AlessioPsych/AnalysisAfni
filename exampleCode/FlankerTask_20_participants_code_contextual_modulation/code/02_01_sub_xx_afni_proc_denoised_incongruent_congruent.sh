@@ -42,10 +42,14 @@ afni_proc.py -subj_id $subj                                      \
         -volreg_align_e2a                                        \
         -blur_size 3                                             \
         -regress_stim_times                                      \
+            $stim_dir/cue.1D 					 \
+            $stim_dir/blank.1D 					 \
+            #$stim_dir/MC.1D 					 \
+            #$stim_dir/MI.1D 					 \
             $stim_dir/congruent.1D                               \
             $stim_dir/incongruent.1D                             \
         -regress_stim_labels                                     \
-            congruent incongruent                      \
+            cue blank congruent incongruent                      \
         -regress_basis 'BLOCK(1,1)'                              \
         -regress_censor_motion 0.3                               \
         -regress_motion_per_run                                  \

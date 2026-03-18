@@ -1,7 +1,7 @@
 #!/bin/tcsh -xef
 
 # creates output folder
-set maindir="/home/fracasso/Data/openNeuro/ds000102"
+set maindir="/home/fracasso/Data/openNeuro/ds001751"
 set codedir="/code"
 set foldername = "derivatives/images_processing_Freesurfer"
 cd $maindir

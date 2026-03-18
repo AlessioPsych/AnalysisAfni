@@ -1,6 +1,6 @@
 #!/bin/tcsh -xef
 
-set maindir = "/home/fracasso/Data/openNeuro/ds000102"
+set maindir = "/home/fracasso/Data/openNeuro/ds001751"
 set codedir = ${maindir}/code
 
 cd $maindir
@@ -29,7 +29,7 @@ cd $maindir
 foreach i (`cat subjList.txt`)	
     cd $maindir
     cd $codedir
-    tcsh 05_01_visualizeProcessed_ORIG.sh $i $output_folder $input_folder $maindir
+    tcsh 04_01_visualizeProcessed_ORIG.sh $i $output_folder $input_folder $maindir
 end
 
 

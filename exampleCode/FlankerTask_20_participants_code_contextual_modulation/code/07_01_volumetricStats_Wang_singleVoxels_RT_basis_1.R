@@ -25,7 +25,7 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
   print( 'participant dirs...' )
   print(partDirs)
   
-  statFilename <- 'stats.'
+  statFilename <- 'stats_RT_correct_basis_1.'
   tsnrFilename <- 'TSNR.'
   roiFilenameLH <- roiFilenameLH_input
   roiFilenameRH <- roiFilenameRH_input
@@ -166,10 +166,10 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
   
 }
 
-mainFolder <- '/home/fracasso/Data/openNeuro/ds000102'
-inputFolder <- 'derivatives/processing_afni_denoised_RT'
+mainFolder <- '/home/fracasso/Data/openNeuro/ds001751'
+inputFolder <- 'derivatives/processing_afni_denoised_incongruent_congruent'
 outputFolder <- 'derivatives/resultsWang'
-outputFileName <- 'results_Wang_ORIG_Denoised_singleVoxel_RT.RData'
+outputFileName <- 'results_Wang_ORIG_Denoised_singleVoxel_RT_basis_1.RData'
 roiFilenameLH_input <- 'lh.Wang_2015_epiResampled_' 
 roiFilenameRH_input <- 'rh.Wang_2015_epiResampled_' 
 MNI_flag <- 0

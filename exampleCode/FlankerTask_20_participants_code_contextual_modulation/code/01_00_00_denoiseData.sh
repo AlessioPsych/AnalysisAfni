@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # Instructions to run:
-# sudo docker run -v /home/fracasso/Data/openNeuro/ds000102:/mrtrixDataFolder --rm -it alessiodock/mrtrix3_addon:01
+# sudo docker run -v /home/fracasso/Data/openNeuro/ds001751:/mrtrixDataFolder --rm -it alessiodock/mrtrix3_addon:01
 # cd /mrtrixDataFolder
 # sh 01_00_denoiseData.sh
+
 
 maindir="/mrtrixDataFolder"
 targetdir="derivatives/mrtrix3"

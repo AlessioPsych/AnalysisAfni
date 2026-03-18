@@ -166,7 +166,7 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
   
 }
 
-mainFolder <- '/home/fracasso/Data/openNeuro/ds000102'
+mainFolder <- '/home/fracasso/Data/openNeuro/ds001751'
 inputFolder <- 'derivatives/processing_afni_denoised_incongruent_congruent'
 outputFolder <- 'derivatives/resultsWang'
 outputFileName <- 'results_Wang_ORIG_Denoised_singleVoxel_incongruent_congruent.RData'

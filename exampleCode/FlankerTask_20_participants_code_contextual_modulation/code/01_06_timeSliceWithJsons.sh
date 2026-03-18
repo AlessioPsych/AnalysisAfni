@@ -1,11 +1,6 @@
 #!/bin/bash
 
-# Instructions to run:
-# sudo docker run -v /home/fracasso/Data/openNeuro/ds000102:/mrtrixDataFolder --rm -it alessiodock/mrtrix3_addon:01
-# cd /mrtrixDataFolder
-# sh 01_00_denoiseData.sh
-
-maindir="/mrtrixDataFolder"
+maindir="/home/fracasso/Data/openNeuro/ds001751"
 targetdir="derivatives/mrtrix3"
 
 echo "$maindir"
@@ -17,11 +12,11 @@ echo "Current folder: $PWD"
 # print list of participants
 \ls -d sub-* > subdirs.txt
 
-if [ -d $maindir/$targetdir ]; then
-	echo "removing folder $maindir/$targetdir" 
-	rm -R $maindir/$targetdir
-fi
-mkdir $maindir/$targetdir
+#if [ -d $maindir/$targetdir ]; then
+#	echo "removing folder $maindir/$targetdir" 
+#	rm -R $maindir/$targetdir
+#fi
+#mkdir $maindir/$targetdir
 
 while IFS= read -r dir; do
 
@@ -29,18 +24,18 @@ while IFS= read -r dir; do
 
 	echo "Processing directory: $dir"
 	
-	if [ -d $maindir/$targetdir/$dir ]; then
-	        echo "removing folder $maindir/$targetdir/$dir" 
-		rm -R $maindir/$targetdir/$dir
-	fi
-	mkdir $maindir/$targetdir/$dir
+	#if [ -d $maindir/$targetdir/$dir ]; then
+	#        echo "removing folder $maindir/$targetdir/$dir" 
+#		rm -R $maindir/$targetdir/$dir
+#	fi
+#	mkdir $maindir/$targetdir/$dir
 	
 	echo "data folder: $maindir/$dir/func"
 	echo "target folder: $maindir/$targetdir/$dir/func"
 	
 	# copy func folder to denoise
-	echo "cp -R $maindir/$dir/func $maindir/$targetdir/$dir/func"	
-	cp -R $maindir/$dir/func $maindir/$targetdir/$dir/func
+	#echo "cp -R $maindir/$dir/func $maindir/$targetdir/$dir/func"	
+	#cp -R $maindir/$dir/func $maindir/$targetdir/$dir/func
 	
 	# denoise data
 	cd "$maindir/$targetdir/$dir/func"

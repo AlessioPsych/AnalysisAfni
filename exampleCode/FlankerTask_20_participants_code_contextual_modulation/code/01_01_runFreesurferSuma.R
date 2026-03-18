@@ -1,5 +1,5 @@
 rm( list=ls() )
-mainDir <- '/home/fracasso/Data/openNeuro/ds000102'
+mainDir <- '/home/fracasso/Data/openNeuro/ds001751'
 setwd( mainDir )
 outputDir <- 'Freesurfer_output'
 
