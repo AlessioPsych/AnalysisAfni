@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Instructions to run:
-# sudo docker run -v /home/fracasso/Data/openNeuro/ds001751:/mrtrixDataFolder --rm -it alessiodock/mrtrix3_addon:01
+# sudo docker run -v /mnt/disk01/ds001751_FlankerTask_context:/mrtrixDataFolder --rm -it alessiodock/mrtrix3_addon:01
 # cd /mrtrixDataFolder
 # sh 01_00_denoiseData.sh
 
@@ -47,10 +47,10 @@ while IFS= read -r dir; do
 	cd "$maindir/$targetdir/$dir/func"
 	echo "Current folder: $PWD"
 
-	echo "dwidenoise -nthreads 4 ${dir}_task-flanker_run-1_bold.nii.gz ${dir}_task-flanker_run-1_bold_denoised.nii.gz"
-	echo "dwidenoise -nthreads 4 ${dir}_task-flanker_run-2_bold.nii.gz ${dir}_task-flanker_run-2_bold_denoised.nii.gz"
-	dwidenoise -nthreads 4 ${dir}_task-flanker_run-1_bold.nii.gz ${dir}_task-flanker_run-1_bold_denoised.nii.gz
-	dwidenoise -nthreads 4 ${dir}_task-flanker_run-2_bold.nii.gz ${dir}_task-flanker_run-2_bold_denoised.nii.gz
+	echo "dwidenoise -nthreads 12 ${dir}_task-flanker_run-1_bold.nii.gz ${dir}_task-flanker_run-1_bold_denoised.nii.gz"
+	echo "dwidenoise -nthreads 12 ${dir}_task-flanker_run-2_bold.nii.gz ${dir}_task-flanker_run-2_bold_denoised.nii.gz"
+	dwidenoise -nthreads 12 ${dir}_task-flanker_run-1_bold.nii.gz ${dir}_task-flanker_run-1_bold_denoised.nii.gz
+	dwidenoise -nthreads 12 ${dir}_task-flanker_run-2_bold.nii.gz ${dir}_task-flanker_run-2_bold_denoised.nii.gz
 	rm ${dir}_task-flanker_run-1_bold.nii.gz
 	rm ${dir}_task-flanker_run-2_bold.nii.gz
 

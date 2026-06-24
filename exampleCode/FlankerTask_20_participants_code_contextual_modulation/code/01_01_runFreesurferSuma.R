@@ -1,5 +1,6 @@
 rm( list=ls() )
-mainDir <- '/home/fracasso/Data/openNeuro/ds001751'
+mainDir <- '/mnt/disk01/ds001751_FlankerTask_context'
+
 setwd( mainDir )
 outputDir <- 'Freesurfer_output'
 
@@ -17,7 +18,7 @@ if ( flagDir==TRUE ) {
 }
 if ( flagDir==FALSE ) { dir.create( dirToCheck ) }
 
-nCores <- 10
+nCores <- 12
 runFlag <- 1
 
 ##### run freesurfer and suma ####

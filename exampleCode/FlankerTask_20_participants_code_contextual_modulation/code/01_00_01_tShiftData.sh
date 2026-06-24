@@ -1,6 +1,6 @@
 #!/bin/bash
 
-maindir="/home/fracasso/Data/openNeuro/ds001751/derivatives/mrtrix3"
+maindir="/mnt/disk01/ds001751_FlankerTask_context/derivatives/mrtrix3"
 #targetdir="derivatives/mrtrix3"
 
 echo "$maindir"

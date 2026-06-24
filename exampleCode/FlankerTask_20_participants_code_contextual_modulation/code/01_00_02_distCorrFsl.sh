@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Instructions to run:
-# sudo docker run -v /home/fracasso/Data/openNeuro/ds001751:/mrtrixDataFolder --rm -it fslimage:Dockerfile
+# sudo docker run -v /mnt/disk01/ds001751_FlankerTask_context:/mrtrixDataFolder --rm -it alessiodock/fsl_60710:01
 
 # sudo docker run -it fslimage:Dockerfile
 # sudo docker run -e DISPLAY=$DISPLAY  -v /tmp/.X11-unix:/tmp/.X11-unix -v /home/fracasso/Data/openNeuro/ds001751:/mrtrixDataFolder --rm --user $(id -u):$(id -g) -it fslimage:Dockerfile
@@ -9,11 +9,11 @@
 # cd /mrtrixDataFolder
 # sh 01_00_02_distCorrFsl.sh
 
-maindir="/mrtrixDataFolder"
-datadir="$maindir/derivatives/mrtrix3"
+basedir="/mrtrixDataFolder"
+maindir="$basedir/derivatives/mrtrix3"
 #targetdir="derivatives/mrtrix3"
 
-apt-get install bc
+#apt-get install bc
 
 echo "$maindir"
 
@@ -21,9 +21,15 @@ cd "$maindir"
 echo "Current folder: $PWD"
 
 # print list of participants
+
+# to run properly on all participants
 #\ls -d sub-* > subdirs.txt
-\ls -d sub-01 > subdirs.txt
+
+# to test only:
+\ls -d sub-01 sub-02 > subdirs.txt
 chmod 777 subdirs.txt
+#dir="sub-01"
+
 #if [ -d $maindir/$targetdir ]; then
 #	echo "removing folder $maindir/$targetdir" 
 #	rm -R $maindir/$targetdir
@@ -33,7 +39,6 @@ chmod 777 subdirs.txt
 while IFS= read -r dir; do
 
 	cd "$maindir/$dir/fmap"
-	dir
 	echo "Processing directory: $dir"
 	echo
 	echo "folder: $PWD"
@@ -163,16 +168,18 @@ while IFS= read -r dir; do
 	fslmaths fmap_T1w_brain_pve_2.nii.gz -thr 0.5 -bin fmap_T1_wmseg.nii.gz
 	chmod 777 fmap_T1_wmseg.nii.gz
 
-	cp $func_dir/${dir}_task-flanker_run-1_bold.nii.gz ${output_dir}/run-1_bold.nii.gz
+	cp $func_dir/${dir}_task-flanker_run-1_bold_denoised_tSliceCorrect.nii.gz ${output_dir}/run-1_bold.nii.gz
 	chmod 777 run-1_bold.nii.gz
-	cp $func_dir/${dir}_task-flanker_run-2_bold.nii.gz ${output_dir}/run-2_bold.nii.gz
+	cp $func_dir/${dir}_task-flanker_run-2_bold_denoised_tSliceCorrect.nii.gz ${output_dir}/run-2_bold.nii.gz
 	chmod 777 run-2_bold.nii.gz
 	
+	# provide reasonable coregistration
 	epidata=run-1_bold.nii.gz
 	flirt -in $epidata -ref fmap_T1w_brain.nii.gz -out func_in_struct_start.nii.gz -omat func_to_struct.mat -dof 6 -cost normmi
 	chmod 777 func_in_struct_start*
 	chmod 777 func_to_struct*
-
+	
+	# apply reasonable start to rads, mag, and stripped mag:
 	flirt -in fmap_rads.nii.gz -ref fmap_T1w_brain.nii.gz -out fmap_rads_coreg.nii.gz -init func_to_struct.mat -applyxfm
 	chmod 777 fmap_rads_coreg.nii.gz
 
@@ -195,7 +202,7 @@ while IFS= read -r dir; do
 
 	# apply warp
 	applywarp -i run-1_bold_coreg.nii.gz -r run-1_bold_coreg.nii.gz -o run-1_bold_coreg_warp.nii.gz -w func2struct_negy_warp.nii.gz 
-	--postmat=warpexample_func_bold01.mat
+	#--postmat=warpexample_func_bold01.mat
 	chmod 777 run-1_bold_coreg_warp.nii.gz
 
 	rm func_to_struct* 
@@ -229,12 +236,12 @@ while IFS= read -r dir; do
 	chmod 777 func2struct_posy*
 
 	# apply basic coreg
-	flirt -in run-2_bold.nii.gz -ref fmap_T1w_brain.nii.gz -out run-1_bold_coreg.nii.gz -init func_to_struct.mat -applyisoxfm 3
+	flirt -in run-2_bold.nii.gz -ref fmap_T1w_brain.nii.gz -out run-2_bold_coreg.nii.gz -init func_to_struct.mat -applyisoxfm 3
 	chmod 777 run-2_bold_coreg.nii.gz
 
 	# apply warp
-	applywarp -i run-2_bold_coreg.nii.gz -r run-2_bold_coreg.nii.gz -o run-1_bold_coreg_warp.nii.gz -w func2struct_negy_warp.nii.gz 
-	--postmat=warpexample_func_bold01.mat
+	applywarp -i run-2_bold_coreg.nii.gz -r run-2_bold_coreg.nii.gz -o run-2_bold_coreg_warp.nii.gz -w func2struct_negy_warp.nii.gz 
+	#--postmat=warpexample_func_bold01.mat
 	chmod 777 run-2_bold_coreg_warp.nii.gz
 
 	rm func_to_struct* 

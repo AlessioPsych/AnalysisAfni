@@ -34,8 +34,8 @@ afni_proc.py -subj_id $subj                                      \
         -blocks tshift align volreg blur mask scale regress \
         -copy_anat $anat_dir/{$subj}_T1w.nii.gz                  \
         -dsets                                                   \
-            $epi_dir/{$subj}_task-flanker_run-1_bold_denoised.nii.gz       \
-            $epi_dir/{$subj}_task-flanker_run-2_bold_denoised.nii.gz       \
+            $epi_dir/{$subj}_task-flanker_run-1_bold_denoised_tSliceCorrect.nii.gz       \
+            $epi_dir/{$subj}_task-flanker_run-2_bold_denoised_tSliceCorrect.nii.gz       \
         -tcat_remove_first_trs 0                                 \
         -align_opts_aea -cost lpc -giant_move                    \
         -volreg_align_to MIN_OUTLIER                             \
@@ -44,20 +44,20 @@ afni_proc.py -subj_id $subj                                      \
         -regress_stim_times                                      \
             $stim_dir/cue.1D 					 \
             $stim_dir/blank.1D 					 \
-            #$stim_dir/MC.1D 					 \
-            #$stim_dir/MI.1D 					 \
-            $stim_dir/congruent.1D                               \
-            $stim_dir/incongruent.1D                             \
+            $stim_dir/congruent_MC.1D                               \
+            $stim_dir/incongruent_MC.1D                             \
+            $stim_dir/congruent_MI.1D                               \
+            $stim_dir/incongruent_MI.1D                             \
         -regress_stim_labels                                     \
-            cue blank congruent incongruent                      \
+            cue blank congruent_MC incongruent_MC congruent_MI incongruent_MI                      \
         -regress_basis 'BLOCK(1,1)'                              \
         -regress_censor_motion 0.3                               \
         -regress_motion_per_run                                  \
         -regress_opts_3dD                                        \
             -jobs 8                                              \
-            -gltsym 'SYM: incongruent -congruent' -glt_label 1   \
+            -gltsym 'SYM: +incongruent_MC +incongruent_MI -congruent_MC -congruent_MI' -glt_label 1   \
         incongruent-congruent                                    \
-	-gltsym 'SYM: congruent -incongruent' -glt_label 2       \
+	-gltsym 'SYM: +congruent_MC +congruent_MI -incongruent_MC -incongruent_MI' -glt_label 2       \
         congruent-incongruent                                    \
         -regress_reml_exec                                       \
         -regress_make_ideal_sum sum_ideal.1D                     \
