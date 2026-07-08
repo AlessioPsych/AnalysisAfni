@@ -51,7 +51,7 @@ afni_proc.py -subj_id $subj                                      \
             $stim_dir/incongruent_MI.1D                             \
         -regress_stim_labels                                     \
             cue blank_MC blank_MI congruent_MC incongruent_MC congruent_MI incongruent_MI                      \
-        -regress_basis 'BLOCK(1,1)'                              \
+        -regress_basis_multi 'BLOCK(1,1)' 'TENT(0,15,12)' 'TENT(0,15,12)' 'BLOCK(1,1)' 'BLOCK(1,1)' 'BLOCK(1,1)' 'BLOCK(1,1)'    \
         -regress_censor_motion 0.3                               \
         -regress_motion_per_run                                  \
         -regress_opts_3dD                                        \

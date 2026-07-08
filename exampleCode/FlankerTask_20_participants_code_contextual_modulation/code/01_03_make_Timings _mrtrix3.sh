@@ -23,7 +23,8 @@ for subj in `cat subjList.txt`; do
 	#cat ${subj}_task-flanker_run-1_events.tsv | awk '{if ($4=="MI") {print $1, 1, 1}}' > MI_run1.txt
 	#cat ${subj}_task-flanker_run-1_events.tsv | awk '{if ($4=="MC") {print $1, 1, 1}}' > MC_run1.txt
 	cat ${subj}_task-flanker_run-1_events.tsv | awk '{if ($5=="cue") {print $1, 1, 1}}' > cue_run1.txt
-	cat ${subj}_task-flanker_run-1_events.tsv | awk '{if ($5=="blank") {print $1, 1, 1}}' > blank_run1.txt
+	cat ${subj}_task-flanker_run-1_events.tsv | awk '{if ($5=="blank" && $4=="MC") {print $1, 1, 1}}' > blank_MC_run1.txt
+	cat ${subj}_task-flanker_run-1_events.tsv | awk '{if ($5=="blank" && $4=="MI") {print $1, 1, 1}}' > blank_MI_run1.txt
 	
 
 	cat ${subj}_task-flanker_run-2_events.tsv | awk '{if ($5=="I" && $4=="MC" && $7=="1") {print $1, 1, 1}}' > incongruent_MC_run2.txt
@@ -32,8 +33,8 @@ for subj in `cat subjList.txt`; do
 	cat ${subj}_task-flanker_run-2_events.tsv | awk '{if ($5=="C" && $4=="MI" && $7=="1") {print $1, 1, 1}}' > congruent_MI_run2.txt
 	#cat ${subj}_task-flanker_run-2_events.tsv | awk '{if ($4=="MI") {print $1, 1, 1}}' > MI_run2.txt
 	#cat ${subj}_task-flanker_run-2_events.tsv | awk '{if ($4=="MC") {print $1, 1, 1}}' > MC_run2.txt
-	cat ${subj}_task-flanker_run-2_events.tsv | awk '{if ($5=="cue") {print $1, 1, 1}}' > cue_run2.txt
-	cat ${subj}_task-flanker_run-2_events.tsv | awk '{if ($5=="blank") {print $1, 1, 1}}' > blank_run2.txt
+	cat ${subj}_task-flanker_run-2_events.tsv | awk '{if ($5=="blank" && $4=="MC") {print $1, 1, 1}}' > blank_MC_run2.txt
+	cat ${subj}_task-flanker_run-2_events.tsv | awk '{if ($5=="blank" && $4=="MI") {print $1, 1, 1}}' > blank_MI_run2.txt
 
 
 #Now convert to AFNI format
@@ -44,7 +45,8 @@ for subj in `cat subjList.txt`; do
 	#timing_tool.py -fsl_timing_files MI_*.txt -write_timing MI.1D
 	#timing_tool.py -fsl_timing_files MC_*.txt -write_timing MC.1D
 	timing_tool.py -fsl_timing_files cue_*.txt -write_timing cue.1D
-	timing_tool.py -fsl_timing_files blank_*.txt -write_timing blank.1D
+	timing_tool.py -fsl_timing_files blank_MC*.txt -write_timing blank_MC.1D
+	timing_tool.py -fsl_timing_files blank_MI*.txt -write_timing blank_MI.1D
 
 	cd ../..
 

@@ -3,7 +3,7 @@
 set main_folder = '/mnt/disk01/ds001751_FlankerTask_context'
 set code_folder = $main_folder/code
 set input_folder = $main_folder/derivatives/mrtrix3
-set output_folder = $main_folder/derivatives/processing_afni_denoised_incongruent_congruent
+set output_folder = $main_folder/derivatives/processing_afni_denoised_incongruent_congruent_tent
 echo $main_folder
 echo $code_folder
 echo $input_folder
@@ -29,9 +29,9 @@ endif
 
 # runs code across participants
 foreach i (`cat subjList.txt`)
-    echo instr: tcsh $code_folder/02_01_sub_xx_afni_proc_denoised_incongruent_congruent.sh $i $main_folder $input_folder
+    echo instr: tcsh $code_folder/02_02_sub_xx_afni_proc_denoised_incongruent_congruent_TENT.sh $i $main_folder $input_folder
     echo instr mv ${i}.results $output_folder
-    tcsh $code_folder/02_01_sub_xx_afni_proc_denoised_incongruent_congruent.sh $i $main_folder $input_folder
+    tcsh $code_folder/02_02_sub_xx_afni_proc_denoised_incongruent_congruent_TENT.sh $i $main_folder $input_folder
     mv ${i}.results $output_folder
     mv proc.${i} $output_folder
     mv output.proc.${i} $output_folder    

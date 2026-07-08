@@ -1,6 +1,6 @@
 #!/bin/tcsh -xef
 
-set main_folder = '/home/fracasso/Data/openNeuro/ds001751'
+set main_folder = '/mnt/disk01/ds001751_FlankerTask_context'
 set code_folder = $main_folder/code
 set input_folder = $main_folder/derivatives/mrtrix3
 set output_folder = $main_folder/derivatives/processing_afni_denoised_incongruent_congruent
@@ -39,6 +39,43 @@ foreach i (`cat subjList.txt`)
 	cd $output_folder
 	cd {$i}.results
 	pwd
+
+	ls *_RT_correct_basis_1*
+	rm *_RT_correct_basis_1*
+
+	# -------------------------------------------
+	# run the regression analysis, tent approach
+	# -------------------------------------------
+
+	3dDeconvolve -input pb04.$subj.r*.scale+orig.HEAD                        \
+	    -censor motion_${subj}_censor.1D                                     \
+	    -ortvec mot_demean.r01.1D mot_demean_r01                             \
+    	-ortvec mot_demean.r02.1D mot_demean_r02                             \
+    	-polort 9 -float                                                     \
+    	-num_stimts 6                                                        \
+    	-stim_times 1 stimuli/cue.1D 'BLOCK(1,1)'                            \
+    	-stim_label 1 cue                                                    \
+    	-stim_times 2 stimuli/blank.1D 'TENT(0,15,12)'                       \
+    	-stim_label 2 blank                                                  \
+    	-stim_times 3 stimuli/congruent_MC.1D 'BLOCK(1,1)'                   \
+    	-stim_label 3 congruent_MC                                           \
+    	-stim_times 4 stimuli/incongruent_MC.1D 'BLOCK(1,1)'                 \
+    	-stim_label 4 incongruent_MC                                         \
+    	-stim_times 5 stimuli/congruent_MI.1D 'BLOCK(1,1)'                   \
+    	-stim_label 5 congruent_MI                                           \
+    	-stim_times 6 stimuli/incongruent_MI.1D 'BLOCK(1,1)'                 \
+    	-stim_label 6 incongruent_MI                                         \
+    	-iresp 2 iresp_blank.$subj                                           \
+    	-jobs 8                                                              \
+    	-gltsym 'SYM: +incongruent_MC +incongruent_MI -congruent_MC -congruent_MI'  \
+    	-glt_label 1 incongruent-congruent                                   \
+    	-gltsym 'SYM: +congruent_MC +congruent_MI -incongruent_MC -incongruent_MI'  \
+    	-glt_label 2 congruent-incongruent                                   \
+    	-fout -tout -x1D X.xmat_tentApproach.1D -xjpeg X_tentApproach.jpg                              \
+    	-x1D_uncensored X.nocensor.xmat_tentApproach.1D                                   \
+    	-fitts fitts_tentApproach.$subj                                                   \
+    	-errts errts_tentApproach.${subj}                                                 \
+    	-bucket stats_tentApproach.$subj
 	
 	ls *_RT_correct_basis_1*
 	rm *_RT_correct_basis_1*
@@ -79,45 +116,6 @@ foreach i (`cat subjList.txt`)
 	    -errts errts_RT_correct_basis_no.${subj}                                                \
 	    -bucket stats_RT_correct_basis_no.$subj
 
-	#ls *_IM_basis_1_dmUBLOCK*
-	#rm *_IM_basis_1_dmUBLOCK*
-	## IM model -basis_normall 1.0
-	#3dDeconvolve -input pb04.$subj.r*.scale+orig.HEAD                    \
-    	#-censor motion_${subj}_censor.1D                                     \
-    	#-ortvec mot_demean.r01.1D mot_demean_r01                             \
-    	#-ortvec mot_demean.r02.1D mot_demean_r02                             \
-    	#-polort 2 -float                                                     \
-    	#-basis_normall 1.0                                                   \
-    	#-num_stimts 1                                                        \
-    	#-stim_times_IM 1 $input_folder/{$i}/func/RT_correctWrong_all_for_IM.1D 'dmUBLOCK'    \
-    	#-stim_label 1 stim01                                                 \
-    	#-jobs 2                                                              \
-    	#-GOFORIT 10                                                          \
-    	#-fout -tout -x1D X_IM_basis_1_dmUBLOCK.xmat.1D -xjpeg X_IM_basis_1_dmUBLOCK.jpg                   \
-    	#-x1D_uncensored X_IM_basis_1_dmUBLOCK.nocensor.xmat.1D                                   \
-    	#-fitts fitts_IM_basis_1_dmUBLOCK.$subj                                                   \
-    	#-errts errts_IM_basis_1_dmUBLOCK.${subj}                                                 \
-    	#-bucket stats_IM_basis_1_dmUBLOCK.$subj
-
-	#ls *_IM_basis_1_dmUBLOCK_1*
-	#rm *_IM_basis_1_dmUBLOCK_1*
-	## IM model BLOCK, basis_normall 1.0 dmUBLOCK(1)
-	#3dDeconvolve -input pb04.$subj.r*.scale+orig.HEAD                    \
-    	#-censor motion_${subj}_censor.1D                                     \
-    	#-ortvec mot_demean.r01.1D mot_demean_r01                             \
-    	#-ortvec mot_demean.r02.1D mot_demean_r02                             \
-    	#-polort 2 -float                                                     \
-    	#-basis_normall 1.0                                                   \
-    	#-num_stimts 1                                                        \
-    	#-stim_times_IM 1 $input_folder/{$i}/func/RT_correctWrong_all_for_IM.1D 'dmUBLOCK(1)'    \
-    	#-stim_label 1 stim01                                                 \
-    	#-jobs 2                                                              \
-    	#-GOFORIT 10                                                          \
-    	#-fout -tout -x1D X_IM_basis_1_dmUBLOCK_1.xmat.1D -xjpeg X_IM_basis_1_dmUBLOCK_1.jpg                  \
-    	#-x1D_uncensored X_IM_basis_1_dmUBLOCK_1.nocensor.xmat.1D                                   \
-    	#-fitts fitts_IM_basis_1_dmUBLOCK_1.$subj                                                   \
-    	#-errts errts_IM_basis_1_dmUBLOCK_1.${subj}                                                 \
-    	#-bucket stats_IM_basis_1_dmUBLOCK_1.$subj
 
     echo ................
     echo ................
