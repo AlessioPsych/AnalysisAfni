@@ -1,0 +1,7 @@
+# to bring wang surface atlas into MNI volume space properly, remember to move the maxprob_surf files in the main surface suma folder:
+
+@surf_to_vol_spackle -spec std.141.MNI152_2009_lh.spec -surfA std.141.lh.smoothwm.gii -surfB std.141.lh.pial.gii -surfset maxprob_surf_lh.1D.dset -prefix lh.Wang_2015 -maskset MNI152_2009_SurfVol.nii -mode -meanrad 0.7 -maxiters 1
+
+@surf_to_vol_spackle -spec std.141.MNI152_2009_rh.spec -surfA std.141.rh.smoothwm.gii -surfB std.141.rh.pial.gii -surfset maxprob_surf_rh.1D.dset -prefix rh.Wang_2015 -maskset MNI152_2009_SurfVol.nii -mode -meanrad 0.7 -maxiters 1
+
+
