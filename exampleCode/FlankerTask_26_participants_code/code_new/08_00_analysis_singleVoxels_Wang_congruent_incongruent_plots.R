@@ -3,6 +3,9 @@ source('~/abin/AFNIio.R')
 library(lme4)
 library(lmerTest)
 
+# to run ' Rscript filename '
+
+
 mainFolder <- '/mnt/disk01/ds000102_FlankerTask'
 outputFolder <- 'derivatives/resultsWang'
 surfacesFolder <- '/mnt/disk01/surfaceAtlas_HCP_vonEconomo/surfaceAtlases/suma_MNI152_2009_princetonAtlas'

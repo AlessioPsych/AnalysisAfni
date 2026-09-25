@@ -1,7 +1,7 @@
 rm( list=ls() )
 source('~/abin/AFNIio.R')
 
-# to run ' Rscript 07_00_volumetricStats_Wang_singleVoxels_incongruent_congruent.R '
+# to run ' Rscript filename '
 
 debugFlag  <- 0
 if (debugFlag==1) {
