@@ -1,12 +1,14 @@
 rm( list=ls() )
 source('~/abin/AFNIio.R')
 
+# to run ' Rscript 07_00_volumetricStats_Wang_singleVoxels_incongruent_congruent.R '
+
 debugFlag  <- 0
 if (debugFlag==1) {
-  mainFolder <- '/home/fracasso/Data/openNeuro/ds000102'
+  mainFolder <- '/mnt/disk01/ds000102_FlankerTask'
   inputFolder <- 'derivatives/processing_afni_denoised_incongruent_congruent'
   outputFolder <- 'derivatives/resultsWang'
-  outputFileName <- 'results_Wang_ORIG_Denoised.RData'
+  outputFileName <- 'results_Wang_ORIG_Denoised_incongruent_congruent.RData'
   roiFilenameLH_input <- 'lh.Wang_2015_epiResampled_' 
   roiFilenameRH_input <- 'rh.Wang_2015_epiResampled_' 
   MNI_flag <- 0
@@ -33,6 +35,8 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
   #  roiFilenameRH <- 'rh.Glasser_HCP_epiResampled_' 
   
   #flagOutput <- 1
+  for ( i in  1:length( partDirs ) ) { # i <- 1; side <- 'lh' length( partDirs )
+  
   outputDataset <- data.frame( voxelValue=double(), 
   			       voxelIdx=double(),
                                side=factor(),
@@ -40,7 +44,7 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
                                roi=factor(),
                                coefficient=factor(),
                                roiIdx=double())
-  for ( i in  1:length( partDirs ) ) { # i <- 1; side <- 'lh' length( partDirs )
+  
     for ( side in c('lh','rh') ) {
       setwd( mainDir )
       setwd( dataDir )
@@ -159,15 +163,13 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
       #if ( flagOutput==1 ) { outputDataset <- dataPartSideTemp; flagOutput <- 0 }
       
     }
+    fileToSave <- sprintf('%s/%s/%s_%s', mainDir, outputDir, partNameClean, outputFileName )
+    save( outputDataset, file=fileToSave )
   }
-  
-  fileToSave <- sprintf('%s/%s/%s', mainDir, outputDir, outputFileName )
-  save( outputDataset, file=fileToSave )
-  
 }
 
-mainFolder <- '/home/fracasso/Data/openNeuro/ds001751'
-inputFolder <- 'derivatives/processing_afni_denoised_incongruent_congruent'
+mainFolder <- '/home/fracasso/Data/openNeuro/ds001751_FlankerContextualModulation'
+inputFolder <- 'derivatives/processing_afni_denoised_incongruent_congruent_tent'
 outputFolder <- 'derivatives/resultsWang'
 outputFileName <- 'results_Wang_ORIG_Denoised_singleVoxel_incongruent_congruent.RData'
 roiFilenameLH_input <- 'lh.Wang_2015_epiResampled_' 

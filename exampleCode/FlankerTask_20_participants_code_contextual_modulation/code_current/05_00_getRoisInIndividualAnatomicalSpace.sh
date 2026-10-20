@@ -4,8 +4,8 @@
 # cd /media/alessiofracasso/DATADRIVE1/Flanker/code
 # sh 09_00_getRoisInIndividualSpace.sh
 
-maindir="/home/fracasso/Data/openNeuro/ds001751"
-codedir="/code"
+maindir="/home/fracasso/Data/openNeuro/ds001751_FlankerContextualModulation"
+codedir="code"
 Freesurferdir="derivatives/Freesurfer_output"
 inputAfniDenoisedOrigDir="derivatives/processing_afni_denoised"
 inputAfniNoDenoisedOrigDir="derivatives/processing_afni_no_denoised"

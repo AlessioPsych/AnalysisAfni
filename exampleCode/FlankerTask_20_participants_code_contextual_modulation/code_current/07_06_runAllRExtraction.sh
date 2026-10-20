@@ -1,0 +1,8 @@
+#!/bin/bash
+
+Rscript 07_00_volumetricStats_Wang_singleVoxels_incongruent_congruent.R
+Rscript 07_01_volumetricStats_Wang_singleVoxels_RT_basis_1.R
+Rscript 07_02_volumetricStats_Wang_singleVoxels_RT_basis_no.R
+Rscript 07_03_volumetricStats_Glasser_singleVoxels_incongruent_congruent.R
+Rscript 07_04_volumetricStats_Glasser_singleVoxels_RT_basis_1.R
+Rscript 07_05_volumetricStats_Glasser_singleVoxels_RT_basis_no.R

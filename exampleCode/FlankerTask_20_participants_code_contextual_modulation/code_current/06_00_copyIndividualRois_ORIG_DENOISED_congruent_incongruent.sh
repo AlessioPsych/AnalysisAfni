@@ -4,10 +4,10 @@
 # cd /media/alessiofracasso/DATADRIVE1/Flanker/code
 # sh 11_00_copyIndividualRoisInOrigSpace.sh
 
-maindir="/home/fracasso/Data/openNeuro/ds001751"
-codedir="/code"
+maindir="/home/fracasso/Data/openNeuro/ds001751_FlankerContextualModulation"
+codedir="code"
 Freesurferdir="derivatives/Freesurfer_output"
-inputAfniDenoisedOrigDir="derivatives/processing_afni_denoised_incongruent_congruent"
+inputAfniDenoisedOrigDir="derivatives/processing_afni_denoised_incongruent_congruent_tent"
 sumaMNIDir="derivatives/surfaceAtlases/suma_MNI152_2009_princetonAtlas"
 glasserDir="derivatives/surfaceAtlases/MNI_Glasser_HCP_v1.0/MNI_Glasser_HCP_2019_v1.0"
 princetonDir="derivatives/surfaceAtlases/suma_MNI152_2009_princetonAtlas/probatlas_v4/ProbAtlas_v4/subj_surf_all"

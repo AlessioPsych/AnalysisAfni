@@ -82,15 +82,15 @@ foreach i (`cat subjList.txt`)
 	    -ortvec mot_demean.r01.1D mot_demean_r01                             \
     	-ortvec mot_demean.r02.1D mot_demean_r02                             \
     	-polort 9 -float                                                     \
-    	-num_stimts 3                                                        \
+    	-num_stimts 4                                                        \
     	-stim_times 1 stimuli/cue.1D 'BLOCK(1,1)'                            \
     	-stim_label 1 cue                                                    \
     	-stim_times 2 stimuli/blank_MC.1D 'TENT(0,15,12)'                       \
     	-stim_label 2 blank_MC                                                  \
     	-stim_times 3 stimuli/blank_MI.1D 'TENT(0,15,12)'                       \
     	-stim_label 3 blank_MI                                                  \
-	-stim_times_AM1 3 $input_folder/{$i}/func/RT_correct.1D 'dmUBLOCK'   \
-	-stim_label 3 RT_correct                                             \
+	-stim_times_AM1 4 $input_folder/{$i}/func/RT_correct.1D 'dmUBLOCK'   \
+	-stim_label 4 RT_correct                                             \
     	-jobs 8                                                              \
     	-fout -tout -x1D X.xmat_RT_correct_basis_no.1D -xjpeg X_RT_correct_basis_no.jpg                              \
     	-x1D_uncensored X.nocensor.xmat_RT_correct_basis_no.1D                                   \

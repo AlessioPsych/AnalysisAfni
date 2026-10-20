@@ -1,0 +1,38 @@
+!/bin/bash
+
+startDir="/home/fracasso/Programs/freesurfer-linux-ubuntu20_amd64-7.4.1/freesurfer/average/Yeo_Brainmap_MNI152"
+subdir="/home/fracasso/Data/openNeuro/ds001751/derivatives/Freesurfer_output/sub-01/Freesurfer_result/mri"
+
+mri_convert $subdir/orig.mgz $subdir/delMe_orig.nii
+
+mri_vol2vol --targ $startDir/FSL_MNI152_2mm.nii.gz \
+     --mov $subdir/orig.mgz \
+     --xfm $subdir/transforms/talairach.xfm  \
+     --inv \
+     --o $subdir/delMe_MNI_in_orig.nii
+
+mri_vol2vol --targ $startDir/subcortex.fit1_R2.nii \
+     --mov $subdir/orig.mgz \
+     --xfm $subdir/transforms/talairach.xfm  \
+     --inv \
+     --o $subdir/delMe_subcortex.fit1_R2.nii
+
+
+
+mri_vol2vol \
+  --mov $startDir/FSL_MNI152_2mm.nii.gz \
+  --targ $subdir/orig.mgz \
+  --tal \
+  --inv \
+  --o data_native.nii.gz \
+  --interp trilinear
+
+
+mri_vol2vol \
+  --mov $startDir/FSL_MNI152_2mm.nii.gz \
+  --targ $subdir/orig.mgz \
+  --inv-txfm \
+  --tal \
+  --o volume_native.nii.gz \
+  --interp nearest
+
