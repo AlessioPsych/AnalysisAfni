@@ -175,8 +175,8 @@ getResultsGlasser <- function( mainFolder, inputFolder, outputFolder, outputFile
 }
 
 mainFolder <- '/home/fracasso/Data/openNeuro/ds001751_FlankerContextualModulation'
-inputFolder <- 'derivatives/processing_afni_denoised_incongruent_congruent_tent'
-outputFolder <- 'derivatives/resultsGlasser'
+inputFolder <- 'derivatives/processing_afni_denoised_incongruent_congruent_outputFolder'
+tent <- 'derivatives/resultsGlasser'
 outputFileName <- 'results_Glasser_ORIG_Denoised_singleVoxel_stats_RT_correct_basis_no.RData'
 roiFilenameLH_input <- 'lh.Glasser_HCP_epiResampled_' 
 roiFilenameRH_input <- 'rh.Glasser_HCP_epiResampled_' 
