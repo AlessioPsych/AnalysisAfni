@@ -4,6 +4,7 @@
 set subj  = $argv[1]
 set main_folder = $argv[2]
 set input_folder = $argv[3]
+set anat_folder = $argv[4]
 set gname = Flanker
 
 echo "subj function loop, main folder: '$main_folder'"
@@ -12,7 +13,7 @@ echo "subj function loop, input folder: '$input_folder'"
 
 # set data directories
 set top_dir = $input_folder/{$subj}
-set anat_dir  = $top_dir/anat
+set anat_dir  = $anat_folder/{$subj}/Freesurfer_result/SUMA
 set epi_dir   = $top_dir/func
 set stim_dir  = $top_dir/func
 
@@ -32,12 +33,12 @@ set stim_dir  = $top_dir/func
 afni_proc.py -subj_id $subj                                      \
         -script proc.$subj -scr_overwrite                        \
         -blocks tshift align volreg blur mask scale regress \
-        -copy_anat $anat_dir/{$subj}_T1w.nii.gz                  \
+        -copy_anat $anat_dir/brainAFNI+orig                  \
         -dsets                                                   \
             $epi_dir/{$subj}_task-flanker_run-1_bold_denoised_tSliceCorrect.nii.gz       \
             $epi_dir/{$subj}_task-flanker_run-2_bold_denoised_tSliceCorrect.nii.gz       \
         -tcat_remove_first_trs 0                                 \
-        -align_opts_aea -cost lpc -giant_move                    \
+        -align_opts_aea -cost lpc -giant_move -epi2anat -deoblique off -anat_has_skull no \
         -volreg_align_to MIN_OUTLIER                             \
         -volreg_align_e2a                                        \
         -blur_size 2                                             \

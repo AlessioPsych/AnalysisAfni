@@ -3,10 +3,12 @@
 set main_folder = '/home/fracasso/Data/openNeuro/ds001751_FlankerContextualModulation'
 set code_folder = $main_folder/code
 set input_folder = $main_folder/derivatives/mrtrix3
+set anat_folder = $main_folder/derivatives/Freesurfer_output
 set output_folder = $main_folder/derivatives/processing_afni_denoised_incongruent_congruent_tent
 echo $main_folder
 echo $code_folder
 echo $input_folder
+echo $anat_folder
 echo $output_folder
 
 cd $main_folder
@@ -29,9 +31,9 @@ endif
 
 # runs code across participants
 foreach i (`cat subjList.txt`)
-    echo instr: tcsh $code_folder/02_02_sub_xx_afni_proc_denoised_incongruent_congruent_TENT.sh $i $main_folder $input_folder
+    echo instr: tcsh $code_folder/02_02_sub_xx_afni_proc_denoised_incongruent_congruent_TENT.sh $i $main_folder $input_folder $anat_folder
     echo instr mv ${i}.results $output_folder
-    tcsh $code_folder/02_02_sub_xx_afni_proc_denoised_incongruent_congruent_TENT.sh $i $main_folder $input_folder
+    tcsh $code_folder/02_02_sub_xx_afni_proc_denoised_incongruent_congruent_TENT.sh $i $main_folder $input_folder $anat_folder
     mv ${i}.results $output_folder
     mv proc.${i} $output_folder
     mv output.proc.${i} $output_folder    
