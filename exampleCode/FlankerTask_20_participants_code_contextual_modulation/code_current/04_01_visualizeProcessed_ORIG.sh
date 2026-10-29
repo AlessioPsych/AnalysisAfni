@@ -15,8 +15,11 @@ cd $maindir
 cd $datadir
 cd {$subj}.results/
 
+3dTcat -prefix delMeTemp.nii.gz pb01.{$subj}.r01.volreg+orig'[1]'
+
 @chauffeur_afni                     \
         -ulay    anat_final.{$subj}+orig         \
+        -olay delMeTemp.nii.gz -cbar Plasma -opacity 7 \
         -prefix  ${maindir}/${targetdir}/{$subj}-anatOrig         \
         -montx 5 -monty 5               \
         -set_xhairs OFF                 \
@@ -24,15 +27,14 @@ cd {$subj}.results/
         -do_clean  
 
 
-3dTcat -prefix delMeTemp.nii.gz pb02.{$subj}.r01.volreg+orig'[1]'
 
-@chauffeur_afni                     \
-        -ulay    delMeTemp.nii.gz         \
-        -prefix  ${maindir}/${targetdir}/{$subj}-volregOrig         \
-        -montx 5 -monty 5               \
-        -set_xhairs OFF                 \
-        -label_mode 0 -label_size 0     \
-        -do_clean  
+#@chauffeur_afni                     \
+#        -ulay    delMeTemp.nii.gz         \
+#        -prefix  ${maindir}/${targetdir}/{$subj}-volregOrig         \
+#        -montx 5 -monty 5               \
+#        -set_xhairs OFF                 \
+#        -label_mode 0 -label_size 0     \
+#        -do_clean  
 
 rm delMeTemp.nii.gz
 

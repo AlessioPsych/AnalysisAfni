@@ -1,13 +1,13 @@
 #!/bin/tcsh -xef
 
-set maindir = "/home/fracasso/Data/openNeuro/ds001751"
+set maindir = "/home/fracasso/Data/openNeuro/ds001751_FlankerContextualModulation"
 set codedir = ${maindir}/code
 
 cd $maindir
 
 # creates output folder
 set output_folder = "derivatives/images_afni_ORIG_from_denoised_data"
-set input_folder = "derivatives/processing_afni_denoised_incongruent_congruent"
+set input_folder = "derivatives/processing_afni_denoised_incongruent_congruent_tent"
 
 if ( -d $output_folder ) then
     echo "Directory '$output_folder' exists. Removing and recreating..."
